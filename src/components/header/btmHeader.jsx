@@ -1,0 +1,69 @@
+import React, { useEffect, useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { PiSignInBold } from "react-icons/pi";
+import { MdPersonAddAlt1 } from "react-icons/md";
+import { IoMdMenu } from "react-icons/io";
+import { MdOutlineArrowDropDown } from "react-icons/md";
+import axios from 'axios';
+
+const navlinks = [
+  {title: 'Home' , link: '/'},
+  {title: 'About' , link: '/about'},
+  {title: 'Accessories' , link: '/accessories'},
+  {title: 'Blog' , link: '/blog'},
+  {title: 'Contact' , link: '/contact'},
+];
+
+
+const BtmHeader = () => {
+
+  const [categories, setCategories] = useState([]);
+  const [active, setActive] = useState(false);
+  const location = useLocation();
+
+
+  useEffect(() =>{
+    async function fetchAllCategories () {
+      let response = await axios.get('https://dummyjson.com/products/categories');
+      let data = response.data.map((cate) => ({
+        name: cate.name,
+        slug: cate.slug,
+      }));
+      setCategories(data);
+    }
+    fetchAllCategories();
+  },[])
+
+  return ( 
+    <div className='btm-hedear'>
+      <div className="container">
+        <div className="nav">
+          <div className="category-nav">
+            <div className="category-btn" onClick={() => setActive((prev) => !prev)}>
+              <IoMdMenu />
+              <p>Browse Category</p>
+              <MdOutlineArrowDropDown />
+            </div>
+            <div className={`${active ?  'active': ''} category-nav-list`}>
+              {categories.map((cate, index) => (<NavLink className='link' key={index} to={cate.slug}>{cate.name}</NavLink>))}
+            </div>
+          </div>
+          <ul className="nav-links">
+            {navlinks.map((navlink, index) => (            
+                <li key={index} className={ location.pathname === navlink.link ? 'active' : '' } >
+                  <NavLink className= 'link' to={navlink.link}>{navlink.title}</NavLink>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div className="sign-reg-icon">
+          <NavLink to= '/signIn'><PiSignInBold /></NavLink>
+          <NavLink to= '/register'><MdPersonAddAlt1 /></NavLink>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default BtmHeader;
