@@ -5,6 +5,7 @@ import { MdPersonAddAlt1 } from "react-icons/md";
 import { IoMdMenu } from "react-icons/io";
 import { MdOutlineArrowDropDown } from "react-icons/md";
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const navlinks = [
   {title: 'Home' , link: '/'},
@@ -25,12 +26,16 @@ const BtmHeader = () => {
 
   useEffect(() =>{
     async function fetchAllCategories () {
-      let response = await axios.get('https://dummyjson.com/products/categories');
-      let data = response.data.map((cate) => ({
-        name: cate.name,
-        slug: cate.slug,
-      }));
-      setCategories(data);
+      try {
+        let response = await axios.get('https://dummyjson.com/products/categories');
+        let data = response.data.map((cate) => ({
+          name: cate.name,
+          slug: cate.slug,
+        }));
+        setCategories(data);
+      } catch(error) {
+        toast.error('Error on Fetch Categories:'+ error)
+      }
     }
     fetchAllCategories();
   },[])
