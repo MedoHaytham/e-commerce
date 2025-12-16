@@ -49,7 +49,7 @@ const BtmHeader = () => {
               {categories.map((cate, index) => (<NavLink className='link' key={index} to={cate.slug}>{cate.name}</NavLink>))}
             </div>
           </div>
-          <div className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+          <div className="menu-toggle" onClick={() => setMenuOpen((prev) => !prev)}>
             <IoMdMenu />
           </div>
           <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
