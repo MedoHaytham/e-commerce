@@ -19,6 +19,7 @@ const BtmHeader = () => {
 
   const [categories, setCategories] = useState([]);
   const [active, setActive] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
 
@@ -40,7 +41,7 @@ const BtmHeader = () => {
         <div className="nav">
           <div className="category-nav">
             <div className="category-btn" onClick={() => setActive((prev) => !prev)}>
-              <IoMdMenu />
+              <IoMdMenu className="menu-icon" />
               <p>Browse Category</p>
               <MdOutlineArrowDropDown />
             </div>
@@ -48,9 +49,12 @@ const BtmHeader = () => {
               {categories.map((cate, index) => (<NavLink className='link' key={index} to={cate.slug}>{cate.name}</NavLink>))}
             </div>
           </div>
-          <ul className="nav-links">
+          <div className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+            <IoMdMenu />
+          </div>
+          <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
             {navlinks.map((navlink, index) => (            
-                <li key={index} className={ location.pathname === navlink.link ? 'active' : '' } >
+                <li key={index} className={ location.pathname === navlink.link ? 'active' : '' } onClick={() => setMenuOpen(false)} >
                   <NavLink className= 'link' to={navlink.link}>{navlink.title}</NavLink>
                 </li>
               ))

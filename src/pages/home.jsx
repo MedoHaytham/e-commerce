@@ -1,9 +1,12 @@
 import React from 'react';
+import HeroSlider from '../components/heroSlider';
 
 const HomePage = () => {
   return ( 
-    <h1>Home Page</h1>
-   );
+    <>
+      <HeroSlider />
+    </>
+  );
 }
 
 export default HomePage;
