@@ -1,6 +1,7 @@
 .hero-slider {
   position: relative;
   margin-bottom: 80px;
+  margin-top: 20px;
 }
 
 .hero-slider .swiper-slide .content {
