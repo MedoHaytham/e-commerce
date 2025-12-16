@@ -1,0 +1,42 @@
+.hero-slider {
+  position: relative;
+  margin-bottom: 80px;
+}
+
+.hero-slider .swiper-slide .content {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 5%;
+  z-index: 999;
+}
+
+.hero-slider .swiper-slide .content h4 {
+  text-transform: uppercase;
+  font-size: 1vw;
+  font-style: italic;
+  font-weight: normal;
+  margin-bottom: 0.4vw;
+}
+
+.hero-slider .swiper-slide .content h3 {
+  font-size: 3vw;
+  text-transform: capitalize;
+  margin-bottom: 30px;
+  color: var(--main_color);
+  font-weight: bolder;
+  line-height: 1.1;
+}
+
+.hero-slider .swiper-slide .content p {
+  font-size: 1.1vw;
+  margin-bottom: 2.5vw;
+  margin-top: 2.5vw;
+}
+
+@media (max-width: 767px) {
+  .hero-slider .swiper-slide .content .btn {
+    padding: 5px 10px;
+    font-size: 8px;
+  }
+}
