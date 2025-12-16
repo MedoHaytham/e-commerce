@@ -1,6 +1,6 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from 'swiper/modules'
+import { Autoplay, Pagination } from 'swiper/modules'
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Link } from 'react-router-dom';
@@ -12,10 +12,9 @@ import banner3 from '../imgs/banner_Hero3.jpg';
 const HeroSlider = () => {
   return ( 
     <>
-
     <div className="hero-slider">
       <div className="container">
-        <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
+        <Swiper loop={true} autoplay={{delay: 2500}} pagination={true} modules={[Autoplay,Pagination]} className="mySwiper">
           <SwiperSlide>
             <div className="content">
               <h4>Introducing the new</h4>
