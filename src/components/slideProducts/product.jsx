@@ -21,11 +21,11 @@ const Product = ({title, rating, price, image}) => {
         </div>
         <span className='price'>$ {price}</span>
       </Link>
-      {/* <div className='icons'>
+      <div className='icons'>
         <span><FaCartArrowDown /></span>
         <span><FaRegHeart /></span>
         <span><FaShare /></span>
-      </div> */}
+      </div>
     </div>
   );
 }
