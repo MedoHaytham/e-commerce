@@ -39,11 +39,38 @@ const SlideProducts = () => {
           <h2>smart phones</h2>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, voluptates?</p>
         </div>
-        <Swiper loop={true} autoplay={{delay: 2500}} slidesPerView={5} navigation={true} modules={[Autoplay, Navigation]} className="mySwiper">
+        <Swiper 
+          loop={true}
+          breakpoints={{
+            340: {
+              slidesPerView: 3,
+              spaceBetween: 20,
+            },
+            370: {
+              slidesPerView: 3,
+              spaceBetween: 20,
+            },
+            520: {
+              slidesPerView: 4,
+              spaceBetween: 20,
+            },
+            767: {
+              slidesPerView: 5,
+              spaceBetween: 20,
+            },
+            992: {
+              slidesPerView: 5,
+              spaceBetween: 20,
+            },
+          }}
+
+          navigation={true} 
+          modules={[Autoplay, Navigation]} 
+          className="mySwiper"
+        >
           { products.map((p, index) => (
-              <SwiperSlide>
+              <SwiperSlide  key={index}>
                 <Product
-                  key={index}
                   title={p.title} 
                   price={p.price} 
                   rating={p.rating} 

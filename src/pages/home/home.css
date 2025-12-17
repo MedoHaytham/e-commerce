@@ -4,6 +4,20 @@
   margin-top: 20px;
 }
 
+@media (max-width: 991px) {
+  .hero-slider {
+    margin-bottom: 40px;
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-slider {
+    margin-bottom: 30px;
+    margin-top: 10px;
+  }
+}
+
 .hero-slider .swiper-slide .content {
   position: absolute;
   top: 50%;
