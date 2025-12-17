@@ -41,6 +41,10 @@ const SlideProducts = () => {
         </div>
         <Swiper 
           loop={true}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
           breakpoints={{
             340: {
               slidesPerView: 3,
