@@ -48,15 +48,15 @@ const SlideProducts = () => {
           breakpoints={{
             340: {
               slidesPerView: 3,
-              spaceBetween: 20,
+              spaceBetween: 10,
             },
             370: {
               slidesPerView: 3,
-              spaceBetween: 20,
+              spaceBetween: 10,
             },
             520: {
               slidesPerView: 4,
-              spaceBetween: 20,
+              spaceBetween: 15,
             },
             767: {
               slidesPerView: 5,
