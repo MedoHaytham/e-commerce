@@ -4,6 +4,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px 0;
+  background-attachment: fixed;
 }
 
 @media (max-width: 767px) {
@@ -176,6 +177,7 @@
 /* btm-header start */
 .btm-hedear {
   background-color: var(--main_color);
+  position: relative;
 }
 
 .btm-hedear .container {
@@ -334,7 +336,7 @@
 @media (max-width: 767px) {
   .btm-hedear .container .nav .nav-links {
     position: absolute;
-    top: 106.08px;
+    top: 40.08px;
     left: 0;
     width: 100%;
     height: fit-content;

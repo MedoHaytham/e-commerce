@@ -1,26 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { FaStar, FaRegHeart, FaCartArrowDown, FaShare, FaStarHalfAlt } from "react-icons/fa";
 
 
 
-const Product = ({title, rating, price, image}) => {
+const Product = ({id, title, price, image, onClickHandler}) => {
   return ( 
-    <div className='product'>
-      <Link>
-        <div className="image">
-          <img src={image} alt="" />
-        </div>
-        <p className='title'>{title}</p>
-        <div className="stars">
-          <FaStar />
-          <FaStar />
-          <FaStar />
-          <FaStar />
-          <FaStarHalfAlt />
-        </div>
-        <span className='price'>$ {price}</span>
-      </Link>
+    <div className='product' onClick={onClickHandler}>
+      <div className="image">
+        <img src={image} alt="" />
+      </div>
+      <p className='title'>{title}</p>
+      <div className="stars">
+        <FaStar />
+        <FaStar />
+        <FaStar />
+        <FaStar />
+        <FaStarHalfAlt />
+      </div>
+      <span className='price'>$ {price}</span>
       <div className='icons'>
         <span><FaCartArrowDown /></span>
         <span><FaRegHeart /></span>

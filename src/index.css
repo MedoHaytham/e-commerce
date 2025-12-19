@@ -97,3 +97,11 @@ ul {
   }
 }
 
+/* header {
+  position: fixed;
+  z-index: 999999999999999;
+  background-color: var(--white_color);
+  width: 100%;
+  top: 0;
+} */
+

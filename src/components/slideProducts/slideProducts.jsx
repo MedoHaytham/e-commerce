@@ -8,21 +8,24 @@ import axios from 'axios';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import './slideProducts.css';
+import { useNavigate } from 'react-router-dom';
 
 
-const SlideProducts = () => {
+const SlideProducts = ({categorySlug, categoryName}) => {
 
   const [products, setProducts] = useState([]);
+  const naviget = useNavigate();
 
   useEffect(() => {
     async function fetchProducts() {
       try {
-        let response = await axios.get('https://dummyjson.com/products/category/smartphones');
+        let response = await axios.get(`https://dummyjson.com/products/category/${categorySlug}`);
         let data = response.data.products.map((p) => ({
+          id: p.id,
           title : p.title,
           price: p.price,
           rating: p.rating,
-          image: p.images[0],
+          image: p.thumbnail,
         }));
         setProducts(data);
       } catch(error) {
@@ -30,20 +33,19 @@ const SlideProducts = () => {
       }
     }
     fetchProducts();
-  },[])
+  },[categorySlug]);
 
   return ( 
     <div className="slider">
       <div className="container">
         <div className='top-slider'>
-          <h2>smart phones</h2>
+          <h2>{categoryName}</h2>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, voluptates?</p>
         </div>
         <Swiper 
-          loop={true}
+          loop={products.length > 5}
           autoplay={{
-            delay: 2500,
-            disableOnInteraction: false,
+            delay: 2500
           }}
           breakpoints={{
             340: {
@@ -67,18 +69,18 @@ const SlideProducts = () => {
               spaceBetween: 20,
             },
           }}
-
           navigation={true} 
           modules={[Autoplay, Navigation]} 
           className="mySwiper"
         >
-          { products.map((p, index) => (
-              <SwiperSlide  key={index}>
+          { products.map((p) => (
+              <SwiperSlide  key={p.id}>
                 <Product
+                  id={p.id}
                   title={p.title} 
                   price={p.price} 
-                  rating={p.rating} 
                   image={p.image}
+                  onClickHandler={() => naviget(`product/${p.id}`)}
                 /> 
               </SwiperSlide>
             ))
