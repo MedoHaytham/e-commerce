@@ -76,11 +76,10 @@ const SlideProducts = ({categorySlug, categoryName}) => {
           { products.map((p) => (
               <SwiperSlide  key={p.id}>
                 <Product
-                  id={p.id}
                   title={p.title} 
                   price={p.price} 
                   image={p.image}
-                  onClickHandler={() => naviget(`product/${p.id}`)}
+                  onClickHandler={() => naviget(`/product/${p.id}`)}
                 /> 
               </SwiperSlide>
             ))
