@@ -21,6 +21,12 @@ body {
   padding-top: 150px;
 }
 
+@media (max-width: 767px) {
+  body {
+    padding-top: 110px;
+  }
+}
+
 img {
   width: 100%;
 }
