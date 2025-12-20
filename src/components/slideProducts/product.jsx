@@ -3,7 +3,8 @@ import { FaStar, FaRegHeart, FaCartArrowDown, FaShare, FaStarHalfAlt } from "rea
 
 
 
-const Product = ({title, price, image, onClickHandler}) => {
+
+const Product = ({ title, price, image, onClickHandler }) => {
   return ( 
     <div className='product' onClick={onClickHandler}>
       <div className="image">
