@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect , useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { FaStar, FaRegHeart, FaShare, FaStarHalfAlt } from "react-icons/fa";
+import { FaStar, FaRegHeart, FaShare, FaRegStar, FaStarHalfAlt } from "react-icons/fa";
 import { TiShoppingCart } from "react-icons/ti";
 
 import './productPage.css';
@@ -31,12 +31,35 @@ const ProductPage = () => {
       }
     }
     fetchProduct();
-  },[id])
+  },[id]);
+
+  const renderStars = () => {
+    const stars = [];
+    const fullStars = Math.floor(product.rating);
+    const hasHalfStar = product.rating % 1 !== 0;
+    const totalStars = 5;
+    
+    // full stars
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<FaStar key={`full-${i}`}/>);
+    }
+
+    // has half star
+    if(hasHalfStar) {
+      stars.push(<FaStarHalfAlt key='half'/>);
+    }
+
+    // empty stars
+    const remaining = totalStars - stars.length;
+    for (let i = 0; i < remaining; i++) {
+      stars.push(<FaRegStar />);
+    }
+
+    return stars;
+  }
 
   if(loading) return <ProductLoading />
   if(!product) return <p>Product Not Found</p>
-
-  console.log(product.category);
 
   return (
     <>
@@ -57,11 +80,7 @@ const ProductPage = () => {
           <div className="product-info">
             <h1>{product.title}</h1>
             <div className="rating">
-              <FaStar />
-              <FaStar />
-              <FaStar />
-              <FaStar />
-              <FaStarHalfAlt />
+              {renderStars ()}
             </div>
             <p className="price">$ {product.price}</p>
             <h5>Availability: <span>{product.availabilityStatus}</span></h5>
