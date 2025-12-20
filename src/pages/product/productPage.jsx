@@ -7,6 +7,7 @@ import { TiShoppingCart } from "react-icons/ti";
 
 import './productPage.css';
 import SlideProducts from '../../components/slideProducts/slideProducts';
+import ProductLoading from './productLoading';
 
 
 
@@ -32,7 +33,7 @@ const ProductPage = () => {
     fetchProduct();
   },[id])
 
-  if(loading) return <p>Loading....</p>
+  if(loading) return <ProductLoading />
   if(!product) return <p>Product Not Found</p>
 
   console.log(product.category);

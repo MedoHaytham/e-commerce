@@ -1,9 +1,6 @@
 import React from 'react';
 import { FaStar, FaRegHeart, FaCartArrowDown, FaShare, FaStarHalfAlt } from "react-icons/fa";
 
-
-
-
 const Product = ({ title, price, image, onClickHandler }) => {
   return ( 
     <div className='product' onClick={onClickHandler}>
