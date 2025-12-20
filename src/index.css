@@ -18,6 +18,7 @@
 body {
   background-color: #fff;
   font-family: "Inter", sans-serif;
+  padding-top: 150px;
 }
 
 img {
@@ -97,13 +98,13 @@ ul {
   }
 }
 
-/* header {
+header {
   position: fixed;
   z-index: 999999999999999;
   background-color: var(--white_color);
   width: 100%;
   top: 0;
-} */
+}
 
 /* skeltoin loading */
 
