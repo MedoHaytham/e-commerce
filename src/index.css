@@ -144,10 +144,24 @@ header {
   max-width: 300px;
 }
 
+@media (max-width: 767px) {
+  .toast-wrapper {
+    gap: 10px;
+    min-width: 150px;
+    max-width: 150px;
+  }
+}
+
 .toast-wrapper img {
   height: 50px;
   width: auto;
   object-fit: cover;
+}
+
+@media (max-width: 767px) {
+  .toast-wrapper img {
+    height: 60px;
+  }
 }
 
 .toast-wrapper .toast-contet {
@@ -155,6 +169,12 @@ header {
   flex-direction: column;
   gap: 5px;
   font-size: 14px;
+}
+
+@media (max-width: 767px) {
+  .toast-wrapper .toast-contet {
+    font-size: 12px;
+  }
 }
 
 .toast-wrapper .toast-contet strong {
@@ -168,4 +188,12 @@ header {
 .toast-wrapper .toast-contet button {
   margin-top: 5px;
   font-size: 13px;
+}
+
+@media (max-width: 767px) {
+  .toast-wrapper .toast-contet button {
+    margin-top: 5px;
+    font-size: 11px;
+    padding: 6px 12px;
+  }
 }
