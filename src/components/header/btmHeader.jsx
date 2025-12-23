@@ -51,7 +51,7 @@ const BtmHeader = () => {
               <MdOutlineArrowDropDown />
             </div>
             <div className={`${active ?  'active': ''} category-nav-list`}>
-              {categories.map((cate, index) => (<NavLink className='link' key={index} to={cate.slug}>{cate.name}</NavLink>))}
+              {categories.map((cate, index) => (<NavLink className='link' key={index} to={`/category/${cate.slug}`} onClick={() => setActive(false)}>{cate.name}</NavLink>))}
             </div>
           </div>
           <div className="menu-toggle" onClick={() => setMenuOpen((prev) => !prev)}>

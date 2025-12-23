@@ -15,6 +15,7 @@ import ProductPage from './pages/product/productPage';
 import CartPage from './pages/cart/cartPage';
 import FavoritesPage from './pages/favoritesPage';
 import { Toaster } from 'react-hot-toast';
+import CategoryPage from './pages/categoryPage';
 
 
 const App = () => {
@@ -34,6 +35,7 @@ const App = () => {
             <Route index element={<HomePage />}/>
             <Route path='/favorites' element={<FavoritesPage />}/>
             <Route path='/cart' element={<CartPage />}/>
+            <Route path='/category/:slug' element={<CategoryPage />}/>
             <Route path='/about' element={<AboutPage />}/>
             <Route path='/accessories' element={<AccessoriesPage />}/>
             <Route path='/blog' element={<BlogPage />}/>
