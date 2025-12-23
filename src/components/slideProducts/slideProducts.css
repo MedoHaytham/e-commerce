@@ -117,8 +117,18 @@
   transition: 0.3s;
 }
 
+@media (max-width: 767px) {
+  .product .in-cart-check {
+    position: absolute;
+    font-size: 10px;
+    gap: 5px;
+    transition: 0.3s;
+  }
+}
+
+
 .product .in-cart-check.in-cart {
-  top: 10px;
+  top: 5px;
 }
 
 .product .in-cart-check svg{
@@ -136,7 +146,7 @@
 @media (max-width: 991px) {
   .product .image {
     height: 90px;
-    padding: 0 15px;
+    padding: 10px 15px;
     margin-bottom: 15px;
   }
 }
@@ -144,7 +154,7 @@
 @media (max-width: 767px) {
   .product .image {
     height: 100px;
-    padding: 0 5px;
+    padding: 8px 5px;
     margin-bottom: 12px;
   }
 }
