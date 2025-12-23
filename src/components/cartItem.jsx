@@ -17,7 +17,7 @@ const CartItem = ({item}) => {
           <h4>{item.title}</h4>
           <p className="price">${item.price}</p>
           <div className="quantity-control">
-            <button onClick={()=> item.quantity <= 0 ? '' : decreaseQuantity(item) }>-</button>
+            <button onClick={()=> item.quantity <= 1 ? '' : decreaseQuantity(item) }>-</button>
             <span className='quantity'>{item.quantity}</span>
             <button onClick={()=>  item.quantity > 99 ? '' : increaseQuantity(item) }>+</button>
           </div>
