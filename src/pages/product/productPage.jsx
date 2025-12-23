@@ -1,14 +1,15 @@
 import axios from 'axios';
 import React, { useContext, useEffect , useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FaStar, FaRegHeart, FaShare, FaRegStar, FaStarHalfAlt } from "react-icons/fa";
 import { TiShoppingCart } from "react-icons/ti";
-
 import './productPage.css';
 import SlideProducts from '../../components/slideProducts/slideProducts';
 import ProductLoading from './productLoading';
 import { CartContext } from '../../context/cartContext';
+import hotToast from 'react-hot-toast';
+
 
 
 
@@ -17,19 +18,18 @@ const ProductPage = () => {
   const {id} = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeImg, setActicveImg] = useState('');
+  const [activeImg, setActiveImg] = useState('');
   const [inCart, setInCart] = useState(false);
   const {cartItems, addToCart} = useContext(CartContext);
   const [inFav, setInFav] = useState(false);
-
-  console.log(cartItems);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchProduct () {
       try {
         let response = await axios.get(`https://dummyjson.com/products/${id}`);
         setProduct(response.data);
-        setActicveImg(response.data.images[0]);
+        setActiveImg(response.data.images[0]);
       } catch (error) {
         toast.error('Error fetchProduct: ' + error);
       } finally {
@@ -40,10 +40,10 @@ const ProductPage = () => {
   },[id]);
 
   useEffect(() => {
-    const exists = cartItems.find((Cartitem) => +Cartitem.id === +id);
-    console.log(exists);
-    if (exists) setInCart(true);
-  },[id, cartItems])
+    if (!product) return;
+    const exists = cartItems.find((cartItem) => +cartItem.id === +product.id);
+    setInCart(!!exists);
+  },[product, cartItems])
 
   const renderStars = () => {
     const stars = [];
@@ -70,6 +70,22 @@ const ProductPage = () => {
     return stars;
   }
 
+  const handleAddToCart = () => {
+    addToCart(product);
+    setInCart(true);
+    hotToast.success(
+      <div className='toast-wrapper'>
+        <img src={product.images[0]} alt="toast-img" />
+        <div className="toast-contet">
+          <strong>{product.title}</strong>
+          Added To Cart
+          <button className='btn' onClick={() => navigate('/cart')}>View Cart</button>
+        </div>
+      </div>
+      ,{duration: 3500}
+    )
+  }
+
   if(loading) return <ProductLoading />
   if(!product) return <p>Product Not Found</p>
 
@@ -86,7 +102,7 @@ const ProductPage = () => {
             <div className="sm-imgs">
               {
                 product.images.map((img, index) => (
-                  <img key={index} src={img} alt={product.title} className={activeImg === img ? 'active' : ''} onClick={() => (setActicveImg(img))}/>
+                  <img key={index} src={img} alt={product.title} className={activeImg === img ? 'active' : ''} onClick={() => (setActiveImg(img))}/>
                 ))
               }
             </div>
@@ -101,10 +117,7 @@ const ProductPage = () => {
             <h5>Brand: <span>{product.brand}</span></h5>
             <p className='desc'>{product.description}</p>
             <h5 className='stock'><span>Only {product.stock} products left in Stock</span></h5>
-            <button className={`btn ${ inCart ? 'in-cart-btn' : '' }`} onClick={() => {
-                addToCart(product);
-                setInCart(true);
-              }}>
+            <button className={`btn ${ inCart ? 'in-cart-btn' : '' }`} onClick={handleAddToCart} disabled={inCart}>
               { inCart ? 'Item In Cart' : 'Add to Cart'} 
               <TiShoppingCart />
             </button>

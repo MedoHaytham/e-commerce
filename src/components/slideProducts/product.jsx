@@ -1,23 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FaStar, FaRegHeart, FaCartArrowDown, FaShare, FaRegStar, FaStarHalfAlt, FaCheck } from "react-icons/fa";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CartContext } from '../../context/cartContext';
-
-
+import toast from 'react-hot-toast';
 
 const Product = ({ item }) => {
 
   const [inCart, setInCart] = useState(false);
   const [inFav, setInFav] = useState(false);
   const {cartItems, addToCart} = useContext(CartContext);
+  const navigate = useNavigate();
 
-  console.log(cartItems);
-
-    useEffect(() => {
-      const exists = cartItems.find((Cartitem) => +Cartitem.id === +item.id);
-      console.log(exists);
-      if (exists) setInCart(true);
-    },[item.id, cartItems])
+  useEffect(() => {
+    if (!item) return;
+    const exists = cartItems.find((cartItem) => +cartItem.id === +item.id);
+    setInCart(!!exists);
+  },[item, cartItems])
 
   const renderStars = () => {
     const stars = [];
@@ -44,6 +42,22 @@ const Product = ({ item }) => {
     return stars;
   };
 
+  const handleAddToCart = () => {
+    addToCart(item);
+    setInCart(true);
+    toast.success(
+      <div className='toast-wrapper'>
+        <img src={item.images[0]} alt="toast-img" />
+        <div className="toast-contet">
+          <strong>{item.title}</strong>
+          Added To Cart
+          <button className='btn' onClick={() => navigate('/cart')}>View Cart</button>
+        </div>
+      </div>
+      ,{duration: 3500}
+    )
+  }
+
   return ( 
     <div className='product'>
       <Link to={`/product/${item.id}`}>
@@ -61,10 +75,7 @@ const Product = ({ item }) => {
         <span className='price'>$ {item.price}</span>
       </Link>
       <div className='icons'>
-        <span className={ inCart ? 'in-cart' : '' } onClick={() => {
-          setInCart(true);
-          addToCart(item);
-          }}><FaCartArrowDown /></span>
+        <span className={ inCart ? 'in-cart' : '' } onClick={handleAddToCart}  disabled={inCart}><FaCartArrowDown /></span>
         <span className={ inFav ? 'in-fav' : '' } onClick={() => setInFav((prev) => !prev)}><FaRegHeart /></span>
         <span><FaShare /></span>
       </div>

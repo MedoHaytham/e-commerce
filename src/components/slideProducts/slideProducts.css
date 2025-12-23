@@ -298,6 +298,7 @@
 .product .icons span.in-cart {
   background-color: var(--main_color);
   color: var(--white_color);
+  pointer-events: none;
 }
 
 .product .icons span.in-fav {
@@ -398,4 +399,3 @@
   }
 }
 /* slide loading end */
-

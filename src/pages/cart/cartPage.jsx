@@ -9,7 +9,6 @@ const CartPage = () => {
   const {cartItems} = useContext(CartContext);
   let totalCost = cartItems.reduce((acc, curent) => (acc + curent.price * curent.quantity), 0)
 
-  console.log(cartItems);
   return ( 
     <div className='cart'>
       <div className="checkout">

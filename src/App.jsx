@@ -14,12 +14,20 @@ import ErrorPage from './pages/errorPage';
 import ProductPage from './pages/product/productPage';
 import CartPage from './pages/cart/cartPage';
 import FavoritesPage from './pages/favoritesPage';
+import { Toaster } from 'react-hot-toast';
 
 
 const App = () => {
   return ( 
     <>
       <ToastContainer />
+      <Toaster position='bottom-right' toastOptions={{
+        style: {
+          background: '#e9e9e9',
+          borderRadius: '5px',
+          padding: '14px',
+        }
+      }}/>
       <Router>
         <Routes>
           <Route path='/' element={<RootLayout />}>

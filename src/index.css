@@ -134,3 +134,38 @@ header {
   }
 }
 
+/* toast-wrapper*/
+
+.toast-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-width: 300px;
+  max-width: 300px;
+}
+
+.toast-wrapper img {
+  height: 50px;
+  width: auto;
+  object-fit: cover;
+}
+
+.toast-wrapper .toast-contet {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 14px;
+}
+
+.toast-wrapper .toast-contet strong {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  line-clamp: 1;
+}
+
+.toast-wrapper .toast-contet button {
+  margin-top: 5px;
+  font-size: 13px;
+}
