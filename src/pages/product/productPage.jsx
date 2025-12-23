@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect , useState } from 'react';
+import React, { useContext, useEffect , useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FaStar, FaRegHeart, FaShare, FaRegStar, FaStarHalfAlt } from "react-icons/fa";
@@ -8,6 +8,7 @@ import { TiShoppingCart } from "react-icons/ti";
 import './productPage.css';
 import SlideProducts from '../../components/slideProducts/slideProducts';
 import ProductLoading from './productLoading';
+import { CartContext } from '../../context/cartContext';
 
 
 
@@ -17,13 +18,18 @@ const ProductPage = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeImg, setActicveImg] = useState('');
+  const [inCart, setInCart] = useState(false);
+  const {cartItems, addToCart} = useContext(CartContext);
+  const [inFav, setInFav] = useState(false);
+
+  console.log(cartItems);
 
   useEffect(() => {
     async function fetchProduct () {
       try {
         let response = await axios.get(`https://dummyjson.com/products/${id}`);
         setProduct(response.data);
-        setActicveImg(response.data.images[0])
+        setActicveImg(response.data.images[0]);
       } catch (error) {
         toast.error('Error fetchProduct: ' + error);
       } finally {
@@ -32,6 +38,12 @@ const ProductPage = () => {
     }
     fetchProduct();
   },[id]);
+
+  useEffect(() => {
+    const exists = cartItems.find((Cartitem) => +Cartitem.id === +id);
+    console.log(exists);
+    if (exists) setInCart(true);
+  },[id, cartItems])
 
   const renderStars = () => {
     const stars = [];
@@ -52,7 +64,7 @@ const ProductPage = () => {
     // empty stars
     const remaining = totalStars - stars.length;
     for (let i = 0; i < remaining; i++) {
-      stars.push(<FaRegStar />);
+      stars.push(<FaRegStar key={`empty-${i}`} />);
     }
 
     return stars;
@@ -60,6 +72,8 @@ const ProductPage = () => {
 
   if(loading) return <ProductLoading />
   if(!product) return <p>Product Not Found</p>
+
+  console.log(product);
 
   return (
     <>
@@ -87,12 +101,15 @@ const ProductPage = () => {
             <h5>Brand: <span>{product.brand}</span></h5>
             <p className='desc'>{product.description}</p>
             <h5 className='stock'><span>Only {product.stock} products left in Stock</span></h5>
-            <button className='btn'>
-              Add to cart 
+            <button className={`btn ${ inCart ? 'in-cart-btn' : '' }`} onClick={() => {
+                addToCart(product);
+                setInCart(true);
+              }}>
+              { inCart ? 'Item In Cart' : 'Add to Cart'} 
               <TiShoppingCart />
             </button>
             <div className="icons">
-              <span><FaRegHeart /></span>
+              <span className={ inFav ? 'in-fav' : '' } onClick={() => setInFav((prev) => !prev)}><FaRegHeart /></span>
               <span><FaShare /></span>
             </div>
           </div>

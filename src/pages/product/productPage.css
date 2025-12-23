@@ -125,6 +125,17 @@
   font-size: 16px;
 }
 
+.product-details .product-info .in-cart-btn {
+  background-color: var(--white_color);
+  color: var(--main_color);
+  border: 1px solid var(--main_color);
+  cursor: no-drop;
+}
+
+.product-details .product-info .in-cart-btn:hover {
+ scale: 1;
+}
+
 .product-details .product-info .icons {
   margin: 20px 0;
   display: flex;
@@ -147,6 +158,12 @@
   background-color: var(--main_color);
   color: white;
 }
+
+.product-details .product-info .icons span.in-fav {
+  background-color: var(--main_color);
+  color: white;
+}
+
 /* product end */
 
 /* product loading start */

@@ -1,12 +1,28 @@
-import React from 'react';
-import { FaStar, FaRegHeart, FaCartArrowDown, FaShare, FaRegStar, FaStarHalfAlt } from "react-icons/fa";
+import React, { useContext, useEffect, useState } from 'react';
+import { FaStar, FaRegHeart, FaCartArrowDown, FaShare, FaRegStar, FaStarHalfAlt, FaCheck } from "react-icons/fa";
+import { Link } from 'react-router-dom';
+import { CartContext } from '../../context/cartContext';
 
-const Product = ({ title, price, image, rating, onClickHandler }) => {
+
+
+const Product = ({ item }) => {
+
+  const [inCart, setInCart] = useState(false);
+  const [inFav, setInFav] = useState(false);
+  const {cartItems, addToCart} = useContext(CartContext);
+
+  console.log(cartItems);
+
+    useEffect(() => {
+      const exists = cartItems.find((Cartitem) => +Cartitem.id === +item.id);
+      console.log(exists);
+      if (exists) setInCart(true);
+    },[item.id, cartItems])
 
   const renderStars = () => {
     const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
+    const fullStars = Math.floor(item.rating);
+    const hasHalfStar = item.rating % 1 !== 0;
     const totalStars = 5;
 
     // full stars
@@ -29,18 +45,27 @@ const Product = ({ title, price, image, rating, onClickHandler }) => {
   };
 
   return ( 
-    <div className='product' onClick={onClickHandler}>
-      <div className="image">
-        <img src={image} alt="" />
-      </div>
-      <p className='title'>{title}</p>
-      <div className="stars">
-        { renderStars() }
-      </div>
-      <span className='price'>$ {price}</span>
+    <div className='product'>
+      <Link to={`/product/${item.id}`}>
+        <span className={`in-cart-check ${ inCart ? 'in-cart' : '' }`}>
+          <FaCheck />
+          in Cart
+        </span>
+        <div className="image">
+          <img src={item.images[0]} alt="" />
+        </div>
+        <p className='title'>{item.title}</p>
+        <div className="stars">
+          { renderStars() }
+        </div>
+        <span className='price'>$ {item.price}</span>
+      </Link>
       <div className='icons'>
-        <span><FaCartArrowDown /></span>
-        <span><FaRegHeart /></span>
+        <span className={ inCart ? 'in-cart' : '' } onClick={() => {
+          setInCart(true);
+          addToCart(item);
+          }}><FaCartArrowDown /></span>
+        <span className={ inFav ? 'in-fav' : '' } onClick={() => setInFav((prev) => !prev)}><FaRegHeart /></span>
         <span><FaShare /></span>
       </div>
     </div>

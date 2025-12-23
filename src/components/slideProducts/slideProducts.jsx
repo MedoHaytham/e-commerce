@@ -8,13 +8,11 @@ import axios from 'axios';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import './slideProducts.css';
-import { useNavigate } from 'react-router-dom';
 
 
 const SlideProducts = ({categorySlug, categoryName}) => {
 
   const [products, setProducts] = useState([]);
-  const naviget = useNavigate();
 
   useEffect(() => {
     async function fetchProducts() {
@@ -25,7 +23,7 @@ const SlideProducts = ({categorySlug, categoryName}) => {
           title : p.title,
           price: p.price,
           rating: p.rating,
-          image: p.thumbnail,
+          images: p.images,
         }));
         setProducts(data);
       } catch(error) {
@@ -45,7 +43,8 @@ const SlideProducts = ({categorySlug, categoryName}) => {
         <Swiper 
           loop={products.length > 5}
           autoplay={{
-            delay: 2500
+            delay: 2500,
+            disableOnInteraction: true
           }}
           breakpoints={{
             340: {
@@ -76,11 +75,7 @@ const SlideProducts = ({categorySlug, categoryName}) => {
           { products.map((p) => (
               <SwiperSlide  key={p.id}>
                 <Product
-                  title={p.title}
-                  rating= {p.rating}
-                  price={p.price} 
-                  image={p.image}
-                  onClickHandler={() => naviget(`/product/${p.id}`)}
+                  item={p}
                 /> 
               </SwiperSlide>
             ))

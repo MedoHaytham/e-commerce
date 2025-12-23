@@ -6,10 +6,13 @@ import App from './App';
 // import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 // import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
 import '../node_modules/@fortawesome/fontawesome-free/css/all.css';
+import CartProvider from './context/cartContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <CartProvider>
+      <App />
+    </CartProvider>
   </React.StrictMode>
 );
