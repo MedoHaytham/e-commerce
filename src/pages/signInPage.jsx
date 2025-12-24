@@ -1,8 +1,11 @@
 import React from 'react';
+import PageTransition from '../components/pageTransition';
 
 const SignInPage = () => {
   return ( 
-    <h1>Sign In Page</h1>
+    <PageTransition>
+      <h1>SignIn Page</h1>
+    </PageTransition>
   );
 }
 

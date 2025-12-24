@@ -6,6 +6,7 @@ import TopSlide from '../../components/topSlide';
 import Product from '../../components/slideProducts/product';
 import './categoryPage.css';
 import CategoryPageLoading from './catePageLoading';
+import PageTransition from '../../components/pageTransition';
 
 const CategoryPage = () => {
   
@@ -38,18 +39,22 @@ const CategoryPage = () => {
   },[slug])
 
   return (
-    
-    loading ? <CategoryPageLoading count={3}/> :
-    <div className='category-products'>
-      <div className="container">
-        <TopSlide categoryName={slug.replace('-', ' ')} length={products.length} inCategory={true}/>
-        <div className="products">
-          {
-            products.map((p) => (<Product key={p.id} item={p}/>))
-          }
-        </div>
-      </div>
-    </div>
+    <PageTransition key={slug}>
+      {
+        loading 
+        ? <CategoryPageLoading count={3}/> 
+        : <div className='category-products'>
+            <div className="container">
+              <TopSlide categoryName={slug.replace('-', ' ')} length={products.length} inCategory={true}/>
+              <div className="products">
+                {
+                  products.map((p) => (<Product key={p.id} item={p}/>))
+                }
+              </div>
+            </div>
+          </div>
+      }
+    </PageTransition>
   );
 }
 export default CategoryPage;

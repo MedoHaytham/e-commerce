@@ -16,6 +16,8 @@ import CartPage from './pages/cart/cartPage';
 import FavoritesPage from './pages/favoritesPage';
 import { Toaster } from 'react-hot-toast';
 import CategoryPage from './pages/category/categoryPage';
+import ScrollToTop from './components/scrollToTop';
+import { AnimatePresence } from 'framer-motion';
 
 
 
@@ -31,22 +33,25 @@ const App = () => {
         }
       }}/>
       <Router>
-        <Routes>
-          <Route path='/' element={<RootLayout />}>
-            <Route index element={<HomePage />}/>
-            <Route path='/favorites' element={<FavoritesPage />}/>
-            <Route path='/cart' element={<CartPage />}/>
-            <Route path='/category/:slug' element={<CategoryPage />}/>
-            <Route path='/about' element={<AboutPage />}/>
-            <Route path='/accessories' element={<AccessoriesPage />}/>
-            <Route path='/blog' element={<BlogPage />}/>
-            <Route path='/contact' element={<ContactPage />}/>
-            <Route path='/product/:id' element={<ProductPage />}/>
-            <Route path='/signIn' element={<SignInPage />}/>
-            <Route path='/register' element={<RegisterPage />}/>
-            <Route path="*" element={<ErrorPage />} />
-          </Route>
-        </Routes>
+        <ScrollToTop />
+        <AnimatePresence mode='wait'>
+          <Routes>
+            <Route path='/' element={<RootLayout />}>
+              <Route index element={<HomePage />}/>
+              <Route path='/favorites' element={<FavoritesPage />}/>
+              <Route path='/cart' element={<CartPage />}/>
+              <Route path='/category/:slug' element={<CategoryPage />}/>
+              <Route path='/about' element={<AboutPage />}/>
+              <Route path='/accessories' element={<AccessoriesPage />}/>
+              <Route path='/blog' element={<BlogPage />}/>
+              <Route path='/contact' element={<ContactPage />}/>
+              <Route path='/product/:id' element={<ProductPage />}/>
+              <Route path='/signIn' element={<SignInPage />}/>
+              <Route path='/register' element={<RegisterPage />}/>
+              <Route path="*" element={<ErrorPage />} />
+            </Route>
+          </Routes>
+        </AnimatePresence>
       </Router>
     </>
   );

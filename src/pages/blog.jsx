@@ -1,9 +1,12 @@
 import React from 'react';
+import PageTransition from '../components/pageTransition';
 
 const BlogPage = () => {
   return ( 
-    <h1>blog Page</h1>
-   );
+    <PageTransition>
+      <h1>Blog Page</h1>
+    </PageTransition>
+  );
 }
 
 export default BlogPage;

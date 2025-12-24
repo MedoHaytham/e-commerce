@@ -1,8 +1,11 @@
 import React from 'react';
+import PageTransition from '../components/pageTransition';
 
 const FavoritesPage = () => {
   return ( 
-    <h1>Favorites Page</h1>
+    <PageTransition>
+      <h1>Favorites Page</h1>
+    </PageTransition>
   );
 }
 

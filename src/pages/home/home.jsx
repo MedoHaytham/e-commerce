@@ -6,6 +6,7 @@ import './home.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import SlideProductsLoading from '../../components/slideProducts/slideProductsLoading';
+import PageTransition from '../../components/pageTransition';
 
 const homeCate = [
   "smartphones",
@@ -45,7 +46,7 @@ const HomePage = () => {
   },[]);
   
   return ( 
-    <>
+    <PageTransition>
       <HeroSlider />
       {
         loading 
@@ -56,7 +57,7 @@ const HomePage = () => {
             <SlideProducts key={hc.slug} categorySlug={hc.slug} categoryName={hc.name} />
           ))
       }
-    </>
+    </PageTransition>
   );
 }
 

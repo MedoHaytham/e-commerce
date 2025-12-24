@@ -1,8 +1,11 @@
 import React from 'react';
+import PageTransition from '../components/pageTransition';
 
 const RegisterPage = () => {
   return ( 
-    <h1>Register Page</h1>
+    <PageTransition>
+      <h1>Register Page</h1>
+    </PageTransition>
   );
 }
 

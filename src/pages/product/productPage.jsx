@@ -8,6 +8,7 @@ import ProductLoading from './productLoading';
 import ProductImages from './productImages';
 import ProductInfo from './productInfo';
 import SlideProductsLoading from '../../components/slideProducts/slideProductsLoading';
+import PageTransition from '../../components/pageTransition';
 
 const ProductPage = () => {
 
@@ -32,7 +33,7 @@ const ProductPage = () => {
   },[id]);
 
   return (
-    <>
+    <PageTransition key={id}>
       {
         loading 
         ? <ProductLoading /> 
@@ -55,7 +56,7 @@ const ProductPage = () => {
             categoryName={product.category} 
           />
       }
-    </>
+    </PageTransition>
   );
 }
 

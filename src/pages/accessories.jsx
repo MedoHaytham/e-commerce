@@ -1,9 +1,12 @@
 import React from 'react';
+import PageTransition from '../components/pageTransition';
 
 const AccessoriesPage = () => {
   return ( 
-    <h1>Accessories Page</h1>
-   );
+    <PageTransition>
+      <h1>Accessories Page</h1>
+    </PageTransition>
+  );
 }
 
 export default AccessoriesPage;
