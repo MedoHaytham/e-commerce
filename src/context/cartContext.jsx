@@ -34,8 +34,7 @@ const CartProvider = ({children}) => {
       prev.map((cartItem) => cartItem.id === item.id ? {...cartItem,  quantity: cartItem.quantity - 1 } : cartItem)
     )
   }
-
-
+  
   useEffect(() => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   },[cartItems]);

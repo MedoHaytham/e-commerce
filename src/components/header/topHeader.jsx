@@ -6,12 +6,13 @@ import { FaRegHeart } from "react-icons/fa";
 import { TiShoppingCart } from "react-icons/ti";
 import './header.css';
 import { CartContext } from '../../context/cartContext';
+import { FavoritesContext } from '../../context/favoritesContext';
 
 
 const TopHeader = () => {
 
   const {cartItems} = useContext(CartContext);
-
+  const {favItems} = useContext(FavoritesContext);
 
   return ( 
     <div className='top-header'>
@@ -27,7 +28,7 @@ const TopHeader = () => {
           <NavLink to={'favorites'}>
             <div className='icon'>
               <FaRegHeart />
-              <span className='count'>0</span>
+              <span className='count'>{favItems.length}</span>
             </div>
           </NavLink>
           <NavLink to={'cart'}>

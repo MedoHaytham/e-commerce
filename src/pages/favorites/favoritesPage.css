@@ -1,0 +1,19 @@
+.favorites-products .products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill ,minmax(248px, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 991px) {
+  .favorites-products .products {
+    grid-template-columns: repeat(auto-fill ,minmax(220px, 1fr));
+    gap: 15px;
+  }
+}
+
+@media (max-width: 767px) {
+  .favorites-products .products {
+    grid-template-columns: repeat(auto-fill ,minmax(145px, 1fr));
+    gap: 15px;
+  }
+}
