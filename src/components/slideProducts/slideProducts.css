@@ -229,7 +229,7 @@
 
 @media (max-width: 767px) {
   .product:hover .icons {
-    right: 10px
+    right: 6px
   }
 }
 
@@ -268,12 +268,12 @@
 
 @media (max-width: 767px) {
   .product .icons span {
-    height: 22px;
-    width: 22px;
+    height: 20px;
+    width: 20px;
   }
 
   .product .icons span svg {
-    font-size: 12px;
+    font-size: 10px;
   }
 }
 /* product end */
