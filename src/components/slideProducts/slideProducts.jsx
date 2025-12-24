@@ -8,6 +8,7 @@ import axios from 'axios';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import './slideProducts.css';
+import TopSlide from '../topSlide';
 
 
 const SlideProducts = ({categorySlug, categoryName}) => {
@@ -36,10 +37,7 @@ const SlideProducts = ({categorySlug, categoryName}) => {
   return ( 
     <div className="slider">
       <div className="container">
-        <div className='top-slider'>
-          <h2>{categoryName}</h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, voluptates?</p>
-        </div>
+        <TopSlide categoryName={categoryName}/>
         <Swiper 
           loop={products.length > 5}
           autoplay={{
@@ -72,11 +70,10 @@ const SlideProducts = ({categorySlug, categoryName}) => {
           modules={[Autoplay, Navigation]} 
           className="mySwiper"
         >
-          { products.map((p) => (
+          { 
+            products.map((p) => (
               <SwiperSlide  key={p.id}>
-                <Product
-                  item={p}
-                /> 
+                <Product item={p} />
               </SwiperSlide>
             ))
           }

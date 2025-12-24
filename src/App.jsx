@@ -15,7 +15,8 @@ import ProductPage from './pages/product/productPage';
 import CartPage from './pages/cart/cartPage';
 import FavoritesPage from './pages/favoritesPage';
 import { Toaster } from 'react-hot-toast';
-import CategoryPage from './pages/categoryPage';
+import CategoryPage from './pages/category/categoryPage';
+
 
 
 const App = () => {

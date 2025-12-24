@@ -11,13 +11,14 @@ const SlideProductsLoading = ({count}) => {
             <p className='skeltoin'></p>
           </div>
           <div className="products-loading">
-            { Array.from({length: count}).map((_,index) => (
-              <div key={index} className='product'>
-                <div className="image skeltoin"></div>
-                <div className="content skeltoin"></div>
-                <div className="content skeltoin"></div>
-              </div>
-            ))
+            { 
+              Array.from({length: count}).map((_,index) => (
+                <div key={index} className='product'>
+                  <div className="image skeltoin"></div>
+                  <div className="content skeltoin"></div>
+                  <div className="content skeltoin"></div>
+                </div>
+              ))
             }
           </div>
         </div>
