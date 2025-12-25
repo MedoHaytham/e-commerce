@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { FaSearch } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const SearchBox = () => {
@@ -9,9 +9,16 @@ const SearchBox = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(()=> {
     async function fetchSuggestions() {
+
+      if(!searchTerm.trim()) {
+        setSuggestions([]);
+        return;
+      }
+
       try {
         let response = await axios.get(`https://dummyjson.com/products/search?q=${searchTerm}`);
         let data = response.data.products.map((p) => ({
@@ -21,25 +28,53 @@ const SearchBox = () => {
           rating: p.rating,
           images: p.images,
         }));
-        setSuggestions(data.slice(0, 6));
+        setSuggestions(data.slice(0, 5) || []);
       } catch (error) {
         toast.error('Error on fetch suggestions: ' + error)
       }
     }
-  }, [searchTerm])
+    
+    const debouce = setTimeout(() => {
+      fetchSuggestions();
+    }, 300);
 
-  console.log(suggestions);
+    return () => clearTimeout(debouce);
+    // fetchSuggestions();
+  }, [searchTerm]);
 
   let submitHadnler = (e) => {
     e.preventDefault();
     if(searchTerm.trim()) navigate(`search?query=${encodeURIComponent(searchTerm.trim())}`);
+    setSuggestions([]);
   }
 
+  useEffect(() => {
+    setSuggestions([]);
+  },[location])
+
   return ( 
-    <form onSubmit={submitHadnler} className='search-box'>
-      <input onChange={(e) => setSearchTerm(e.target.value)} type="text" name='search' id='search' placeholder='Search For Products'/>
-      <button type='submit'><FaSearch /></button>
-    </form>
+    <div className={`searchBox-container ${suggestions.length > 0 ? 'has-suggestions' : ''}`}>
+      <form onSubmit={submitHadnler} className='search-box' autoComplete='off'>
+        <input onChange={(e) => setSearchTerm(e.target.value)} type="text" name='search' id='search' placeholder='Search For Products'/>
+        <button type='submit'><FaSearch /></button>
+      </form>
+      {
+        suggestions.length > 0 && (
+          <ul className='suggestions'>
+            {
+              suggestions.map((p) => (
+                <Link to={`product/${p.id}`} key={p.id}>
+                  <li key={p.id} >
+                    <img src={p.images[0]} alt={p.title} />
+                    <span>{p.title}</span>
+                  </li>
+                </Link>
+              ))
+            }
+          </ul>
+        )
+      }
+    </div>
   );
 }
 

@@ -27,7 +27,7 @@ const SearchPage = () => {
           rating: p.rating,
           images: p.images,
         }));
-        setSearchProducts(data);
+        setSearchProducts(data || []);
       } catch (error) {
         toast.error('Error On fetch search products: ' + error);
       } finally {
