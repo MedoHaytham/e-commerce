@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import logo from '../../imgs/logo.png';
 import { NavLink } from 'react-router-dom';
-import { FaSearch } from "react-icons/fa";
 import { FaRegHeart } from "react-icons/fa";
 import { TiShoppingCart } from "react-icons/ti";
 import './header.css';
 import { CartContext } from '../../context/cartContext';
 import { FavoritesContext } from '../../context/favoritesContext';
+import SearchBox from './searchBox';
 
 
 const TopHeader = () => {
@@ -20,10 +20,7 @@ const TopHeader = () => {
         <NavLink to={'/'}>
           <img src={logo} alt="logo" className='logo'/>
         </NavLink>
-        <form action="" className='search-box'>
-          <input type="text" name='search' id='search' placeholder='Search For Products'/>
-          <button type='submit'><FaSearch /></button>
-        </form>
+        <SearchBox />
         <div className='header-icons'>
           <NavLink to={'favorites'}>
             <div className='icon'>

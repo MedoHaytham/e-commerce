@@ -37,7 +37,7 @@ const SlideProducts = ({categorySlug, categoryName}) => {
   return ( 
     <div className="slider">
       <div className="container">
-        <TopSlide categoryName={categoryName}/>
+        <TopSlide categoryName={categoryName} desc={'Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, voluptates?'}/>
         <Swiper 
           loop={products.length > 5}
           autoplay={{

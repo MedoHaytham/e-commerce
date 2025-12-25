@@ -14,7 +14,7 @@ const FavoritesPage = () => {
     <PageTransition>
       <div className='favorites-products'>
         <div className="container">
-          <TopSlide categoryName='Your Favorites' inFavorites={true}/>
+          <TopSlide categoryName='Your Favorites' />
           <div className="products">
             {
               favItems.length === 0 

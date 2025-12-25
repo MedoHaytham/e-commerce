@@ -14,9 +14,6 @@ const CategoryPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   
-  const count = products.length;
-  console.log(count);
-  
   useEffect(()=> {
     async function fetchProducts() {
       try {
@@ -45,7 +42,11 @@ const CategoryPage = () => {
         ? <CategoryPageLoading count={3}/> 
         : <div className='category-products'>
             <div className="container">
-              <TopSlide categoryName={slug.replace('-', ' ')} length={products.length} inCategory={true}/>
+              <TopSlide 
+                categoryName={slug.replace('-', ' ')} 
+                content={`: ${products.length}`}
+                desc={'Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, voluptates?'}
+              />
               <div className="products">
                 {
                   products.map((p) => (<Product key={p.id} item={p}/>))

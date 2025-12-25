@@ -18,6 +18,7 @@ import { Toaster } from "react-hot-toast";
 import CategoryPage from "./pages/category/categoryPage";
 import ScrollToTop from "./components/scrollToTop";
 import { AnimatePresence } from "framer-motion";
+import SearchPage from "./pages/search/searchPage";
 
 const App = () => {
   return (
@@ -39,6 +40,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<RootLayout />}>
               <Route index element={<HomePage />} />
+              <Route path="/search" element={<SearchPage />} />
               <Route path="/favorites" element={<FavoritesPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/category/:slug" element={<CategoryPage />} />
