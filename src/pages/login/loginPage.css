@@ -27,6 +27,11 @@
   color: var(--main_color);
 }
 
+.login .mandatory {
+  color: red;
+  padding-left: 1px;
+}
+
 .login .btn {
   width: 100%;
   display: block;
@@ -39,4 +44,11 @@
   scale: 1;
   background-color: var(--white_color);
   color: var(--main_color);
+}
+
+.login .register {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 5px;
 }

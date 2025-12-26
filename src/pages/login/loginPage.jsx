@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Joi from 'joi-browser';
 import './loginPage.css'
+import { Link } from 'react-router-dom';
 
 
 const SignInPage = () => {
@@ -16,10 +17,6 @@ const SignInPage = () => {
   }
 
   const [show, setShow] = useState(false);
-
-  function showHandler() {
-    setShow((prev) => !prev);
-  }
 
   const schema = {
     username: Joi.string().required(),
@@ -58,15 +55,15 @@ const SignInPage = () => {
         <h1>Login</h1>
         <form onSubmit={submitHadnler}>
           <div className="mb-3">
-            <label htmlFor="inputEmail" className="form-label">Email address</label>
+            <label htmlFor="inputEmail" className="form-label">Email address<span className='mandatory'>*</span></label>
             <input onChange={onChangeHandler} name='username' value={form.username} id="inputEmail" type="email" className="form-control"  aria-describedby="emailHelp" />
             {errors.username && <div className='alert alert-danger mt-2' >{errors.username}</div>}
           </div>
           <div className="mb-3">
-            <label htmlFor="inputPassword" className="form-label">Password</label>
+            <label htmlFor="inputPassword" className="form-label">Password<span className='mandatory'>*</span></label>
             <div className="position-relative">
               <input onChange={onChangeHandler} value={form.password} name='password' id="inputPassword" type={show? "text" : "password"} className="form-control" />
-              <i onClick={showHandler} className={`fa-solid ${ show ? 'fa-eye-slash' : 'fa-eye'} position-absolute`} 
+              <i onClick={() => setShow((prev) => !prev)} className={`fa-solid ${ show ? 'fa-eye-slash' : 'fa-eye'} position-absolute`} 
                 style={{
                   cursor: 'pointer',
                   top: '50%',
@@ -81,6 +78,11 @@ const SignInPage = () => {
             <label className="form-check-label" htmlFor="check">Check me out</label>
           </div>
           <button type="submit" className="btn btn-primary">Submit</button>
+          <div className='register'>
+            <Link to={'/register'}>
+              Don't have an Account? <span>Register</span>
+            </Link>
+          </div>
         </form>
       </main>
     </div>
