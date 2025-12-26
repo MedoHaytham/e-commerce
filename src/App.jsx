@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import RootLayout from "./layout/rootLayout";
@@ -8,7 +7,7 @@ import AboutPage from "./pages/about";
 import AccessoriesPage from "./pages/accessories";
 import BlogPage from "./pages/blog";
 import ContactPage from "./pages/contact";
-import SignInPage from "./pages/signInPage";
+import SignInPage from "./pages/signIn/signInPage";
 import RegisterPage from "./pages/registerPage";
 import ErrorPage from "./pages/errorPage";
 import ProductPage from "./pages/product/productPage";

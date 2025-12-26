@@ -43,7 +43,7 @@ const BtmHeader = () => {
   return ( 
     <div className='btm-hedear'>
       <div className="container">
-        <div className="nav">
+        <div className="my-nav">
           <div className="category-nav">
             <div className="category-btn" onClick={() => setActive((prev) => !prev)}>
               <IoMdMenu className="menu-icon" />
