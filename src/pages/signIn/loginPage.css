@@ -1,0 +1,42 @@
+.login .container {
+  width: 30%;
+  margin-top: 10px;
+}
+
+@media (max-width: 1250px) {
+  .login .container {
+    width: 60%;
+  }
+}
+
+
+@media (max-width: 991px) {
+  .login .container {
+    width: 60%;
+  }
+}
+
+@media (max-width: 767px) {
+  .login .container {
+    width: 90%;
+  }
+}
+
+.login h1 {
+  font-size: 40px;
+  color: var(--main_color);
+}
+
+.login .btn {
+  width: 100%;
+  display: block;
+  border-radius: 0.375rem;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.login .btn:hover {
+  scale: 1;
+  background-color: var(--white_color);
+  color: var(--main_color);
+}

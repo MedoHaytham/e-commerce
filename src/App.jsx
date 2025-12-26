@@ -7,7 +7,7 @@ import AboutPage from "./pages/about";
 import AccessoriesPage from "./pages/accessories";
 import BlogPage from "./pages/blog";
 import ContactPage from "./pages/contact";
-import SignInPage from "./pages/signIn/signInPage";
+import SignInPage from "./pages/signIn/loginPage";
 import RegisterPage from "./pages/registerPage";
 import ErrorPage from "./pages/errorPage";
 import ProductPage from "./pages/product/productPage";
