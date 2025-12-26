@@ -3,21 +3,20 @@ import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import RootLayout from "./layout/rootLayout";
 import HomePage from "./pages/home/home";
-import AboutPage from "./pages/about";
-import AccessoriesPage from "./pages/accessories";
-import BlogPage from "./pages/blog";
-import ContactPage from "./pages/contact";
+import SearchPage from "./pages/search/searchPage";
+import AccessoriesPage from "./pages/accessories/accessoriesPage";
 import SignInPage from "./pages/login/loginPage";
 import RegisterPage from "./pages/register/registerPage";
 import ErrorPage from "./pages/errorPage";
 import ProductPage from "./pages/product/productPage";
 import CartPage from "./pages/cart/cartPage";
 import FavoritesPage from "./pages/favorites/favoritesPage";
-import { Toaster } from "react-hot-toast";
+import ContactPage from "./pages/contact/contactPage";
+import CheckoutPage from "./pages/checkout/checkoutPage";
 import CategoryPage from "./pages/category/categoryPage";
 import ScrollToTop from "./components/scrollToTop";
+import { Toaster } from "react-hot-toast";
 import { AnimatePresence } from "framer-motion";
-import SearchPage from "./pages/search/searchPage";
 
 const App = () => {
   return (
@@ -42,10 +41,9 @@ const App = () => {
               <Route path="/search" element={<SearchPage />} />
               <Route path="/favorites" element={<FavoritesPage />} />
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/category/:slug" element={<CategoryPage />} />
-              <Route path="/about" element={<AboutPage />} />
               <Route path="/accessories" element={<AccessoriesPage />} />
-              <Route path="/blog" element={<BlogPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/product/:id" element={<ProductPage />} />
               <Route path="/signIn" element={<SignInPage />} />

@@ -3,12 +3,14 @@ import './cartPage.css';
 import { CartContext } from '../../context/cartContext';
 import CartItem from '../../components/cartItem';
 import PageTransition from '../../components/pageTransition';
+import { useNavigate } from 'react-router-dom';
 
 
 const CartPage = () => {
 
   const {cartItems} = useContext(CartContext);
   let totalCost = cartItems.reduce((acc, curent) => (acc + curent.price * curent.quantity), 0)
+  const navigate = useNavigate();
 
   return (
     <PageTransition>
@@ -27,13 +29,16 @@ const CartPage = () => {
               ))
             }
           </div>
-          <div className="summary">
-            <div className="info">
-              <p>Total:</p>
-              <span>${totalCost.toFixed(2)}</span>
-            </div>
-              <button type='submit'>Place Order</button>
-          </div>
+          {  cartItems.length === 0 
+            ? '' 
+            : <div className="summary">
+                <div className="info">
+                  <p>Total:</p>
+                  <span>${totalCost.toFixed(2)}</span>
+                </div>
+                <button onClick={() => navigate('/checkout')}>Proceed to checkout</button>
+              </div>
+          }
         </div>
       </div>
     </PageTransition>
