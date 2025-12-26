@@ -87,6 +87,7 @@
 .product-details .product-info h1 {
   margin-bottom: 30px;
   color: var(--main_color);
+  font-size: 32px;
 }
 
 .product-details .product-info .rating {
