@@ -1,12 +1,18 @@
-import React from 'react';
 import './checkoutPage.css';
 import PageTransition from '../../components/pageTransition';
+import OrderSummary from './orderSummary';
+import ShipingMethod from './shipingMethod';
+
 
 const CheckoutPage = () => {
+
   return ( 
     <PageTransition>
       <div className='checkout'>
-        <h1>checkout Page</h1>
+        <div className="container">
+          <OrderSummary />
+          <ShipingMethod />
+        </div>
       </div>
     </PageTransition>
   );

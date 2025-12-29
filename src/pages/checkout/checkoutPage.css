@@ -1,3 +1,378 @@
-h1 {
-  font-size: 42px;
+.checkout {
+  position: relative;
 }
+
+.checkout .container {
+  display: flex;
+  gap: 20px;
+  width: 95%;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+@media (max-width: 767px) {
+  .checkout .container {
+    flex-direction: column;
+    margin-top: 20px;
+  }
+}
+
+/* order summary start*/
+.checkout .order-summary {
+  flex: 6;
+  background-color: var(--bg_color);
+  border-radius: 20px;
+  overflow: hidden;
+  height: fit-content;
+}
+
+.checkout .order-summary .top-summary {
+  padding: 20px;
+  background-color: #e5eff9;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.checkout .order-summary .top-summary h1 {
+  font-size: 21px;
+}
+
+.checkout .order-summary .top-summary svg {
+  font-size: 30px;
+}
+
+.checkout .order-summary .bottom-summary {
+  padding: 20px;
+}
+
+.checkout .bottom-summary .product-summary {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border_color);
+  margin-top: 16px;
+}
+
+.checkout .bottom-summary .product-summary:first-child {
+  margin-top: 0;
+}
+
+.checkout .bottom-summary .product-summary h2 {
+  font-size: 17px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  line-clamp: 1;
+}
+
+.checkout .bottom-summary .product-summary .quantity {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.checkout .bottom-summary .product-summary .quantity p {
+  font-size: 14px;
+}
+
+.checkout .bottom-summary .product-summary .price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.checkout .bottom-summary .product-summary .price span{
+  font-weight: 600;
+}
+
+.checkout .bottom-summary .subtotal-fee {
+  margin-top: 16px;
+  padding: 16px 0;
+  border-top: 1px solid var(--border_color);
+  border-bottom: 1px solid var(--border_color);
+}
+
+.checkout .bottom-summary .subtotal-fee .subtotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.checkout .bottom-summary .subtotal-fee .subtotal span {
+  font-weight: 600;
+}
+
+.checkout .bottom-summary .subtotal-fee .fee {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.checkout .bottom-summary .subtotal-fee .fee span {
+  font-weight: 600;
+}
+
+.checkout .bottom-summary .total {
+  margin-top: 8px;
+  padding-top: 8px;
+}
+
+.checkout .bottom-summary .total .total-price {
+  display: flex;
+  justify-content: space-between;
+}
+
+.checkout .bottom-summary .total .total-price p {
+  color: black;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.checkout .bottom-summary .total .total-price span {
+  font-size: 20px;
+  font-weight: bold;
+}
+/* order summary end*/
+
+/* shiping-method start*/
+.checkout .shiping-method {
+  flex: 3;
+  background-color: var(--bg_color);
+  border-radius: 20px;
+  overflow: hidden;
+  height: fit-content;
+}
+
+.checkout .shiping-method .top-shiping {
+  padding: 20px;
+  background-color: #e5eff9;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.checkout .shiping-method .top-shiping h1 {
+  font-size: 21px;
+}
+
+.checkout .shiping-method .top-shiping svg {
+  font-size: 30px;
+}
+
+.checkout .shiping-method .bottom-shiping {
+  padding: 20px;
+}
+
+.checkout .shiping-method h1 {
+  font-size: 21px;
+  margin-bottom: 10px;
+}
+
+.checkout .shiping-method .addresses {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(256px, 1fr));
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 991px) {
+  .checkout .shiping-method .addresses {
+    grid-template-columns: repeat(auto-fill, minmax(188px, 1fr));
+  }
+}
+
+.checkout .shiping-method .addresses .address {
+  padding: 12px 20px;
+  border: 1px solid var(--border_color);
+  border-radius: 8px;
+  transition: 0.3s;
+  position: relative;
+}
+
+.checkout .shiping-method .addresses .address.active {
+  border-color: var(--main_color);
+}
+
+.checkout .shiping-method .addresses .address .title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.checkout .shiping-method .addresses .address .title svg{
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  font-size: 22px;
+  fill: red;
+}
+
+
+.checkout .shiping-method .addresses .new-address {
+  border: 2px dashed var(--main_color);
+  color: var(--main_color);
+  border-radius: 8px;
+  height: 120px;
+}
+
+.checkout .shiping-method .addresses .new-address svg{
+  font-size: 20px;
+}
+
+.checkout .shiping-method .notes h2 {
+  margin-bottom: 20px;
+}
+
+.checkout .shiping-method .notes textarea {
+  width: 100%;
+  padding: 8px 12px;
+  height: 113px;
+  border-radius: 8px;
+}
+
+.checkout .shiping-method .btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.checkout .shiping-method .btn:hover {
+  scale: 1;
+}
+
+
+/* shiping-method end */
+
+/* add-address start */
+.checkout .shiping-method .add-address {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.603);
+  z-index: 99999999999999;
+  display: none;
+  overflow-y: auto;
+}
+
+.checkout .shiping-method .add-address.show-address {
+  display: block;
+}
+
+.checkout .shiping-method .add-address form {
+  position: relative;
+  width: min-content;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--white_color);
+  border-radius: 8px;
+}
+
+@media (max-width: 1300px) {
+  .checkout .shiping-method .add-address form {
+    margin-top: 50px;
+    margin-bottom: 20px;
+  }
+}
+
+.checkout .shiping-method .add-address .top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 22px;
+  padding: 24px 24px 16px;
+}
+
+@media (max-width: 767px) {
+  .checkout .shiping-method .add-address .top {
+    padding: 16px 16px 10px;
+  }
+}
+
+.checkout .shiping-method .add-address .bottom {
+  padding: 8px 24px 24px;
+}
+
+@media (max-width: 767px) {
+  .checkout .shiping-method .add-address .bottom {
+    padding: 5px 16px 16px;
+  }
+}
+
+.checkout .shiping-method .add-address .info {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 767px) {
+  .checkout .shiping-method .add-address .info {
+    margin-bottom: 10px;
+  }
+}
+
+.checkout .shiping-method .add-address .name {
+  display: flex;
+  gap: 10px;
+}
+
+.checkout .shiping-method .add-address .info label {
+  margin-bottom: 8px;
+  text-transform: capitalize;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+@media (max-width: 767px) {
+  .checkout .shiping-method .add-address .info label {
+    margin-bottom: 5px;
+  }
+}
+
+.checkout .shiping-method .add-address .info label span {
+  margin-left: 2px;
+  color: red;
+}
+
+
+.checkout .shiping-method .add-address .info input {
+  border: 1px solid var(--border_color);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+@media (max-width: 767px) {
+  .checkout .shiping-method .add-address .info input {
+    padding: 5px 10px;
+  }
+}
+
+@media (max-width: 767px) {
+  .checkout .shiping-method .add-address .name .info input {
+    width: 136px;
+  }
+}
+
+
+.checkout .shiping-method .add-address .info p {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+
+.checkout .shiping-method .add-address .btn {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.checkout .shiping-method .add-address .btn:hover {
+  scale: 1;
+}
+/* add-address end */
