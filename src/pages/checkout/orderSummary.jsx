@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { useLocation } from 'react-router-dom';
 import { CartContext } from '../../context/cartContext';
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import CheckoutProduct from './checkoutProduct';
@@ -8,9 +7,8 @@ import CheckoutProduct from './checkoutProduct';
 const OrderSummary = () => {
 
   const {cartItems} = useContext(CartContext);
-  const {state} = useLocation();
-  const totalCost = state?.totalCost;
   const fee = 64;
+  let totalCost = cartItems.reduce((acc, curent) => (acc + curent.price * curent.quantity), 0);
   const totalWithFees = totalCost + fee;
 
   return ( 

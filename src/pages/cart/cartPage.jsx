@@ -36,7 +36,7 @@ const CartPage = () => {
                   <p>Total:</p>
                   <span>${totalCost.toFixed(2)}</span>
                 </div>
-                <button onClick={() => navigate('/checkout', { state: { totalCost } })}>Proceed to checkout</button>
+                <button onClick={() => navigate('/checkout')}>Proceed to checkout</button>
               </div>
           }
         </div>
