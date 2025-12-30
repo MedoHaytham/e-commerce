@@ -1,3 +1,227 @@
-h1 {
-  font-size: 42px;
+.contact .container {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 137px);
+  width: 100%;
+  padding: 0;
+}
+
+@media (max-width: 991px) {
+  .contact .container {
+    min-height: calc(100vh - px);
+  }
+}
+
+.contact .top-cotanct {
+  background-color: var(--bg_color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 55px;
+  padding: 65px 20px 80px;
+}
+
+@media (max-width: 1300px) {
+  .contact .top-cotanct {
+    gap: 40px;
+  }
+}
+
+@media (max-width: 991px) {
+  .contact .top-cotanct {
+    gap: 30px;
+  }
+}
+
+@media (max-width: 767px) {
+  .contact .top-cotanct {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+.contact .top-cotanct form,
+.contact .top-cotanct .social {
+  max-width: 510px;
+  width: 100%;
+}
+
+@media (max-width: 1300px) {
+  .contact .top-cotanct form,
+  .contact .top-cotanct .social {
+    max-width: 380px;
+  }
+}
+
+@media (max-width: 991px) {
+  .contact .top-cotanct form,
+  .contact .top-cotanct .social {
+    max-width: 330px;
+  }
+}
+
+@media (max-width: 767px) {
+  .contact .top-cotanct form,
+  .contact .top-cotanct .social {
+    max-width: 100%;
+  }
+}
+
+.contact .top-cotanct form .top {
+  display: flex;
+  gap: 25px;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 767px) {
+  .contact .top-cotanct form .top {
+    flex-direction: column;
+  }
+}
+
+.contact .top-cotanct form .info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+}
+
+.contact .top-cotanct form .info label {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  text-transform: capitalize;
+  color: var(--main_color);
+}
+
+.contact .top-cotanct form .info input,
+.contact .top-cotanct form .info textarea {
+  padding: 10px 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.contact .top-cotanct form .info textarea {
+  height: 124px;
+  resize: none;
+}
+
+.contact .top-cotanct form .info::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  background-color: var(--main_color);
+  bottom: 0;
+  left: 0;
+}
+
+.contact .top-cotanct form .btn {
+  width: 100%;
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+
+.contact .top-cotanct form .btn:hover {
+  scale: 1;
+}
+
+.contact .top-cotanct .social h1 {
+  font-size: 48px;
+  color: var(--main_color);
+}
+
+.contact .top-cotanct .social h3 {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.contact .top-cotanct .social p {
+  margin-top: 20px;
+  line-height: 2;
+}
+
+.contact .top-cotanct .social .icons {
+  margin-top: 40px;
+  display: flex;
+  gap: 30px;
+}
+
+@media (max-width: 767px) {
+  .contact .top-cotanct .social .icons {
+    gap: 20px;
+  }
+}
+
+.contact .top-cotanct .social .icons svg {
+  font-size: 41px;
+  fill: var(--main_color);
+}
+
+.contact .bottom-cotanct {
+  background-color: var(--main_color);
+  padding: 50px 20px;
+}
+
+.contact .bottom-cotanct .cards {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  flex-wrap: wrap;
+}
+
+.contact .bottom-cotanct .my-card {
+  background-color: var(--white_color);
+  width: 270px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+}
+
+@media (max-width: 1300px) {
+  .contact .bottom-cotanct .my-card {
+    width: 185px;
+    padding: 20px 10px;
+  }
+}
+
+.contact .bottom-cotanct .my-card svg {
+  font-size: 64px;
+  fill: var(--main_color);
+}
+
+@media (max-width: 1300px) {
+  .contact .bottom-cotanct .my-card svg {
+    font-size: 50px;
+  }
+}
+
+.contact .bottom-cotanct .my-card h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-top: 20px;
+}
+
+@media (max-width: 1300px) {
+  .contact .bottom-cotanct .my-card h2 {
+    font-size: 18px;
+    margin-top: 15px;
+  }
+}
+
+.contact .bottom-cotanct .my-card p {
+  font-size: 18px;
+  line-height: 2;
+  margin-top: 19px;
+}
+
+@media (max-width: 1300px) {
+  .contact .bottom-cotanct .my-card p {
+    font-size: 15px;
+    margin-top: 14px;
+  }
 }

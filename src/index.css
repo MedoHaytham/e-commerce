@@ -18,12 +18,18 @@
 body {
   background-color: #fff;
   font-family: "Inter", sans-serif;
-  padding-top: 150px;
+  padding-top: 137px;
+}
+
+@media (max-width: 991px) {
+  body {
+    padding-top: 118px;
+  }
 }
 
 @media (max-width: 767px) {
   body {
-    padding-top: 110px;
+    padding-top: 102px;
   }
 }
 
