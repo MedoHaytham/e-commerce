@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
 import { FaTrashAlt } from "react-icons/fa";
-import { CartContext } from '../context/cartContext';
+import { useDispatch } from "react-redux";
 import { Link } from 'react-router-dom';
+import { decreaseQuantity, increaseQuantity, removeFromCart } from "../features/cartSlice";
 
 
 const CartItem = ({item}) => {
 
-  const { removeFromCartHandler, increaseQuantity, decreaseQuantity } = useContext(CartContext);
+  const dispatch = useDispatch();
 
   return ( 
     <div className="cart-item">
@@ -22,13 +22,13 @@ const CartItem = ({item}) => {
             <p className="price">${item.price}</p>
           </Link>
           <div className="quantity-control">
-            <button onClick={()=> item.quantity <= 1 ? '' : decreaseQuantity(item) }>-</button>
+            <button onClick={()=> item.quantity <= 1 ? '' : dispatch(decreaseQuantity(item)) }>-</button>
             <span className='quantity'>{item.quantity}</span>
-            <button onClick={()=>  item.quantity > 99 ? '' : increaseQuantity(item) }>+</button>
+            <button onClick={()=>  item.quantity > 99 ? '' : dispatch(increaseQuantity(item)) }>+</button>
           </div>
         </div>
       </div>
-      <button className='del-item' onClick={() => removeFromCartHandler(item)}>
+      <button className='del-item' onClick={() => dispatch(removeFromCart(item))}>
         <FaTrashAlt />
       </button>
     </div>

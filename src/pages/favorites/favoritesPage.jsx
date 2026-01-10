@@ -1,14 +1,13 @@
-import React, { useContext } from "react";
 import PageTransition from "../../components/pageTransition";
-import { FavoritesContext } from "../../context/favoritesContext";
-
-import './favoritesPage.css';
 import TopSlide from "../../components/topSlide";
 import Product from "../../components/slideProducts/product";
+import { useSelector } from "react-redux";
+
+import './favoritesPage.css';
 
 const FavoritesPage = () => {
 
-  const {favItems} = useContext(FavoritesContext);
+  const favItems = useSelector((state) => state.favorites.FavoritesItems);
 
   return (
     <PageTransition>

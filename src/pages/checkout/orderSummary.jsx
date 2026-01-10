@@ -1,12 +1,11 @@
-import React, { useContext } from 'react';
-import { CartContext } from '../../context/cartContext';
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import CheckoutProduct from './checkoutProduct';
+import { useSelector } from "react-redux";
 
 
 const OrderSummary = () => {
 
-  const {cartItems} = useContext(CartContext);
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const fee = 64;
   let totalCost = cartItems.reduce((acc, curent) => (acc + curent.price * curent.quantity), 0);
   const totalWithFees = totalCost + fee;
@@ -30,7 +29,7 @@ const OrderSummary = () => {
         <div className="subtotal-fee">
           <div className="subtotal">
             <p>Subtotal</p>
-            <span>${totalCost}</span>
+            <span>${totalCost.toFixed(2)}</span>
           </div>
           <div className="fee">
             <p>Delivery Fee</p>
@@ -40,7 +39,7 @@ const OrderSummary = () => {
         <div className="total">
           <div className="total-price">
             <p>Total</p>
-            <span>${totalWithFees}</span>
+            <span>${totalWithFees.toFixed(2)}</span>
           </div>
           <p>Coupons are available for registered users only.</p>
           <p>Redeemed Vouchers will be applied automatically upon placing the order.</p>

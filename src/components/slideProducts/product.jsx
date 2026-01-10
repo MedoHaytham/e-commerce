@@ -1,16 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaStar, FaRegHeart, FaCartArrowDown, FaShare, FaRegStar, FaStarHalfAlt, FaCheck } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
-import { CartContext } from '../../context/cartContext';
 import toast from 'react-hot-toast';
-import { FavoritesContext } from '../../context/favoritesContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../../features/cartSlice';
+import { toggleFavorites } from '../../features/favoritesSclice';
 
 const Product = ({ item }) => {
 
   const [inCart, setInCart] = useState(false);
   const [inFav, setInFav] = useState(false);
-  const {cartItems, addToCart} = useContext(CartContext);
-  const {favItems, toggleFavorites} = useContext(FavoritesContext);
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const dispatch = useDispatch();
+  const favItems = useSelector((state) => state.favorites.FavoritesItems);
   
   const navigate = useNavigate();
 
@@ -20,11 +22,11 @@ const Product = ({ item }) => {
     setInCart(!!exists);
   },[item, cartItems])
 
-    useEffect(() => {
-      if (!item) return;
-      const exists = favItems.find((favitem) => +favitem.id === +item.id);
-      setInFav(!!exists);
-    },[item, favItems])
+  useEffect(() => {
+    if (!item) return;
+    const exists = favItems.find((favitem) => +favitem.id === +item.id);
+    setInFav(!!exists);
+  },[item, favItems])
 
   const renderStars = () => {
     const stars = [];
@@ -52,7 +54,8 @@ const Product = ({ item }) => {
   };
 
   const handleAddToCart = () => {
-    addToCart(item);
+    // addToCart(item);
+    dispatch(addToCart(item));
     setInCart(true);
     toast.success(
       <div className='toast-wrapper'>
@@ -68,7 +71,8 @@ const Product = ({ item }) => {
   }
 
   const handleAddToFav = () => {
-    toggleFavorites(item);
+    // toggleFavorites(item);
+    dispatch(toggleFavorites(item));
     setInFav((prev) => !prev)
     inFav 
     ? toast.error(

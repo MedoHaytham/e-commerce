@@ -1,18 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaStar, FaRegHeart, FaShare, FaRegStar, FaStarHalfAlt } from "react-icons/fa";
 import { TiShoppingCart } from "react-icons/ti";
-import { CartContext } from '../../context/cartContext';
 import { useNavigate } from 'react-router-dom';
 import hotToast from 'react-hot-toast';
-import { FavoritesContext } from '../../context/favoritesContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../../features/cartSlice';
+import { toggleFavorites } from '../../features/favoritesSclice';
 
 
 const ProductInfo = ({product}) => {
 
   const [inCart, setInCart] = useState(false);
   const [inFav, setInFav] = useState(false);
-  const {cartItems, addToCart} = useContext(CartContext);
-  const {favItems, toggleFavorites} = useContext(FavoritesContext);
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const dispatch = useDispatch();
+  const favItems = useSelector((state) => state.favorites.FavoritesItems);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,7 +55,8 @@ const ProductInfo = ({product}) => {
   }
 
   const handleAddToCart = () => {
-    addToCart(product);
+    // addToCart(product);
+    dispatch(addToCart(product));
     setInCart(true);
     hotToast.success(
       <div className='toast-wrapper'>
@@ -69,7 +72,8 @@ const ProductInfo = ({product}) => {
   }
 
   const handleAddToFav = () => {
-    toggleFavorites(product);
+    // toggleFavorites(product);
+    dispatch(toggleFavorites(product));
     setInFav((prev) => !prev)
     inFav 
     ? hotToast.error(

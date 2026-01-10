@@ -1,14 +1,13 @@
-import React, { useContext } from 'react';
 import './cartPage.css';
-import { CartContext } from '../../context/cartContext';
 import CartItem from '../../components/cartItem';
 import PageTransition from '../../components/pageTransition';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
 const CartPage = () => {
 
-  const {cartItems} = useContext(CartContext);
+  const cartItems = useSelector((state) => state.cart.cartItems);
   let totalCost = cartItems.reduce((acc, curent) => (acc + curent.price * curent.quantity), 0)
   const navigate = useNavigate();
 

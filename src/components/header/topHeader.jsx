@@ -1,18 +1,16 @@
-import React, { useContext } from 'react';
 import logo from '../../imgs/logo.png';
 import { NavLink } from 'react-router-dom';
 import { FaRegHeart } from "react-icons/fa";
 import { TiShoppingCart } from "react-icons/ti";
 import './header.css';
-import { CartContext } from '../../context/cartContext';
-import { FavoritesContext } from '../../context/favoritesContext';
 import SearchBox from './searchBox';
+import { useSelector } from 'react-redux';
 
 
 const TopHeader = () => {
 
-  const {cartItems} = useContext(CartContext);
-  const {favItems} = useContext(FavoritesContext);
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const favItems = useSelector((state) => state.favorites.FavoritesItems);
 
   return ( 
     <div className='top-header'>
