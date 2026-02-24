@@ -2,19 +2,15 @@ import React from 'react';
 import PageTransition from '../../components/pageTransition';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 import './contactPage.css';
-import { MdOutlineLocationOn } from "react-icons/md";
+import { MdOutlineLocationOn, MdOutlineEmail } from "react-icons/md";
 import { BsTelephone } from "react-icons/bs";
-import { MdOutlineEmail } from "react-icons/md";
-
-
-
 
 const ContactPage = () => {
-  return ( 
+  return (
     <PageTransition>
       <div className='contact'>
         <div className="container">
-          <div className="top-cotanct">
+          <div className="top-contact">
             <form>
               <div className="top">
                 <div className="info">
@@ -27,10 +23,10 @@ const ContactPage = () => {
                 </div>
               </div>
               <div className="info">
-                <label htmlFor="message">message</label>
+                <label htmlFor="message">Message</label>
                 <textarea name="message" id="message"></textarea>
               </div>
-              <input type="submit" value="submit" className='btn'/>
+              <input type="submit" value="Submit" className='btn' />
             </form>
             <div className="social">
               <h1>Contact Us</h1>
@@ -44,16 +40,16 @@ const ContactPage = () => {
               </div>
             </div>
           </div>
-          <div className="bottom-cotanct">
+          <div className="bottom-contact">
             <div className="cards">
               <div className="my-card">
                 <MdOutlineLocationOn />
-                <h2>our main office</h2>
+                <h2>Our Main Office</h2>
                 <p>SoHo 94 Broadway St New York, NY 1001</p>
               </div>
               <div className="my-card">
                 <BsTelephone />
-                <h2>phone number</h2>
+                <h2>Phone Number</h2>
                 <p>+2001116339830</p>
               </div>
               <div className="my-card">

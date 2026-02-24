@@ -8,11 +8,13 @@
 
 @media (max-width: 991px) {
   .contact .container {
-    min-height: calc(100vh - px);
+    min-height: calc(100vh - 200px);
   }
 }
 
-.contact .top-cotanct {
+/* ===== TOP CONTACT ===== */
+.contact .top-contact {
+  flex: 1; /* FIX: يملأ المساحة الفاضية */
   background-color: var(--bg_color);
   display: flex;
   justify-content: center;
@@ -22,52 +24,53 @@
 }
 
 @media (max-width: 1300px) {
-  .contact .top-cotanct {
+  .contact .top-contact {
     gap: 40px;
   }
 }
 
 @media (max-width: 991px) {
-  .contact .top-cotanct {
+  .contact .top-contact {
     gap: 30px;
   }
 }
 
 @media (max-width: 767px) {
-  .contact .top-cotanct {
+  .contact .top-contact {
     flex-direction: column;
     gap: 20px;
   }
 }
 
-.contact .top-cotanct form,
-.contact .top-cotanct .social {
+.contact .top-contact form,
+.contact .top-contact .social {
   max-width: 510px;
   width: 100%;
 }
 
 @media (max-width: 1300px) {
-  .contact .top-cotanct form,
-  .contact .top-cotanct .social {
+  .contact .top-contact form,
+  .contact .top-contact .social {
     max-width: 380px;
   }
 }
 
 @media (max-width: 991px) {
-  .contact .top-cotanct form,
-  .contact .top-cotanct .social {
+  .contact .top-contact form,
+  .contact .top-contact .social {
     max-width: 330px;
   }
 }
 
 @media (max-width: 767px) {
-  .contact .top-cotanct form,
-  .contact .top-cotanct .social {
+  .contact .top-contact form,
+  .contact .top-contact .social {
     max-width: 100%;
   }
 }
 
-.contact .top-cotanct form .top {
+/* Form */
+.contact .top-contact form .top {
   display: flex;
   gap: 25px;
   width: 100%;
@@ -75,19 +78,19 @@
 }
 
 @media (max-width: 767px) {
-  .contact .top-cotanct form .top {
+  .contact .top-contact form .top {
     flex-direction: column;
   }
 }
 
-.contact .top-cotanct form .info {
+.contact .top-contact form .info {
   display: flex;
   flex-direction: column;
   width: 100%;
   position: relative;
 }
 
-.contact .top-cotanct form .info label {
+.contact .top-contact form .info label {
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 5px;
@@ -95,19 +98,19 @@
   color: var(--main_color);
 }
 
-.contact .top-cotanct form .info input,
-.contact .top-cotanct form .info textarea {
+.contact .top-contact form .info input,
+.contact .top-contact form .info textarea {
   padding: 10px 12px;
   width: 100%;
   box-sizing: border-box;
 }
 
-.contact .top-cotanct form .info textarea {
+.contact .top-contact form .info textarea {
   height: 124px;
   resize: none;
 }
 
-.contact .top-cotanct form .info::after {
+.contact .top-contact form .info::after {
   content: '';
   position: absolute;
   width: 100%;
@@ -117,63 +120,67 @@
   left: 0;
 }
 
-.contact .top-cotanct form .btn {
+.contact .top-contact form .btn {
   width: 100%;
   display: block;
   text-align: center;
   margin-top: 20px;
   border-radius: 10px;
+  cursor: pointer;
 }
 
-.contact .top-cotanct form .btn:hover {
-  scale: 1;
+.contact .top-contact form .btn:hover {
+  transform: scale(1); /* FIX: كانت scale: 1 وده غلط */
 }
 
-.contact .top-cotanct .social h1 {
+/* Social */
+.contact .top-contact .social h1 {
   font-size: 48px;
   color: var(--main_color);
 }
 
-.contact .top-cotanct .social h3 {
+.contact .top-contact .social h3 {
   margin-top: 20px;
   font-size: 18px;
 }
 
-.contact .top-cotanct .social p {
+.contact .top-contact .social p {
   margin-top: 20px;
   line-height: 2;
 }
 
-.contact .top-cotanct .social .icons {
+.contact .top-contact .social .icons {
   margin-top: 40px;
   display: flex;
   gap: 30px;
 }
 
 @media (max-width: 767px) {
-  .contact .top-cotanct .social .icons {
+  .contact .top-contact .social .icons {
     gap: 20px;
   }
 }
 
-.contact .top-cotanct .social .icons svg {
-  font-size: 41px;
+.contact .top-contact .social .icons svg {
+  width: 41px;   /* FIX: كانت font-size وده مش موثوق على SVG */
+  height: 41px;
   fill: var(--main_color);
 }
 
-.contact .bottom-cotanct {
+/* ===== BOTTOM CONTACT ===== */
+.contact .bottom-contact {
   background-color: var(--main_color);
   padding: 50px 20px;
 }
 
-.contact .bottom-cotanct .cards {
+.contact .bottom-contact .cards {
   display: flex;
   justify-content: center;
   gap: 50px;
   flex-wrap: wrap;
 }
 
-.contact .bottom-cotanct .my-card {
+.contact .bottom-contact .my-card {
   background-color: var(--white_color);
   width: 270px;
   padding: 30px;
@@ -183,44 +190,46 @@
 }
 
 @media (max-width: 1300px) {
-  .contact .bottom-cotanct .my-card {
+  .contact .bottom-contact .my-card {
     width: 185px;
     padding: 20px 10px;
   }
 }
 
-.contact .bottom-cotanct .my-card svg {
-  font-size: 64px;
+.contact .bottom-contact .my-card svg {
+  width: 64px;   /* FIX: كانت font-size وده مش موثوق على SVG */
+  height: 64px;
   fill: var(--main_color);
 }
 
 @media (max-width: 1300px) {
-  .contact .bottom-cotanct .my-card svg {
-    font-size: 50px;
+  .contact .bottom-contact .my-card svg {
+    width: 50px;
+    height: 50px;
   }
 }
 
-.contact .bottom-cotanct .my-card h2 {
+.contact .bottom-contact .my-card h2 {
   font-size: 20px;
   font-weight: 700;
   margin-top: 20px;
 }
 
 @media (max-width: 1300px) {
-  .contact .bottom-cotanct .my-card h2 {
+  .contact .bottom-contact .my-card h2 {
     font-size: 18px;
     margin-top: 15px;
   }
 }
 
-.contact .bottom-cotanct .my-card p {
+.contact .bottom-contact .my-card p {
   font-size: 18px;
   line-height: 2;
   margin-top: 19px;
 }
 
 @media (max-width: 1300px) {
-  .contact .bottom-cotanct .my-card p {
+  .contact .bottom-contact .my-card p {
     font-size: 15px;
     margin-top: 14px;
   }
