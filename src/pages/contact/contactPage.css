@@ -12,9 +12,8 @@
   }
 }
 
-/* ===== TOP CONTACT ===== */
 .contact .top-contact {
-  flex: 1; /* FIX: يملأ المساحة الفاضية */
+  flex: 1;
   background-color: var(--bg_color);
   display: flex;
   justify-content: center;
@@ -130,7 +129,7 @@
 }
 
 .contact .top-contact form .btn:hover {
-  transform: scale(1); /* FIX: كانت scale: 1 وده غلط */
+  transform: scale(1);
 }
 
 /* Social */
@@ -162,12 +161,11 @@
 }
 
 .contact .top-contact .social .icons svg {
-  width: 41px;   /* FIX: كانت font-size وده مش موثوق على SVG */
+  width: 41px;   
   height: 41px;
   fill: var(--main_color);
 }
 
-/* ===== BOTTOM CONTACT ===== */
 .contact .bottom-contact {
   background-color: var(--main_color);
   padding: 50px 20px;
@@ -197,7 +195,7 @@
 }
 
 .contact .bottom-contact .my-card svg {
-  width: 64px;   /* FIX: كانت font-size وده مش موثوق على SVG */
+  width: 64px;
   height: 64px;
   fill: var(--main_color);
 }
