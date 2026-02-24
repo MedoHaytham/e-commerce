@@ -19,13 +19,13 @@ const ProductInfo = ({product}) => {
 
   useEffect(() => {
     if (!product) return;
-    const exists = cartItems.find((cartItem) => +cartItem.id === +product.id);
+    const exists = cartItems.find((cartItem) => cartItem.id === product.id);
     setInCart(!!exists);
   },[product, cartItems])
 
   useEffect(() => {
     if (!product) return;
-    const exists = favItems.find((favitem) => +favitem.id === +product.id);
+    const exists = favItems.find((favitem) => favitem.id === product.id);
     setInFav(!!exists);
   },[product, favItems])
 

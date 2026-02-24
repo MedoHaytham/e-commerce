@@ -18,17 +18,22 @@ const AccessoriesPage = () => {
   useEffect(() => {
     async function fetchAccessories() {
       try {
-        let response = await axios.get('https://dummyjson.com/products/categories');
-        let categories = response.data.map((c) => c.slug);
+        let response = await axios.get('https://e-commerce-backend-geri.onrender.com/api/categories?limit=0');
+        let categories = response.data.data.map((c) => c.slug);
         let accessoriesCat = categories.filter((c) => c.toLowerCase().includes('accessories'));
-
         const allAccessories = [];
 
         for (let category of accessoriesCat) {
-          let response = await axios.get(`https://dummyjson.com/products/category/${category}`);
+          let response = await axios.get(`https://e-commerce-backend-geri.onrender.com/api/products/category/${category}`);
           allAccessories.push({
             category: category,
-            products: response.data.products
+            products: response.data.data.map((p) => ({
+              id: p._id,
+              title: p.title,
+              price: p.price,
+              images: p.images,
+              rating: p.rating,
+            }))
           });
         }
         setAccessories(allAccessories);
@@ -50,7 +55,7 @@ const AccessoriesPage = () => {
             {
               accessories.map((a, index) => (
                 <div className='accessory' key={index}>
-                  <TopSlide categoryName={a.category}/>
+                  <TopSlide categoryName={a.category.replace('-', ' ')}/>
                   <div className="products">
                     {
                       a.products.map((p) => (<Product key={p.id} item={p} />))

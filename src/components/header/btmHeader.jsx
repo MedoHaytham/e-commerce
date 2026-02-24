@@ -6,6 +6,8 @@ import { IoMdMenu } from "react-icons/io";
 import { MdOutlineArrowDropDown } from "react-icons/md";
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { IoPerson } from "react-icons/io5";
+
 
 const navlinks = [
   {title: 'Home' , link: '/'},
@@ -20,12 +22,11 @@ const BtmHeader = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
-
   useEffect(() =>{
     async function fetchAllCategories () {
       try {
-        let response = await axios.get('https://dummyjson.com/products/categories');
-        let data = response.data.map((cate) => ({
+        let response = await axios.get('https://e-commerce-backend-geri.onrender.com/api/categories?limit=25');
+        let data = response.data.data.map((cate) => ({
           name: cate.name,
           slug: cate.slug,
         }));
@@ -35,7 +36,7 @@ const BtmHeader = () => {
       }
     }
     fetchAllCategories();
-  },[])
+  },[]);
 
   return ( 
     <div className='btm-hedear'>
@@ -63,10 +64,18 @@ const BtmHeader = () => {
             }
           </ul>
         </div>
-        <div className="sign-reg-icon">
-          <NavLink to= '/signIn'><PiSignInBold /></NavLink>
-          <NavLink to= '/register'><MdPersonAddAlt1 /></NavLink>
-        </div>
+        {
+          localStorage.getItem('token') ? (
+            <div className="sign-reg-icon">
+              <NavLink to= '/#'><IoPerson /></NavLink>
+            </div>
+          ) : (
+            <div className="sign-reg-icon">
+              <NavLink to= '/signIn'><PiSignInBold /></NavLink>
+              <NavLink to= '/register'><MdPersonAddAlt1 /></NavLink>
+            </div>
+          )
+        }
       </div>
     </div>
   );

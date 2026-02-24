@@ -7,7 +7,7 @@ import { addToCart } from '../../features/cartSlice';
 import { toggleFavorites } from '../../features/favoritesSclice';
 
 const Product = ({ item }) => {
-
+  
   const [inCart, setInCart] = useState(false);
   const [inFav, setInFav] = useState(false);
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -18,13 +18,13 @@ const Product = ({ item }) => {
 
   useEffect(() => {
     if (!item) return;
-    const exists = cartItems.find((cartItem) => +cartItem.id === +item.id);
+    const exists = cartItems.find((cartItem) => cartItem.id === item.id);
     setInCart(!!exists);
   },[item, cartItems])
 
   useEffect(() => {
     if (!item) return;
-    const exists = favItems.find((favitem) => +favitem.id === +item.id);
+    const exists = favItems.find((favitem) => favitem.id === item.id);
     setInFav(!!exists);
   },[item, favItems])
 

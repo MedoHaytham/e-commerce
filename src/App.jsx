@@ -21,7 +21,7 @@ import { AnimatePresence } from "framer-motion";
 const App = () => {
   return (
     <>
-      <ToastContainer />
+      <ToastContainer position="bottom-right"/>
       <Toaster
         position="bottom-right"
         toastOptions={{

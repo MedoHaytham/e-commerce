@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import Joi from 'joi-browser';
 import './loginPage.css'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 const SignInPage = () => {
 
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
-    username: '',
+    email: '',
     password: '',
   });
 
@@ -19,11 +23,12 @@ const SignInPage = () => {
   const [show, setShow] = useState(false);
 
   const schema = {
-    username: Joi.string().required(),
+    email: Joi.string().required(),
     password: Joi.string().required(),
   }
 
   const [errors, setErrors] = useState({});
+  const [errorsLogin, setErrorLogin] = useState('');
 
   const validate = () => {
     const {error} = Joi.validate(form, schema, {abortEarly: false});
@@ -39,25 +44,37 @@ const SignInPage = () => {
     return Object.keys(errors).length > 0 ? errors : null;
   }
 
+  const login = async () => {
+    const {data} = await axios.post('https://e-commerce-backend-geri.onrender.com/api/users/login', form);
+    localStorage.setItem('token', data.data.token);
+    toast.success('Login Success');
+  }
 
-  let submitHadnler = (e) => {
+  let submitHadnler = async (e) => {
     e.preventDefault();
     
     const errors = validate();
 
     if(errors) return;
-    console.log('submit');
+    try {
+      await login();
+      navigate('/');
+    } catch(error) {
+      const msg = error?.response?.data?.message || error?.message || 'Login Failed';
+      setErrorLogin(msg);
+    }
   }
 
   return ( 
     <div className='login'>
       <main className='container position-absolute top-50 start-50 translate-middle'>
         <h1>Login</h1>
+        {errorsLogin && <div className='alert alert-danger mt-2' >{errorsLogin}</div>}
         <form onSubmit={submitHadnler}>
           <div className="mb-3">
             <label htmlFor="inputEmail" className="form-label">Email address<span className='mandatory'>*</span></label>
-            <input onChange={onChangeHandler} name='username' value={form.username} id="inputEmail" type="email" className="form-control"  aria-describedby="emailHelp" />
-            {errors.username && <div className='alert alert-danger mt-2' >{errors.username}</div>}
+            <input onChange={onChangeHandler} name='email' value={form.email} id="inputEmail" type="email" className="form-control"  aria-describedby="emailHelp" />
+            {errors.email && <div className='alert alert-danger mt-2' >{errors.email}</div>}
           </div>
           <div className="mb-3">
             <label htmlFor="inputPassword" className="form-label">Password<span className='mandatory'>*</span></label>

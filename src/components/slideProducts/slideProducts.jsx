@@ -18,9 +18,9 @@ const SlideProducts = ({categorySlug, categoryName}) => {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        let response = await axios.get(`https://dummyjson.com/products/category/${categorySlug}`);
-        let data = response.data.products.map((p) => ({
-          id: p.id,
+        let response = await axios.get(`https://e-commerce-backend-geri.onrender.com/api/products/category/${categorySlug}`);
+        let data = response.data.data.map((p) => ({
+          id: p._id,
           title : p.title,
           price: p.price,
           rating: p.rating,
@@ -37,7 +37,7 @@ const SlideProducts = ({categorySlug, categoryName}) => {
   return ( 
     <div className="slider">
       <div className="container">
-        <TopSlide categoryName={categoryName} desc={'Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, voluptates?'}/>
+        <TopSlide categoryName={categoryName.replace('-', ' ')} desc={'Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, voluptates?'}/>
         <Swiper 
           loop={products.length > 5}
           autoplay={{

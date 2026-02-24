@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import Joi from 'joi-browser';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 import './registerPage.css';
 
 const RegisterPage = () => {
+
+  const navigate = useNavigate();
 
   const [form, setForm] = useState({
     username: '',
@@ -47,14 +51,26 @@ const RegisterPage = () => {
     setErrors(errors);
     return Object.keys(errors).length > 0 ? errors : null;
   }
+  
+  async function register() {
+    await axios.post('https://e-commerce-backend-geri.onrender.com/api/users/register', form);
+    toast.success('Register Success');
+  }
 
-  let submitHadnler = (e) => {
+  let submitHadnler = async (e) => {
     e.preventDefault();
   
     const errors = validate();
     if(errors) return;
-    console.log('submit');
+    try {
+      await register();
+      navigate('/signIn');
+    } catch(error) {
+      const msg = error?.response?.data?.message || error?.message || 'Register Failed';
+      toast.error(msg);
+    }
   }
+
 
   return ( 
     <div className='register'>

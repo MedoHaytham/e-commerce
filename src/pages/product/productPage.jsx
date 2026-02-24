@@ -20,9 +20,9 @@ const ProductPage = () => {
   useEffect(() => {
     async function fetchProduct () {
       try {
-        let response = await axios.get(`https://dummyjson.com/products/${id}`);
-        setProduct(response.data);
-        setActiveImg(response.data.images[0] || '');
+        let response = await axios.get(`https://e-commerce-backend-geri.onrender.com/api/products/${id}`);
+        setProduct(response.data.data);
+        setActiveImg(response.data.data.images[0] || '');
       } catch (error) {
         toast.error('Error fetchProduct: ' + error);
       } finally {

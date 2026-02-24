@@ -24,12 +24,11 @@ const HomePage = () => {
   useEffect(() =>{
     async function fetchCategories () {
       try {
-        let response = await axios.get('https://dummyjson.com/products/categories');
-        let data = response.data.map((cate) => ({
+        let response = await axios.get('https://e-commerce-backend-geri.onrender.com/api/categories?limit=0');
+        let data = response.data.data.map((cate) => ({
           name: cate.name,
           slug: cate.slug,
         }));
-
         let homeData = homeCate.map((slug) =>  (
           data.find(cate => cate.slug === slug)
         )).filter(Boolean);
@@ -51,7 +50,7 @@ const HomePage = () => {
       {
         loading 
         ? homeCate.map((_,index) => (
-            <SlideProductsLoading key={index} count={3} />  
+            <SlideProductsLoading key={index} count={3} />
           ))
         : homeCategories.map((hc) => (
             <SlideProducts key={hc.slug} categorySlug={hc.slug} categoryName={hc.name} />

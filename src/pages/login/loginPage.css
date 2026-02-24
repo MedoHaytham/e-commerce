@@ -1,6 +1,6 @@
 .login .container {
   width: 30%;
-  margin-top: 10px;
+  margin: 50px auto;
 }
 
 @media (max-width: 1250px) {
@@ -8,7 +8,6 @@
     width: 60%;
   }
 }
-
 
 @media (max-width: 991px) {
   .login .container {
@@ -24,6 +23,7 @@
 
 .login h1 {
   font-size: 40px;
+  margin-bottom: 20px;
   color: var(--main_color);
 }
 
