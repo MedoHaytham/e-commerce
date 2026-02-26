@@ -10,7 +10,7 @@ const CartPageLoading = ({count}) => {
         <div className="items">
           {
             Array.from({length: 2}).map((_, index) => (
-              <div className="cart-item">
+              <div key={index} className="cart-item">
                 <div className="item-info">
                   <div className="image-item skeltoin"></div>
                   <div className="item-content">         

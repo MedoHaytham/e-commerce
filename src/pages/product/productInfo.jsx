@@ -50,7 +50,7 @@ const ProductInfo = ({product}) => {
   const handleAddToCart = () => {
     // addToCart(product);
     if(!product || inCart) return;
-    dispatch(addToCart(productId));
+    dispatch(addToCart({ productId, product }))
     hotToast.success(
       <div className='toast-wrapper'>
         <img src={product.images[0]} alt="toast-img" />
@@ -88,7 +88,7 @@ const ProductInfo = ({product}) => {
       </div>
       ,{duration: 3500}
     )
-    dispatch(toggleFavorites(productId));
+    dispatch(toggleFavorites({ productId, product: product }));
   }
 
   return ( 

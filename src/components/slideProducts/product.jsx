@@ -16,8 +16,8 @@ const Product = ({ item }) => {
   const navigate = useNavigate();
 
 
-  const inCart = cartItems.some((cartItem) => (cartItem.product._id || cartItem.product.id) === item.id);
-  const inFav = favItems.some((favItem) => (favItem._id  || favItem.id) === item.id);
+  const inCart = cartItems.some((cartItem) => (cartItem.product._id || cartItem.product.id) === productId);
+  const inFav = favItems.some((favItem) => (favItem._id  || favItem.id) === productId);
 
   const renderStars = () => {
     const stars = [];
@@ -53,7 +53,7 @@ const Product = ({ item }) => {
       return;
     }
     if(inCart) return;
-    dispatch(addToCart(productId));
+    dispatch(addToCart({ productId, product: item }))
     toast.success(
       <div className='toast-wrapper'>
         <img src={item.images[0]} alt="toast-img" />
@@ -94,12 +94,12 @@ const Product = ({ item }) => {
       </div>
       ,{duration: 3500}
     )
-    dispatch(toggleFavorites(productId));
+    dispatch(toggleFavorites({ productId, product: item }));
   }
 
   return ( 
     <div className='product'>
-      <Link to={`/product/${item.id}`}>
+      <Link to={`/product/${productId}`}>
         <span className={`in-cart-check ${ inCart ? 'in-cart' : '' }`}>
           <FaCheck />
           in Cart
