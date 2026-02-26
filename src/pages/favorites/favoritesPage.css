@@ -21,6 +21,7 @@
   }
 }
 
+/* loading */
 .favorites-products-loading .products-loading {
   display: grid;
   grid-template-columns: repeat(auto-fill ,minmax(248px, 1fr));
