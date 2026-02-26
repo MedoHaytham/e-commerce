@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { FaStar, FaRegHeart, FaCartArrowDown, FaShare, FaRegStar, FaStarHalfAlt, FaCheck } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -7,26 +7,17 @@ import { addToCart } from '../../features/cartSlice';
 import { toggleFavorites } from '../../features/favoritesSclice';
 
 const Product = ({ item }) => {
-  
-  const [inCart, setInCart] = useState(false);
-  const [inFav, setInFav] = useState(false);
+
+  const productId = item?._id || item?.id;
+
   const cartItems = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
-  const favItems = useSelector((state) => state.favorites.FavoritesItems);
-  
+  const favItems = useSelector((state) => state.favorites.favoritesItems);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!item) return;
-    const exists = cartItems.find((cartItem) => cartItem.id === item.id);
-    setInCart(!!exists);
-  },[item, cartItems])
 
-  useEffect(() => {
-    if (!item) return;
-    const exists = favItems.find((favitem) => favitem.id === item.id);
-    setInFav(!!exists);
-  },[item, favItems])
+  const inCart = cartItems.some((cartItem) => (cartItem.product._id || cartItem.product.id) === item.id);
+  const inFav = favItems.some((favItem) => (favItem._id  || favItem.id) === item.id);
 
   const renderStars = () => {
     const stars = [];
@@ -53,10 +44,16 @@ const Product = ({ item }) => {
     return stars;
   };
 
+  
+
   const handleAddToCart = () => {
     // addToCart(item);
-    dispatch(addToCart(item));
-    setInCart(true);
+    if(!localStorage.getItem('token')) {
+      toast.error('Please login first');
+      return;
+    }
+    if(inCart) return;
+    dispatch(addToCart(productId));
     toast.success(
       <div className='toast-wrapper'>
         <img src={item.images[0]} alt="toast-img" />
@@ -72,8 +69,10 @@ const Product = ({ item }) => {
 
   const handleAddToFav = () => {
     // toggleFavorites(item);
-    dispatch(toggleFavorites(item));
-    setInFav((prev) => !prev)
+    if(!localStorage.getItem('token')) {
+      toast.error('Please login first');
+      return;
+    }
     inFav 
     ? toast.error(
       <div className='toast-wrapper'>
@@ -95,6 +94,7 @@ const Product = ({ item }) => {
       </div>
       ,{duration: 3500}
     )
+    dispatch(toggleFavorites(productId));
   }
 
   return ( 
@@ -114,7 +114,7 @@ const Product = ({ item }) => {
         <span className='price'>$ {item.price}</span>
       </Link>
       <div className='icons'>
-        <span className={ inCart ? 'in-cart' : '' } onClick={handleAddToCart}  disabled={inCart}><FaCartArrowDown /></span>
+        <span className={ inCart ? 'in-cart' : '' } onClick={handleAddToCart}><FaCartArrowDown /></span>
         <span className={ inFav ? 'in-fav' : '' } onClick={handleAddToFav}><FaRegHeart /></span>
         <span><FaShare /></span>
       </div>

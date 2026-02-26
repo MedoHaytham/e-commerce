@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import RootLayout from "./layout/rootLayout";
@@ -17,8 +17,23 @@ import CategoryPage from "./pages/category/categoryPage";
 import ScrollToTop from "./components/scrollToTop";
 import { Toaster } from "react-hot-toast";
 import { AnimatePresence } from "framer-motion";
+import { fetchFavorites } from "./features/favoritesSclice";
+import { useDispatch } from "react-redux";
+import { fetchCart } from "./features/cartSlice";
 
 const App = () => {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch(fetchFavorites());
+      dispatch(fetchCart());
+    }
+  }, [dispatch]);
+
+
   return (
     <>
       <ToastContainer position="bottom-right"/>

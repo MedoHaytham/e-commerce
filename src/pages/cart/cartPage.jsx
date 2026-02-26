@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 const CartPage = () => {
 
   const cartItems = useSelector((state) => state.cart.cartItems);
-  let totalCost = cartItems.reduce((acc, curent) => (acc + curent.price * curent.quantity), 0)
+  let totalCost = cartItems.reduce((acc, curent) => (acc + curent.product.price * curent.quantity), 0)
   const navigate = useNavigate();
 
   return (
@@ -22,7 +22,7 @@ const CartPage = () => {
               ? <p>Your Cart is empty.</p> 
               : cartItems.map((item) => (
                 <CartItem
-                  key={item.id}
+                  key={item.product?.id || item.product?._id}
                   item={item}
                 />
               ))

@@ -7,28 +7,31 @@ import { decreaseQuantity, increaseQuantity, removeFromCart } from "../features/
 const CartItem = ({item}) => {
 
   const dispatch = useDispatch();
+  const product = item.product;
+  const productId = product?._id || product?.id;
+  const quantity = item.quantity;
 
   return ( 
     <div className="cart-item">
       <div className="item-info">
-        <Link to={`/product/${item.id}`}>       
+        <Link to={`/product/${productId}`}>       
           <div className="image-item">
-            <img src={item.images[0]} alt="" />
+            <img src={product.images?.[0]} alt="" />
           </div>
         </Link>
         <div className="item-content">
-          <Link to={`/product/${item.id}`}>          
-            <h4>{item.title}</h4>
-            <p className="price">${item.price}</p>
+          <Link to={`/product/${productId}`}>          
+            <h4>{product.title}</h4>
+            <p className="price">${product.price}</p>
           </Link>
           <div className="quantity-control">
-            <button onClick={()=> item.quantity <= 1 ? '' : dispatch(decreaseQuantity(item)) }>-</button>
-            <span className='quantity'>{item.quantity}</span>
-            <button onClick={()=>  item.quantity > 99 ? '' : dispatch(increaseQuantity(item)) }>+</button>
+            <button onClick={()=> quantity <= 1 ? '' : dispatch(decreaseQuantity(productId)) }>-</button>
+            <span className='quantity'>{quantity}</span>
+            <button onClick={()=>  quantity > 99 ? '' : dispatch(increaseQuantity(productId)) }>+</button>
           </div>
         </div>
       </div>
-      <button className='del-item' onClick={() => dispatch(removeFromCart(item))}>
+      <button className='del-item' onClick={() => dispatch(removeFromCart(productId))}>
         <FaTrashAlt />
       </button>
     </div>

@@ -1,39 +1,125 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import axios from 'axios';
 
 const initialState = {
-  cartItems: JSON.parse(localStorage.getItem('cartItems')) || [],
+  cartItems: [],
+  isLoading: false,
+  error: null,
 }
+
+export const fetchCart = createAsyncThunk('cart/fetchCart', async(_,thunkAPI) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get('https://e-commerce-backend-geri.onrender.com/api/users/cart',
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data.data.inCartProducts;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+})
+
+export const addToCart = createAsyncThunk('cart/addToCart', async (productId, thunkAPI) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.post(`https://e-commerce-backend-geri.onrender.com/api/users/cart/${productId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
+    )
+    return response.data.data.inCartProducts;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+})
+
+export const removeFromCart = createAsyncThunk('cart/removeFromCart', async (productId, thunkAPI) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.delete(`https://e-commerce-backend-geri.onrender.com/api/users/cart/${productId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
+    )
+    return response.data.data.inCartProducts;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+})
+
+export const increaseQuantity = createAsyncThunk('cart/increaseQuantity', async (productId, thunkAPI) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.patch(`https://e-commerce-backend-geri.onrender.com/api/users/cart/${productId}/increase`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
+    )
+    return response.data.data.inCartProducts;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+})
+
+export const decreaseQuantity = createAsyncThunk('cart/decreaseQuantity', async (productId, thunkAPI) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.patch(`https://e-commerce-backend-geri.onrender.com/api/users/cart/${productId}/decrease`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
+    )
+    return response.data.data.inCartProducts;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+})
 
 export const CartSlice = createSlice({
   name: 'cart',
   initialState,
-  reducers: {
-    addToCart: (currentState, action) => {
-      let item = action.payload;
-      let cartItems = currentState.cartItems;
-
-      let exists = cartItems.find((cartItem) => cartItem.id === item.id);
-      if (exists) return;
-      cartItems.push({...item, quantity: 1});
-      localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    },
-    removeFromCart: (currentState, action) => {
-      let item = action.payload;
-      currentState.cartItems = currentState.cartItems.filter((cartItem) => cartItem.id !== item.id);
-      localStorage.setItem('cartItems', JSON.stringify(currentState.cartItems));
-    },
-    increaseQuantity: (currentState, action) => {
-      let item = action.payload;
-      currentState.cartItems = currentState.cartItems.map((cartItem) => cartItem.id === item.id ? {...cartItem, quantity: cartItem.quantity + 1} : cartItem);
-      localStorage.setItem('cartItems', JSON.stringify(currentState.cartItems));
-    },
-    decreaseQuantity: (currentState, action) => {
-      let item = action.payload;
-      currentState.cartItems = currentState.cartItems.map((cartItem) => cartItem.id === item.id ? {...cartItem, quantity: cartItem.quantity - 1} : cartItem);
-      localStorage.setItem('cartItems', JSON.stringify(currentState.cartItems));
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCart.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchCart.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.cartItems = action.payload;
+      })
+      .addCase(fetchCart.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(addToCart.fulfilled, (state, action) => {
+        state.cartItems = action.payload;
+      })
+      .addCase(removeFromCart.fulfilled, (state, action) => {
+        state.cartItems = action.payload;
+      })
+      .addCase(increaseQuantity.fulfilled, (state, action) => {
+        state.cartItems = action.payload;
+      })
+      .addCase(decreaseQuantity.fulfilled, (state, action) => {
+        state.cartItems = action.payload;
+      })
   }
 });
 
-export const {addToCart, removeFromCart, increaseQuantity, decreaseQuantity} = CartSlice.actions;
 export default CartSlice.reducer

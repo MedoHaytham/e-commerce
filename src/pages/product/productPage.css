@@ -130,7 +130,6 @@
   background-color: var(--white_color);
   color: var(--main_color);
   border: 1px solid var(--main_color);
-  cursor: no-drop;
 }
 
 .product-details .product-info .in-cart-btn:hover {

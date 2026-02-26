@@ -7,7 +7,7 @@ const OrderSummary = () => {
 
   const cartItems = useSelector((state) => state.cart.cartItems);
   const fee = 64;
-  let totalCost = cartItems.reduce((acc, curent) => (acc + curent.price * curent.quantity), 0);
+  let totalCost = cartItems.reduce((acc, curent) => (acc + curent.product.price * curent.quantity), 0);
   const totalWithFees = totalCost + fee;
 
   return ( 
@@ -20,9 +20,9 @@ const OrderSummary = () => {
         {
           cartItems.map((p) => (
             <CheckoutProduct
-              key={p.id} 
-              title={p.title}
-              price={p.price}
+              key={p.product.id} 
+              title={p.product.title}
+              price={p.product.price}
               quantity={p.quantity}
             />))
         }

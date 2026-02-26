@@ -2,27 +2,35 @@ import PageTransition from "../../components/pageTransition";
 import TopSlide from "../../components/topSlide";
 import Product from "../../components/slideProducts/product";
 import { useSelector } from "react-redux";
+import FavPageLoading from "./favPageLoading";
 
 import './favoritesPage.css';
 
 const FavoritesPage = () => {
 
-  const favItems = useSelector((state) => state.favorites.FavoritesItems);
+  const { favoritesItems, isLoading } = useSelector((state) => state.favorites);
+
+  const favorites = (favoritesItems || []).map((p) => ({ ...p, id: p._id }));
 
   return (
     <PageTransition>
-      <div className='favorites-products'>
-        <div className="container">
-          <TopSlide categoryName='Your Favorites' />
-          <div className="products">
-            {
-              favItems.length === 0 
-              ? <p>No Favorites Products yet.</p>
-              : favItems.map((p) => (<Product key={p.id} item={p}/>))
-            }
+      {
+        isLoading 
+        ? <FavPageLoading count={3}/> 
+        : <div className='favorites-products'>
+            <div className="container">
+              <TopSlide categoryName='Your Favorites' />
+              <div className="products">
+                {
+                  favorites.length === 0 
+                  ? <p>No Favorites Products yet.</p>
+                  : favorites.map((p) => (<Product key={p.id} item={p}/>))
+                }
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+      }
+
     </PageTransition>
   );
 };

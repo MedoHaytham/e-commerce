@@ -1,26 +1,74 @@
-import { createSlice } from '@reduxjs/toolkit'
+import axios from 'axios';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  FavoritesItems: JSON.parse(localStorage.getItem('favItems')) || [],
+  favoritesItems: [],
+  isLoading: false,
+  error: null,
 }
+
+export const fetchFavorites = createAsyncThunk('favorites/fetchFavorites', async(_,thunkAPI) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get('https://e-commerce-backend-geri.onrender.com/api/users/favorites',
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data.data.favoriteProducts;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+})
+
+export const toggleFavorites = createAsyncThunk('favorites/toggleFavorite', async (productId, thunkAPI) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.post(`https://e-commerce-backend-geri.onrender.com/api/users/favorites/${productId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
+    )
+    return response.data.data.favoriteProducts;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.response.data);
+  }
+})
 
 export const FavoritesSlice = createSlice({
   name: 'favorites',
   initialState,
-  reducers: {
-    toggleFavorites : (currentState, action) => {
-      let item = action.payload;
-      let favoritesItems = currentState.FavoritesItems;
-      const exists = favoritesItems.find((favItem) => favItem.id === item.id);
-      if (exists) {
-        currentState.FavoritesItems = currentState.FavoritesItems.filter((favItem) => favItem.id !== item.id);
-      } else {
-        favoritesItems.push({...item});
-      }
-      localStorage.setItem('favItems', JSON.stringify(currentState.FavoritesItems));
-    }
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(fetchFavorites.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchFavorites.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.favoritesItems = action.payload;
+    });
+    builder.addCase(fetchFavorites.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+
+    builder.addCase(toggleFavorites.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(toggleFavorites.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.favoritesItems = action.payload;
+    });
+    builder.addCase(toggleFavorites.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
   }
 });
 
-export const {toggleFavorites} = FavoritesSlice.actions;
 export default FavoritesSlice.reducer

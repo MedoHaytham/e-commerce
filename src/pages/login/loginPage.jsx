@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Joi from 'joi-browser';
 import './loginPage.css'
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { fetchFavorites } from '../../features/favoritesSclice';
+import { useDispatch } from 'react-redux';
 
 
 const SignInPage = () => {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [form, setForm] = useState({
     email: '',
@@ -58,12 +61,19 @@ const SignInPage = () => {
     if(errors) return;
     try {
       await login();
-      navigate('/');
+      await dispatch(fetchFavorites()).unwrap();
+      navigate('/', {replace: true});
     } catch(error) {
       const msg = error?.response?.data?.message || error?.message || 'Login Failed';
       setErrorLogin(msg);
     }
   }
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      navigate('/', { replace: true });
+    }
+  }, [navigate]);
 
   return ( 
     <div className='login'>
