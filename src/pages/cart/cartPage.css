@@ -140,6 +140,7 @@
   border-radius: 2px;
   display: flex;
   justify-content: center;
+  align-items: center;
   cursor: pointer;
 }
 
@@ -279,4 +280,13 @@
   width: 80px;
   height: 25px;
   margin-top: 10px;
+}
+
+.cart-item.is-removing {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.del-item:disabled {
+  cursor: not-allowed;
 }

@@ -6,6 +6,8 @@ const initialState = {
   isLoading: false,
   error: null,
   optimisticSnapshot: null,
+  removingById: {},
+  updatingById: {},
 };
 
 const API = "https://e-commerce-backend-geri.onrender.com/api/users";
@@ -132,55 +134,50 @@ export const CartSlice = createSlice({
       })
 
       .addCase(removeFromCart.pending, (state, action) => {
-        state.error = null;
-        snapshot(state);
-
-        const productId = action.meta.arg;
-        state.cartItems = state.cartItems.filter((x) => getPid(x) !== productId);
+          const productId = action.meta.arg;
+          state.error = null;
+          state.removingById[productId] = true;
       })
       .addCase(removeFromCart.fulfilled, (state, action) => {
-        state.optimisticSnapshot = null;
+        const productId = action.meta.arg;
+        delete state.removingById[productId];
         state.cartItems = action.payload;
       })
       .addCase(removeFromCart.rejected, (state, action) => {
-        if (state.optimisticSnapshot) state.cartItems = state.optimisticSnapshot;
-        state.optimisticSnapshot = null;
+        const productId = action.meta.arg;
+        delete state.removingById[productId];
         state.error = action.payload;
       })
 
       .addCase(increaseQuantity.pending, (state, action) => {
-        state.error = null;
-        snapshot(state);
-
         const productId = action.meta.arg;
-        const item = state.cartItems.find((x) => getPid(x) === productId);
-        if (item) item.quantity += 1;
+        state.error = null;
+        state.updatingById[productId] = true;
       })
       .addCase(increaseQuantity.fulfilled, (state, action) => {
-        state.optimisticSnapshot = null;
+        const productId = action.meta.arg;
+        delete state.updatingById[productId];
         state.cartItems = action.payload;
       })
       .addCase(increaseQuantity.rejected, (state, action) => {
-        if (state.optimisticSnapshot) state.cartItems = state.optimisticSnapshot;
-        state.optimisticSnapshot = null;
+        const productId = action.meta.arg;
+        delete state.updatingById[productId];
         state.error = action.payload;
       })
 
       .addCase(decreaseQuantity.pending, (state, action) => {
-        state.error = null;
-        snapshot(state);
-
         const productId = action.meta.arg;
-        const item = state.cartItems.find((x) => getPid(x) === productId);
-        if (item && item.quantity > 1) item.quantity -= 1;
+        state.error = null;
+        state.updatingById[productId] = true;
       })
       .addCase(decreaseQuantity.fulfilled, (state, action) => {
-        state.optimisticSnapshot = null;
+        const productId = action.meta.arg;
+        delete state.updatingById[productId];
         state.cartItems = action.payload;
       })
       .addCase(decreaseQuantity.rejected, (state, action) => {
-        if (state.optimisticSnapshot) state.cartItems = state.optimisticSnapshot;
-        state.optimisticSnapshot = null;
+        const productId = action.meta.arg;
+        delete state.updatingById[productId];
         state.error = action.payload;
       });
   },
