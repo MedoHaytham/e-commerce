@@ -19,6 +19,8 @@ const ProductPage = () => {
 
   useEffect(() => {
     async function fetchProduct () {
+      setLoading(true);
+      setProduct(null);
       try {
         let response = await axios.get(`https://e-commerce-backend-geri.onrender.com/api/products/${id}`);
         setProduct(response.data.data);
