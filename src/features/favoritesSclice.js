@@ -54,7 +54,13 @@ export const toggleFavorites = createAsyncThunk("favorites/toggleFavorite", asyn
 export const FavoritesSlice = createSlice({
   name: "favorites",
   initialState,
-  reducers: {},
+  reducers: {
+    clearFavorites: (state) => {
+      state.favoritesItems = [];
+      state.error = null;
+      state.optimisticSnapshot = null;
+    }
+  },
   extraReducers: (builder) => {
     builder
     .addCase(fetchFavorites.pending, (state) => {
@@ -104,4 +110,5 @@ export const FavoritesSlice = createSlice({
   },
 });
 
+export const { clearFavorites } = FavoritesSlice.actions;
 export default FavoritesSlice.reducer;

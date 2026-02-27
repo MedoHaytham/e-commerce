@@ -89,7 +89,15 @@ const snapshot = (state) => {
 export const CartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {},
+  reducers: {
+    clearCart: (state) => {
+      state.cartItems = [];
+      state.error = null;
+      state.optimisticSnapshot = null;
+      state.removingById = {};
+      state.updatingById = {};
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCart.pending, (state) => {
@@ -183,4 +191,5 @@ export const CartSlice = createSlice({
   },
 });
 
+export const { clearCart } = CartSlice.actions;
 export default CartSlice.reducer;

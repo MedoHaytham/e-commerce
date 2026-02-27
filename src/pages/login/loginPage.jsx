@@ -4,8 +4,8 @@ import './loginPage.css'
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { fetchFavorites } from '../../features/favoritesSclice';
 import { useDispatch } from 'react-redux';
+import { setToken } from '../../features/authSlice';
 
 
 const SignInPage = () => {
@@ -49,7 +49,7 @@ const SignInPage = () => {
 
   const login = async () => {
     const {data} = await axios.post('https://e-commerce-backend-geri.onrender.com/api/users/login', form);
-    localStorage.setItem('token', data.data.token);
+    dispatch(setToken(data.data.token));
     toast.success('Login Success');
   }
 
@@ -61,7 +61,6 @@ const SignInPage = () => {
     if(errors) return;
     try {
       await login();
-      await dispatch(fetchFavorites()).unwrap();
       navigate('/', {replace: true});
     } catch(error) {
       const msg = error?.response?.data?.message || error?.message || 'Login Failed';

@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { PiSignInBold } from "react-icons/pi";
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { PiSignInBold, PiSignOutBold } from "react-icons/pi";
 import { MdPersonAddAlt1 } from "react-icons/md";
 import { IoMdMenu } from "react-icons/io";
 import { MdOutlineArrowDropDown } from "react-icons/md";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { IoPerson } from "react-icons/io5";
+import { clearCart } from '../../features/cartSlice';
+import { clearFavorites } from '../../features/favoritesSclice';
+import { logout } from '../../features/authSlice';
+import { useDispatch } from 'react-redux';
 
 
 const navlinks = [
@@ -21,6 +25,17 @@ const BtmHeader = () => {
   const [active, setActive] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout  = () => {
+    dispatch(logout());
+    dispatch(clearCart());
+    dispatch(clearFavorites());
+    navigate("/signIn", { replace: true });
+  };
+
 
   useEffect(() =>{
     async function fetchAllCategories () {
@@ -68,6 +83,7 @@ const BtmHeader = () => {
           localStorage.getItem('token') ? (
             <div className="sign-reg-icon">
               <NavLink to= '/#'><IoPerson /></NavLink>
+              <PiSignOutBold onClick={handleLogout} />
             </div>
           ) : (
             <div className="sign-reg-icon">
