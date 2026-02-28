@@ -3,12 +3,12 @@ import { toast } from 'react-toastify';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation } from 'swiper/modules';
 import Product from './product';
-import axios from 'axios';
+import TopSlide from '../topSlide';
+import api from '../../api/axiosInstance';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import './slideProducts.css';
-import TopSlide from '../topSlide';
 
 
 const SlideProducts = ({categorySlug, categoryName}) => {
@@ -18,7 +18,7 @@ const SlideProducts = ({categorySlug, categoryName}) => {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        let response = await axios.get(`https://e-commerce-backend-geri.onrender.com/api/products/category/${categorySlug}`);
+        let response = await api.get(`/products/category/${categorySlug}`);
         let data = response.data.data.map((p) => ({
           id: p._id,
           title : p.title,

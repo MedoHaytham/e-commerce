@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import HeroSlider from '../../components/heroSlider';
 import SlideProducts from '../../components/slideProducts/slideProducts';
-
-import './home.css';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import SlideProductsLoading from '../../components/slideProducts/slideProductsLoading';
 import PageTransition from '../../components/pageTransition';
+import api from '../../api/axiosInstance';
+
+import './home.css';
 
 const homeCate = [
   "smartphones",
@@ -24,7 +24,7 @@ const HomePage = () => {
   useEffect(() =>{
     async function fetchCategories () {
       try {
-        let response = await axios.get('https://e-commerce-backend-geri.onrender.com/api/categories?limit=0');
+        let response = await api.get('/categories?limit=0');
         let data = response.data.data.map((cate) => ({
           name: cate.name,
           slug: cate.slug,

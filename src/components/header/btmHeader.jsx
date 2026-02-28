@@ -4,13 +4,13 @@ import { PiSignInBold, PiSignOutBold } from "react-icons/pi";
 import { MdPersonAddAlt1 } from "react-icons/md";
 import { IoMdMenu } from "react-icons/io";
 import { MdOutlineArrowDropDown } from "react-icons/md";
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import { IoPerson } from "react-icons/io5";
 import { clearCart } from '../../features/cartSlice';
 import { clearFavorites } from '../../features/favoritesSclice';
 import { logout } from '../../features/authSlice';
 import { useDispatch } from 'react-redux';
+import api from '../../api/axiosInstance';
 
 
 const navlinks = [
@@ -40,7 +40,7 @@ const BtmHeader = () => {
   useEffect(() =>{
     async function fetchAllCategories () {
       try {
-        let response = await axios.get('https://e-commerce-backend-geri.onrender.com/api/categories?limit=25');
+        let response = await api.get('/categories?limit=25');
         let data = response.data.data.map((cate) => ({
           name: cate.name,
           slug: cate.slug,

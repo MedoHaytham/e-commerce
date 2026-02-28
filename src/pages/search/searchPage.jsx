@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import PageTransition from './../../components/pageTransition';
 import TopSlide from './../../components/topSlide';
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import Product from '../../components/slideProducts/product';
+import SearchPageLoading from './searchPageLoading';
+import api from '../../api/axiosInstance';
 
 import './searchPage.css';
-import SearchPageLoading from './searchPageLoading';
 
 const SearchPage = () => {
 
@@ -19,7 +19,7 @@ const SearchPage = () => {
   useEffect(() => {
     async function fetchProudtsSearch() {
       try {
-        let response = await axios.get(`https://e-commerce-backend-geri.onrender.com/api/products/search?q=${query}&limit=0`);
+        let response = await api.get(`/products/search?q=${query}&limit=0`);
         let data = response.data.data.map((p) => ({
           id: p._id,
           title: p.title,

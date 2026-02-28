@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import api from '../api/axiosInstance';
 
 const initialState = {
   favoritesItems: [],
@@ -8,19 +8,9 @@ const initialState = {
   optimisticSnapshot: null,
 };
 
-const API = 'https://e-commerce-backend-geri.onrender.com/api/users';
-
 export const fetchFavorites = createAsyncThunk("favorites/fetchFavorites", async (_, thunkAPI) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(`${API}/favorites`,
-        { 
-          headers: 
-          {
-            Authorization: `Bearer ${token}` 
-          } 
-        }
-      );
+      const response = await api.get(`users/favorites`);
       return response.data.data.favoriteProducts;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -32,16 +22,7 @@ export const fetchFavorites = createAsyncThunk("favorites/fetchFavorites", async
 
 export const toggleFavorites = createAsyncThunk("favorites/toggleFavorite", async ({ productId }, thunkAPI) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(`${API}/favorites/${productId}`,
-        {},
-        { 
-          headers: 
-          {
-            Authorization: `Bearer ${token}` 
-          }
-        }
-      );
+      const response = await api.post(`users/favorites/${productId}`, {});
       return response.data.data.favoriteProducts;
     } catch (error) {
       return thunkAPI.rejectWithValue(

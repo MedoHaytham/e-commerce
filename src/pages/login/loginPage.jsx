@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Joi from 'joi-browser';
-import './loginPage.css'
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../../features/authSlice';
+import { fetchFavorites } from '../../features/favoritesSclice';
+import { fetchCart } from '../../features/cartSlice';
+import api from '../../api/axiosInstance';
+import './loginPage.css'
 
 
 const SignInPage = () => {
@@ -48,8 +50,10 @@ const SignInPage = () => {
   }
 
   const login = async () => {
-    const {data} = await axios.post('https://e-commerce-backend-geri.onrender.com/api/users/login', form);
+    const {data} = await api.post('/users/login', form);
     dispatch(setToken(data.data.token));
+    dispatch(fetchFavorites());
+    dispatch(fetchCart());
     toast.success('Login Success');
   }
 

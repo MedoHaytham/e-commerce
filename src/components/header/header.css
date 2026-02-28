@@ -508,9 +508,10 @@
   gap: 20px;
 }
 
-.btm-hedear .container .sign-reg-icon svg{
+.btm-hedear .container .sign-reg-icon svg {
   fill: var(--white_color);
   font-size: 22px;
+  cursor: pointer;
 }
 
 .menu-toggle {

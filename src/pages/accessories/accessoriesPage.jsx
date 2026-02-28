@@ -3,7 +3,7 @@ import PageTransition from '../../components/pageTransition';
 import AccessoriesPageLoading from './accessoriesPageLoading';
 import Product from '../../components/slideProducts/product';
 import { toast } from 'react-toastify';
-import axios from 'axios';
+import api from '../../api/axiosInstance';
 import TopSlide from '../../components/topSlide';
 
 import './accessoriesPage.css';
@@ -18,13 +18,13 @@ const AccessoriesPage = () => {
   useEffect(() => {
     async function fetchAccessories() {
       try {
-        let response = await axios.get('https://e-commerce-backend-geri.onrender.com/api/categories?limit=0');
+        let response = await api.get('/categories?limit=0');
         let categories = response.data.data.map((c) => c.slug);
         let accessoriesCat = categories.filter((c) => c.toLowerCase().includes('accessories'));
         const allAccessories = [];
 
         for (let category of accessoriesCat) {
-          let response = await axios.get(`https://e-commerce-backend-geri.onrender.com/api/products/category/${category}`);
+          let response = await api.get(`/products/category/${category}`);
           allAccessories.push({
             category: category,
             products: response.data.data.map((p) => ({

@@ -1,8 +1,8 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { FaSearch } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import api from '../../api/axiosInstance';
 
 const SearchBox = () => {
 
@@ -20,7 +20,7 @@ const SearchBox = () => {
       }
 
       try {
-        let response = await axios.get(`https://e-commerce-backend-geri.onrender.com/api/products/search?q=${searchTerm}&limit=5`);
+        let response = await api.get(`/products/search?q=${searchTerm}&limit=5`);
         let data = response.data.data.map((p) => ({
           id: p._id,
           title: p.title,

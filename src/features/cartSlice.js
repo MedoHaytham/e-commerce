@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import api from "../api/axiosInstance";
+
 
 const initialState = {
   cartItems: [],
@@ -10,14 +11,9 @@ const initialState = {
   updatingById: {},
 };
 
-const API = "https://e-commerce-backend-geri.onrender.com/api/users";
-
 export const fetchCart = createAsyncThunk("cart/fetchCart", async (_, thunkAPI) => {
   try {
-    const token = localStorage.getItem("token");
-    const response = await axios.get(`${API}/cart`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await api.get(`users/cart`);
     return response.data.data.inCartProducts;
   } catch (error) {
     return thunkAPI.rejectWithValue(error?.response?.data || { message: error.message });
@@ -26,13 +22,7 @@ export const fetchCart = createAsyncThunk("cart/fetchCart", async (_, thunkAPI) 
 
 export const addToCart = createAsyncThunk('cart/addToCart', async ({ productId }, thunkAPI) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.post(`${API}/cart/${productId}`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await api.post(`users/cart/${productId}`, {});
       return response.data.data.inCartProducts;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -44,10 +34,7 @@ export const addToCart = createAsyncThunk('cart/addToCart', async ({ productId }
 
 export const removeFromCart = createAsyncThunk("cart/removeFromCart", async (productId, thunkAPI) => {
   try {
-    const token = localStorage.getItem("token");
-    const response = await axios.delete(`${API}/cart/${productId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await api.delete(`users/cart/${productId}`);
     return response.data.data.inCartProducts;
   } catch (error) {
     return thunkAPI.rejectWithValue(error?.response?.data || { message: error.message });
@@ -56,10 +43,7 @@ export const removeFromCart = createAsyncThunk("cart/removeFromCart", async (pro
 
 export const increaseQuantity = createAsyncThunk("cart/increaseQuantity", async (productId, thunkAPI) => {
   try {
-    const token = localStorage.getItem("token");
-    const response = await axios.patch(`${API}/cart/${productId}/increase`, {}, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await api.patch(`users/cart/${productId}/increase`, {});
     return response.data.data.inCartProducts;
   } catch (error) {
     return thunkAPI.rejectWithValue(error?.response?.data || { message: error.message });
@@ -68,10 +52,7 @@ export const increaseQuantity = createAsyncThunk("cart/increaseQuantity", async 
 
 export const decreaseQuantity = createAsyncThunk("cart/decreaseQuantity", async (productId, thunkAPI) => {
   try {
-    const token = localStorage.getItem("token");
-    const response = await axios.patch(`${API}/cart/${productId}/decrease`, {}, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await api.patch(`users/cart/${productId}/decrease`, {});
     return response.data.data.inCartProducts;
   } catch (error) {
     return thunkAPI.rejectWithValue(error?.response?.data || { message: error.message });

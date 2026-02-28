@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -7,6 +6,7 @@ import Product from '../../components/slideProducts/product';
 import './categoryPage.css';
 import CategoryPageLoading from './catePageLoading';
 import PageTransition from '../../components/pageTransition';
+import api from '../../api/axiosInstance';
 
 const CategoryPage = () => {
   
@@ -17,7 +17,7 @@ const CategoryPage = () => {
   useEffect(()=> {
     async function fetchProducts() {
       try {
-        let response = await axios.get(`https://e-commerce-backend-geri.onrender.com/api/products/category/${slug}`);
+        let response = await api.get(`/products/category/${slug}`);
         let data = response.data.data.map((p) => ({
           id: p._id,
           title: p.title,

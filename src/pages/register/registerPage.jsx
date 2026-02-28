@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Joi from 'joi-browser';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { toast } from 'react-toastify';
+import api from '../../api/axiosInstance';
 
 import './registerPage.css';
 
@@ -53,7 +53,7 @@ const RegisterPage = () => {
   }
   
   async function register() {
-    await axios.post('https://e-commerce-backend-geri.onrender.com/api/users/register', form);
+    await api.post('/users/register', form);
     toast.success('Register Success');
   }
 

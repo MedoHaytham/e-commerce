@@ -1,14 +1,14 @@
-import axios from 'axios';
 import React, { useEffect , useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import './productPage.css';
 import SlideProducts from '../../components/slideProducts/slideProducts';
 import ProductLoading from './productLoading';
 import ProductImages from './productImages';
 import ProductInfo from './productInfo';
 import SlideProductsLoading from '../../components/slideProducts/slideProductsLoading';
 import PageTransition from '../../components/pageTransition';
+import api from '../../api/axiosInstance';
+import './productPage.css';
 
 const ProductPage = () => {
 
@@ -22,7 +22,7 @@ const ProductPage = () => {
       setLoading(true);
       setProduct(null);
       try {
-        let response = await axios.get(`https://e-commerce-backend-geri.onrender.com/api/products/${id}`);
+        let response = await api.get(`/products/${id}`);
         setProduct(response.data.data);
         setActiveImg(response.data.data.images[0] || '');
       } catch (error) {
