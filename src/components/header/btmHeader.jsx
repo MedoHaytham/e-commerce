@@ -30,7 +30,6 @@ const BtmHeader = () => {
   const navigate = useNavigate();
 
   const { isAuthenticated, authChecked } = useSelector((state) => state.auth);
-  console.log(isAuthenticated);
 
   const handleLogout =  async () => {
     try {
