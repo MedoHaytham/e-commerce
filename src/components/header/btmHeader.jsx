@@ -28,8 +28,9 @@ const BtmHeader = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [me, setMe] = useState(null);
 
-  const { isAuthenticated, authChecked } = useSelector((state) => state.auth);
+  const { isAuthenticated, authChecked, user } = useSelector((state) => state.auth);
 
   const handleLogout =  async () => {
     try {
@@ -63,6 +64,22 @@ const BtmHeader = () => {
     fetchAllCategories();
   },[]);
 
+  useEffect(() => {
+    async function fetchMe() {
+      try {
+        const response = await api.get(`/users/${user.id}`);
+        setMe(response.data.data);
+      } catch (error) {
+        toast.error('Error on Fetch Me');
+      }
+    }
+
+    if (!authChecked || !isAuthenticated || !user?.id) return;
+    fetchMe();
+  }, [authChecked, isAuthenticated, user?.id]);
+
+  console.log(me);
+
   return ( 
     <div className='btm-hedear'>
       <div className="container">
@@ -92,7 +109,7 @@ const BtmHeader = () => {
         {
           !authChecked ? null : isAuthenticated ? (
             <div className="sign-reg-icon">
-              <NavLink to= '/#'><IoPerson /></NavLink>
+              <NavLink to= '/#'><IoPerson /> <span>{me?.username}</span></NavLink>
               <PiSignOutBold onClick={handleLogout} />
             </div>
           ) : (

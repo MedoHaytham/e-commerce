@@ -507,6 +507,12 @@
   display: flex;
   gap: 20px;
 }
+.btm-hedear .container .sign-reg-icon span{
+  color: var(--white_color);
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
 
 .btm-hedear .container .sign-reg-icon svg {
   fill: var(--white_color);
