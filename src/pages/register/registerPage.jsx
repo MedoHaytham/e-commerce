@@ -5,10 +5,12 @@ import { toast } from 'react-toastify';
 import api from '../../api/axiosInstance';
 
 import './registerPage.css';
+import { useSelector } from 'react-redux';
 
 const RegisterPage = () => {
 
   const navigate = useNavigate();
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const [form, setForm] = useState({
     username: '',
@@ -53,7 +55,7 @@ const RegisterPage = () => {
   }
   
   async function register() {
-    await api.post('/users/register', form);
+    await api.post('/auth/register', form);
     toast.success('Register Success');
   }
 
@@ -72,10 +74,10 @@ const RegisterPage = () => {
   }
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (isAuthenticated) {
       navigate('/', { replace: true });
     }
-  }, [navigate]);
+  }, [isAuthenticated, navigate]);
 
 
   return ( 

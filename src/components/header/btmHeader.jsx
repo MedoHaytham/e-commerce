@@ -9,7 +9,7 @@ import { IoPerson } from "react-icons/io5";
 import { clearCart } from '../../features/cartSlice';
 import { clearFavorites } from '../../features/favoritesSclice';
 import { logout } from '../../features/authSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import api from '../../api/axiosInstance';
 
 
@@ -29,11 +29,22 @@ const BtmHeader = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogout  = () => {
-    dispatch(logout());
-    dispatch(clearCart());
-    dispatch(clearFavorites());
-    navigate("/signIn", { replace: true });
+  const { isAuthenticated, authChecked } = useSelector((state) => state.auth);
+  console.log(isAuthenticated);
+
+  const handleLogout =  async () => {
+    try {
+      await api.post('/auth/logout');
+      toast.success('Logout Success');
+    } catch (error) {
+      const msg = error?.response?.data?.message || error?.message || "Logout Failed";
+      toast.error(msg);
+    } finally {
+      dispatch(logout());
+      dispatch(clearCart());
+      dispatch(clearFavorites());
+      navigate("/signIn", { replace: true });
+    }
   };
 
 
@@ -80,7 +91,7 @@ const BtmHeader = () => {
           </ul>
         </div>
         {
-          localStorage.getItem('token') ? (
+          !authChecked ? null : isAuthenticated ? (
             <div className="sign-reg-icon">
               <NavLink to= '/#'><IoPerson /></NavLink>
               <PiSignOutBold onClick={handleLogout} />

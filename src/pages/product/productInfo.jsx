@@ -16,6 +16,7 @@ const ProductInfo = ({product}) => {
   const dispatch = useDispatch();
   const favItems = useSelector((state) => state.favorites.favoritesItems);
   const navigate = useNavigate();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const inCart = cartItems.some((cartItem) => (cartItem.product._id || cartItem.product.id) === product?.id);
   const inFav = favItems.some((favItem) => (favItem._id  || favItem.id) === product?.id); 
@@ -49,6 +50,10 @@ const ProductInfo = ({product}) => {
 
   const handleAddToCart = () => {
     // addToCart(product);
+    if(!isAuthenticated) {
+      hotToast.error('Please login first');
+      return;
+    }
     if(!product || inCart) return;
     dispatch(addToCart({ productId, product }))
     hotToast.success(
@@ -66,6 +71,10 @@ const ProductInfo = ({product}) => {
 
   const handleAddToFav = () => {
     // toggleFavorites(product);
+    if(!isAuthenticated) {
+      hotToast.error('Please login first');
+      return;
+    }
     if (!product) return;
     inFav 
     ? hotToast.error(

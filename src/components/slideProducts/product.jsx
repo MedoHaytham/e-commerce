@@ -14,6 +14,7 @@ const Product = ({ item }) => {
   const dispatch = useDispatch();
   const favItems = useSelector((state) => state.favorites.favoritesItems);
   const navigate = useNavigate();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
 
   const inCart = cartItems.some((cartItem) => (cartItem.product._id || cartItem.product.id) === productId);
@@ -48,7 +49,7 @@ const Product = ({ item }) => {
 
   const handleAddToCart = () => {
     // addToCart(item);
-    if(!localStorage.getItem('token')) {
+    if(!isAuthenticated) {
       toast.error('Please login first');
       return;
     }
@@ -69,7 +70,7 @@ const Product = ({ item }) => {
 
   const handleAddToFav = () => {
     // toggleFavorites(item);
-    if(!localStorage.getItem('token')) {
+    if(!isAuthenticated) {
       toast.error('Please login first');
       return;
     }

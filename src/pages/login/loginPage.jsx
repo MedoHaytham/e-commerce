@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Joi from 'joi-browser';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
-import { setToken } from '../../features/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCredentials } from '../../features/authSlice';
 import { fetchFavorites } from '../../features/favoritesSclice';
 import { fetchCart } from '../../features/cartSlice';
 import api from '../../api/axiosInstance';
@@ -14,6 +14,7 @@ const SignInPage = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const [form, setForm] = useState({
     email: '',
@@ -50,10 +51,12 @@ const SignInPage = () => {
   }
 
   const login = async () => {
-    const {data} = await api.post('/users/login', form);
-    dispatch(setToken(data.data.token));
-    dispatch(fetchFavorites());
-    dispatch(fetchCart());
+    const {data} = await api.post('/auth/login', form);
+    dispatch(setCredentials(data.data));
+    await Promise.all([
+      dispatch(fetchFavorites()),
+      dispatch(fetchCart()),
+    ]);
     toast.success('Login Success');
   }
 
@@ -64,6 +67,7 @@ const SignInPage = () => {
 
     if(errors) return;
     try {
+      setErrorLogin('');
       await login();
       navigate('/', {replace: true});
     } catch(error) {
@@ -73,10 +77,10 @@ const SignInPage = () => {
   }
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (isAuthenticated) {
       navigate('/', { replace: true });
     }
-  }, [navigate]);
+  }, [isAuthenticated, navigate]);
 
   return ( 
     <div className='login'>

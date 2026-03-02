@@ -20,18 +20,34 @@ import { AnimatePresence } from "framer-motion";
 import { fetchFavorites } from "./features/favoritesSclice";
 import { useDispatch } from "react-redux";
 import { fetchCart } from "./features/cartSlice";
+import { useSelector } from "react-redux";
+import { logout, setCredentials } from "./features/authSlice";
+import api from "./api/axiosInstance";
 
 const App = () => {
 
   const dispatch = useDispatch();
+  const {isAuthenticated} = useSelector((state) => state.auth);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
+    const bootstrapAuth = async () => {
+      try {
+        const res = await api.get("/auth/refresh");
+        
+        dispatch(setCredentials(res.data.data));
+      } catch {
+        dispatch(logout());
+      }
+    };
+    bootstrapAuth();
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
       dispatch(fetchFavorites());
       dispatch(fetchCart());
     }
-  }, [dispatch]);
+  }, [isAuthenticated, dispatch]);
 
 
   return (

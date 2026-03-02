@@ -17,6 +17,8 @@ const CategoryPage = () => {
   useEffect(()=> {
     async function fetchProducts() {
       try {
+        setLoading(true);
+        setProducts([]);
         let response = await api.get(`/products/category/${slug}`);
         let data = response.data.data.map((p) => ({
           id: p._id,
