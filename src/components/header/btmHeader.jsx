@@ -5,12 +5,15 @@ import { MdPersonAddAlt1 } from "react-icons/md";
 import { IoMdMenu } from "react-icons/io";
 import { MdOutlineArrowDropDown } from "react-icons/md";
 import { toast } from 'react-toastify';
-import { IoPerson } from "react-icons/io5";
 import { clearCart } from '../../features/cartSlice';
 import { clearFavorites } from '../../features/favoritesSclice';
 import { logout } from '../../features/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import api from '../../api/axiosInstance';
+import { RiAccountCircleFill } from "react-icons/ri";
+import { IoIosPaper } from "react-icons/io";
+
+
 
 
 const navlinks = [
@@ -23,6 +26,7 @@ const BtmHeader = () => {
 
   const [categories, setCategories] = useState([]);
   const [active, setActive] = useState(false);
+  const [userActive, setUserActive] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -78,8 +82,6 @@ const BtmHeader = () => {
     fetchMe();
   }, [authChecked, isAuthenticated, user?.id]);
 
-  console.log(me);
-
   return ( 
     <div className='btm-hedear'>
       <div className="container">
@@ -108,12 +110,28 @@ const BtmHeader = () => {
         </div>
         {
           !authChecked ? null : isAuthenticated ? (
-            <div className="sign-reg-icon">
-              <NavLink to= '/#'><IoPerson /> <span>{me?.username}</span></NavLink>
-              <PiSignOutBold onClick={handleLogout} />
+            <div className="sign-icon">
+              <div className="user-info-btn" onClick={() => setUserActive((prev) => !prev)}>
+                <span>Hi, {me?.firstName}</span>
+                <MdOutlineArrowDropDown />
+              </div>
+              <div className={`${userActive ?  'user-active': ''} user-info-list`}>
+                <NavLink className='link' onClick={() => setUserActive(false)} to='/profile'>
+                  <RiAccountCircleFill />
+                  Profile
+                </NavLink>
+                <NavLink className='link' onClick={() => setUserActive(false)} to='/orders'>
+                  <IoIosPaper />
+                  My Orders
+                </NavLink>
+                <NavLink className='link' onClick={() => {handleLogout(); setUserActive(false)}}>
+                  <PiSignOutBold />
+                  Logout
+                </NavLink>
+              </div>
             </div>
           ) : (
-            <div className="sign-reg-icon">
+            <div className="reg-icon">
               <NavLink to= '/signIn'><PiSignInBold /></NavLink>
               <NavLink to= '/register'><MdPersonAddAlt1 /></NavLink>
             </div>

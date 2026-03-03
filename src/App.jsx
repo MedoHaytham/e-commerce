@@ -22,6 +22,8 @@ import { useDispatch } from "react-redux";
 import { fetchCart } from "./features/cartSlice";
 import { logout, setCredentials } from "./features/authSlice";
 import api from "./api/axiosInstance";
+import OrdersPage from "./pages/orders/ordersPage";
+import ProfilePage from "./pages/account/profilePage";
 
 const App = () => {
 
@@ -71,6 +73,8 @@ const App = () => {
               <Route path="/product/:id" element={<ProductPage />} />
               <Route path="/signIn" element={<SignInPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/orders" element={<OrdersPage />} />
               <Route path="*" element={<ErrorPage />} />
             </Route>
           </Routes>

@@ -7,13 +7,43 @@ import api from '../../api/axiosInstance';
 import './registerPage.css';
 import { useSelector } from 'react-redux';
 
+const countries = [
+  {value: 'egypt', label: 'Egypt'},
+  {value: 'saudi arabia', label: 'Saudi Arabia'},
+  {value: 'emirates', label: 'Emirates'},
+  {value: 'qatar', label: 'Qatar'},
+  {value: 'american', label: 'American'},
+  {value: 'british', label: 'British'},
+  {value: 'yemen', label: 'Yemen'},
+  {value: 'syria', label: 'Syria'},
+  {value: 'lebanon', label: 'Lebanon'},
+  {value: 'jordan', label: 'Jordan'},
+  {value: 'palestine', label: 'Palestine'},
+  {value: 'iraq', label: 'Iraq'},
+  {value: 'morocco', label: 'Morocco'},
+  {value: 'algeria', label: 'Algeria'},
+  {value: 'tunisia', label: 'Tunisia'},
+  {value: 'libya', label: 'Libya'},
+  {value: 'sudan', label: 'Sudan'},
+  {value: 'somalia', label: 'Somalia'},
+  {value: 'djibouti', label: 'Djibouti'},
+  {value: 'comoros', label: 'Comoros'},
+  {value: 'other', label: 'Other'}
+];
+
+
 const RegisterPage = () => {
 
   const navigate = useNavigate();
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   const [form, setForm] = useState({
-    username: '',
+    firstName: '',
+    lastName: '',
+    phone: '',
+    country: '',
+    birthDate: '',
+    gender: '',
     email:'',
     password: '',
     confirmPassword: '',
@@ -28,7 +58,12 @@ const RegisterPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
   const schema = {
-    username: Joi.string().required(),
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
+    phone: Joi.string().required(),
+    country: Joi.string().required(),
+    birthDate: Joi.string().required(),
+    gender: Joi.string().required(),
     email: Joi.string().required(),
     password: Joi.string().required(),
     confirmPassword: Joi.any()
@@ -85,10 +120,36 @@ const RegisterPage = () => {
       <main className='container'>
         <h1>Register</h1>
         <form onSubmit={submitHadnler}>
-          <div className="mb-3">
-            <label htmlFor="inputUsername" className="form-label">Username<span className='mandatory'>*</span></label>
-            <input onChange={onChangeHandler} name='username' value={form.username} id="inputUsername" type="text" className="form-control" />
-            {errors.username && <div className='alert alert-danger mt-2' >{errors.username}</div>}
+          <div className='row'>
+            <div className="mb-3 col-6">
+              <label htmlFor="inputFirstName" className="form-label">First Name<span className='mandatory'>*</span></label>
+              <input onChange={onChangeHandler} name='firstName' value={form.firstName} id="inputFirstName" type="text" className="form-control" />
+              {errors.firstName && <div className='alert alert-danger mt-2' >{errors.firstName}</div>}
+            </div>
+            <div className="mb-3 col-6">
+              <label htmlFor="inputLastName" className="form-label">Last Name<span className='mandatory'>*</span></label>
+              <input onChange={onChangeHandler} name='lastName' value={form.lastName} id="inputLastName" type="text" className="form-control" />
+              {errors.lastName && <div className='alert alert-danger mt-2' >{errors.lastName}</div>}
+            </div>
+          </div>
+          <div className='row'>
+            <div className="mb-3 col-6">
+              <label htmlFor="inputPhone" className="form-label">Phone Number<span className='mandatory'>*</span></label>
+              <input onChange={onChangeHandler} name='phone' value={form.phone} id="inputPhone" type="tel" className="form-control" />
+              {errors.phone && <div className='alert alert-danger mt-2' >{errors.phone}</div>}
+            </div>
+            <div className="mb-3 col-6">
+              <label htmlFor="inputCountry" className="form-label">Country<span className='mandatory'>*</span></label>
+              <select onChange={onChangeHandler} name='country' value={form.country} id="inputCountry" className="form-select">
+                <option value="">Select Country</option>
+                {countries.map((country) => (
+                  <option key={country.value} value={country.value}>
+                    {country.label}
+                  </option>
+                ))}
+              </select>
+              {errors.country && <div className='alert alert-danger mt-2' >{errors.country}</div>}
+            </div>
           </div>
           <div className="mb-3">
             <label htmlFor="inputEmail" className="form-label">Email address<span className='mandatory'>*</span></label>
@@ -123,12 +184,24 @@ const RegisterPage = () => {
             </div> 
             {errors.confirmPassword && <div className='alert alert-danger mt-2' >{errors.confirmPassword}</div>}
           </div>
-          <div className="mb-3 form-check">
-            <input type="checkbox" className="form-check-input" id="check" />
-            <label className="form-check-label" htmlFor="check">Check me out</label>
+          <div className='row'>
+            <div className="mb-3 col-6">
+              <label htmlFor="inputBirthday" className="form-label">Birthday<span className='mandatory'>*</span></label>
+              <input onChange={onChangeHandler} name='birthDate' value={form.birthDate} id="inputBirthday" type="date" className="form-control" />
+              {errors.birthDate && <div className='alert alert-danger mt-2' >{errors.birthDate}</div>}
+            </div>
+            <div className="mb-3 col-6">
+              <label htmlFor="inputGender" className="form-label">Gender<span className='mandatory'>*</span></label>
+              <select onChange={onChangeHandler} name='gender' value={form.gender} id="inputGender" className="form-select">
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+              {errors.gender && <div className='alert alert-danger mt-2' >{errors.gender}</div>}
+            </div>
           </div>
-          <button type="submit" className="btn btn-primary">Submit</button>
-          <div className='login'>
+          <button type="submit" className="btn btn-primary mt-4">Submit</button>
+          <div className='login mt-3'>
             <Link to={'/signIn'}>
               Already have an Account? <span>Login</span>
             </Link>            
