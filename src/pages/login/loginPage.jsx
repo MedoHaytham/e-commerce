@@ -66,7 +66,6 @@ const SignInPage = () => {
         });
 
         navigate('/', { replace: true });
-        // window.location.reload();
       }
     } catch (error) {
       console.log(error);
@@ -98,11 +97,11 @@ const SignInPage = () => {
             </div> 
             {errors.password && <div className='alert alert-danger mt-2' >{errors.password}</div>}
           </div>
-          <div className="mb-3 form-check">
+          {/* <div className="mb-3 form-check">
             <input type="checkbox" className="form-check-input" id="check" />
             <label className="form-check-label" htmlFor="check">Check me out</label>
-          </div>
-          <button type="submit" disabled={isLoading} className="btn btn-primary">
+          </div> */}
+          <button type="submit" disabled={isLoading} className="btn btn-primary mt-4">
             {isLoading ? <LoadingCircle /> : 'Submit'}
           </button>
           <div className='register'>

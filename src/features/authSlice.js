@@ -29,5 +29,4 @@ export const {
   useRegisterMutation,
   useLoginMutation,
   useLogoutMutation,
-  useDeleteAccountMutation,
 } = authSlice;

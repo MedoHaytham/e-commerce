@@ -19,13 +19,20 @@ import { AnimatePresence } from "framer-motion";
 import OrdersPage from "./pages/orders/ordersPage";
 import ProfilePage from "./pages/profile/profilePage";
 import PasswordPage from "./pages/profile/passwordPage";
-import Cookies from "js-cookie";
 import AddressesPage from "./pages/profile/addressesPage";
 import PaymentsPage from "./pages/profile/paymentsPage";
+import { useGetMeQuery } from "./features/userSlice";
+import LoadingCircle from "./components/loadingCircle/loadingCircle";
 
 const App = () => {
 
-  const isAuthenticated = Cookies.get('accessToken');
+  const { data: meData, isLoading } = useGetMeQuery();
+  
+  const isAuthenticated = !!meData?.data;
+
+  if (isLoading) {
+    return <div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}><LoadingCircle /></div>;
+  }
 
   return (
     <>

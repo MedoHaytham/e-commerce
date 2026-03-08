@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Joi from 'joi-browser';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-// import api from '../../api/axiosInstance';
 import Cookies from 'js-cookie';
 
 import './registerPage.css';
@@ -115,7 +114,7 @@ const RegisterPage = () => {
           password: '',
           confirmPassword: '',
         });
-        navigate('/signIn');
+        navigate('/');
         toast.success('Register Success');
       } 
     } catch(error) {

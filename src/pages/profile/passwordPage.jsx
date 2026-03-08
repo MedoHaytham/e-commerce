@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { useLogoutMutation } from '../../features/authSlice';
 import { useGetMeQuery, useUpdatePasswordMutation, useDeleteAccountMutation } from '../../features/userSlice';
+import { useDispatch } from 'react-redux';
+import apiSlice from '../../app/api/apiSlice';
 
 const PasswordPage = () => {
 
@@ -25,6 +27,7 @@ const PasswordPage = () => {
 
   const { data: me } = useGetMeQuery();
   const [updatePassword] = useUpdatePasswordMutation();
+  const dispatch = useDispatch();
 
 
   useEffect(() => {
@@ -74,9 +77,9 @@ const handleDeleteAccount = async () => {
     await deleteAccount().unwrap();
     await logout().unwrap();
     Cookies.remove("accessToken");
+    dispatch(apiSlice.util.resetApiState());
     toast.success("Account deleted successfully");
     navigate("/signIn", { replace: true });
-    // window.location.reload();
   } catch (error) {
     const msg =
       error?.response?.data?.message ||

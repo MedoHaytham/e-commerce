@@ -12,6 +12,8 @@ import Cookies from 'js-cookie';
 import { useLogoutMutation } from '../../features/authSlice';
 import { User, MapPin, CreditCard, Shield } from "lucide-react";
 import { useGetMeQuery } from '../../features/userSlice';
+import { useDispatch } from 'react-redux';
+import apiSlice from '../../app/api/apiSlice';
 
 const navlinks = [
   {title: 'Home' , link: '/'},
@@ -57,14 +59,14 @@ const BtmHeader = () => {
   const isAuthenticated = Cookies.get('accessToken') ? true : false;
 
   const [logout] = useLogoutMutation();
-
+  const dispatch = useDispatch();
 
   const handleLogout =  async () => {
     try {
       await logout().unwrap();
       Cookies.remove('accessToken', { path: "/" });
+      dispatch(apiSlice.util.resetApiState());
       toast.success('Logout successful');
-      // window.location.reload();
     } catch (error) {
       toast.error('Error on Logout');
     }
