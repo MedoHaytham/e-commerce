@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { PiSignInBold, PiSignOutBold } from "react-icons/pi";
 import { MdPersonAddAlt1 } from "react-icons/md";
 import { IoMdMenu } from "react-icons/io";
@@ -11,6 +11,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useLogoutMutation } from '../../features/authSlice';
 import { User, MapPin, CreditCard, Shield } from "lucide-react";
+import { useGetMeQuery } from '../../features/userSlice';
 
 const navlinks = [
   {title: 'Home' , link: '/'},
@@ -26,6 +27,12 @@ const accountItems = [
 ];
 
 const BtmHeader = () => {
+
+  const { data: meData, isLoading } = useGetMeQuery();
+  
+  const me = meData?.data;
+  
+  
 
   const location = useLocation();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -46,10 +53,7 @@ const BtmHeader = () => {
   const [active, setActive] = useState(false);
   const [userActive, setUserActive] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const navigate = useNavigate();
   
-
-  const [me, setMe] = useState(null);
   const isAuthenticated = Cookies.get('accessToken') ? true : false;
 
   const [logout] = useLogoutMutation();
@@ -82,30 +86,6 @@ const BtmHeader = () => {
     }
     fetchAllCategories();
   },[]);
-  
-  
-
-  useEffect(() => {
-    async function fetchMe() {
-      try {
-        const response = await axios.get('https://e-commerce-backend-geri.onrender.com/api/users/me', {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('accessToken')}`,
-          },
-        });
-        setMe(response.data.data);
-      } catch (error) {
-        Cookies.remove('accessToken', { path: "/" });
-        setMe(null);
-        navigate('/signIn', { replace: true });
-        toast.error(error?.response?.data?.message || 'Error on Fetch Me');
-      }
-    }
-
-    if (!isAuthenticated) return;
-    fetchMe();
-  }, [isAuthenticated, navigate]);
-
 
   return ( 
     <div className='btm-hedear'>
@@ -154,7 +134,7 @@ const BtmHeader = () => {
           isAuthenticated ? (
             <div className="sign-icon">
               <div className="user-info-btn" onClick={() => setUserActive((prev) => !prev)}>
-                <span>Hi, {me?.firstName}</span>
+                { isLoading ? '' : <span>Hi, {me?.firstName}</span> }
                 <MdOutlineArrowDropDown />
               </div>
               <div className={`${userActive ?  'user-active': ''} user-info-list`}>

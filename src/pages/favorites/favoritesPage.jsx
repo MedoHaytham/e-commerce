@@ -2,7 +2,7 @@ import PageTransition from "../../components/pageTransition";
 import TopSlide from "../../components/topSlide";
 import Product from "../../components/slideProducts/product";
 import FavPageLoading from "./favPageLoading";
-import { useFetchFavoritesQuery } from "../../features/favoritesSclice";
+import { useFetchFavoritesQuery } from "../../features/favoritesSlice";
 
 import './favoritesPage.css';
 

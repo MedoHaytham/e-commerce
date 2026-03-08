@@ -1,9 +1,7 @@
 import Sidebar from '../../components/sidebar';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import { useGetMeQuery } from '../../features/userSlice';
 
 const AddressesPage = () => {
 
@@ -12,20 +10,15 @@ const AddressesPage = () => {
   const [email, setEmail] = useState("");
   const [activeTab, setActiveTab] = useState("Addresses");
 
-  const navigate = useNavigate();
+  const { data: me } = useGetMeQuery();
 
   useEffect(() => {
 
     async function fetchMe() {
       try {
-        const res = await axios.get('https://e-commerce-backend-geri.onrender.com/api/users/me', {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('accessToken')}`,
-          },
-        }); 
-        setFirstName(res.data.data.firstName || "");
-        setLastName(res.data.data.lastName || "");
-        setEmail(res.data.data.email || "");
+        setFirstName(me.data.firstName || "");
+        setLastName(me.data.lastName || "");
+        setEmail(me.data.email || "");
       } catch (error) {
         const msg =
           error?.response?.data?.message ||
@@ -36,7 +29,7 @@ const AddressesPage = () => {
       }
     }
     fetchMe();
-  }, [navigate]);
+  }, [me]);
 
 
 

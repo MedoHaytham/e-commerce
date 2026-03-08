@@ -4,7 +4,7 @@ import { TiShoppingCart } from "react-icons/ti";
 import { useNavigate } from 'react-router-dom';
 import hotToast from 'react-hot-toast';
 import { useAddToCartMutation, useFetchCartQuery } from '../../features/cartSlice';
-import { useFetchFavoritesQuery, useToggleFavoritesMutation } from '../../features/favoritesSclice';
+import { useFetchFavoritesQuery, useToggleFavoritesMutation } from '../../features/favoritesSlice';
 import Cookies from 'js-cookie';
 
 

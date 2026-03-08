@@ -5,7 +5,7 @@ import { TiShoppingCart } from "react-icons/ti";
 import './header.css';
 import SearchBox from './searchBox';
 import { useFetchCartQuery } from '../../features/cartSlice';
-import { useFetchFavoritesQuery } from '../../features/favoritesSclice';
+import { useFetchFavoritesQuery } from '../../features/favoritesSlice';
 
 
 const TopHeader = () => {

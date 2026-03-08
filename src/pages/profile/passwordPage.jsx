@@ -1,10 +1,10 @@
 import Sidebar from '../../components/sidebar';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { useDeleteAccountMutation, useLogoutMutation } from '../../features/authSlice';
+import { useGetMeQuery, useUpdatePasswordMutation } from '../../features/userSlice';
 
 const PasswordPage = () => {
 
@@ -23,18 +23,17 @@ const PasswordPage = () => {
   const [deleteAccount] = useDeleteAccountMutation();
   const [logout] = useLogoutMutation();
 
+  const { data: me } = useGetMeQuery();
+  const [updatePassword] = useUpdatePasswordMutation();
+
+
   useEffect(() => {
 
     async function fetchMe() {
       try {
-        const res = await axios.get('https://e-commerce-backend-geri.onrender.com/api/users/me', {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('accessToken')}`,
-          },
-        }); 
-        setFirstName(res.data.data.firstName || "");
-        setLastName(res.data.data.lastName || "");
-        setEmail(res.data.data.email || "");
+        setFirstName(me?.data?.firstName || "");
+        setLastName(me?.data?.lastName || "");
+        setEmail(me?.data?.email || "");
       } catch (error) {
         const msg =
           error?.response?.data?.message ||
@@ -45,19 +44,15 @@ const PasswordPage = () => {
       }
     }
     fetchMe();
-  }, [navigate]);
+  }, [me]);
 
   const handleUpdatePassword = async () => {
     try {
-      const res = await axios.patch('https://e-commerce-backend-geri.onrender.com/api/users/me/password',  {
+      const res = await updatePassword({
         currentPassword,
         newPassword,
-      }, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('accessToken')}`,
-        },
-      });
-      toast.success(res.data.message);
+      }).unwrap();
+      toast.success(res.message);
       setCurrentPassword("");
       setNewPassword("");
     } catch (error) {

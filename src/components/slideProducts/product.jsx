@@ -3,7 +3,7 @@ import { FaStar, FaRegHeart, FaCartArrowDown, FaShare, FaRegStar, FaStarHalfAlt,
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useAddToCartMutation, useFetchCartQuery } from '../../features/cartSlice';
-import { useFetchFavoritesQuery, useToggleFavoritesMutation } from '../../features/favoritesSclice';
+import { useFetchFavoritesQuery, useToggleFavoritesMutation } from '../../features/favoritesSlice';
 import Cookies from 'js-cookie';
 
 const Product = ({ item }) => {

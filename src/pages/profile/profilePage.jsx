@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import './profilePage.css'
 import Sidebar from '../../components/sidebar';
-import { useNavigate, useLocation } from 'react-router-dom';
-// import api from '../../api/axiosInstance';
-import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
+import { useGetMeQuery, useUpdateMeMutation } from '../../features/userSlice';
 
 const countries = [
   {value: 'egypt', label: 'Egypt'},
@@ -35,7 +34,8 @@ const ProfilePage = () => {
   const location = useLocation();
   const me = location.state?.me || {};
   const isAuthenticated = Cookies.get('accessToken') ? true : false;
-  const navigate = useNavigate();
+  const { data: meData } = useGetMeQuery();
+  const [updateMe] = useUpdateMeMutation();
 
   const toDateInput = (d) => {
     if (!d) return "";
@@ -49,18 +49,14 @@ const ProfilePage = () => {
 
     async function fetchMe() {
       try {
-        const res = await axios.get('https://e-commerce-backend-geri.onrender.com/api/users/me', {
-          headers: {
-            Authorization: `Bearer ${Cookies.get('accessToken')}`,
-          },
-        }); 
-        setFirstName(res.data.data.firstName || "");
-        setLastName(res.data.data.lastName || "");
-        setEmail(res.data.data.email || "");
-        setPhone(res.data.data.phone || "");
-        setCountry(res.data.data.country || "");
-        setBirthDate(toDateInput(res.data.data.birthDate) || "");
-        setGender(res.data.data.gender || "");
+        
+        setFirstName(meData?.data?.firstName || "");
+        setLastName(meData?.data?.lastName || "");
+        setEmail(meData?.data?.email || "");
+        setPhone(meData?.data?.phone || "");
+        setCountry(meData?.data?.country || "");
+        setBirthDate(toDateInput(meData?.data?.birthDate) || "");
+        setGender(meData?.data?.gender || "");
       } catch (error) {
         const msg =
           error?.response?.data?.message ||
@@ -71,13 +67,8 @@ const ProfilePage = () => {
       }
     }
     fetchMe();
-  }, [location.state?.me, isAuthenticated, navigate]);
+  }, [location.state?.me, isAuthenticated, meData]);
 
-  // useEffect(() => {
-  //   if (!isAuthenticated) {
-  //     navigate("/signIn", { replace: true });
-  //   }
-  // }, [isAuthenticated, navigate]);
 
   const [firstName, setFirstName] = useState(me.firstName || "");
   const [lastName, setLastName] = useState(me.lastName || "");
@@ -90,7 +81,7 @@ const ProfilePage = () => {
 
   const handleUpdate = async () => {
     try {
-      const res = await axios.patch('https://e-commerce-backend-geri.onrender.com/api/users/me', {
+      const res = await updateMe({
         firstName,
         lastName,
         email,
@@ -98,12 +89,7 @@ const ProfilePage = () => {
         country,
         birthDate,
         gender,
-      }, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('accessToken')}`,
-        },
       });
-
       setFirstName(res.data.data.firstName);
       setLastName(res.data.data.lastName);
       setEmail(res.data.data.email);
