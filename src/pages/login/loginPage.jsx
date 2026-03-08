@@ -66,10 +66,10 @@ const SignInPage = () => {
         });
 
         navigate('/', { replace: true });
-        window.location.reload();
+        // window.location.reload();
       }
-    } catch (_) {
-      
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -77,7 +77,7 @@ const SignInPage = () => {
     <div className='login'>
       <main className='container position-absolute top-50 start-50 translate-middle'>
         <h1>Login</h1>
-        {isError && error && <div className='alert alert-danger mt-2' >{error.data.message}</div>}
+        {isError && error && <div className='alert alert-danger mt-2' >{error?.data?.message}</div>}
         <form onSubmit={submitHadnler}>
           <div className="mb-3">
             <label htmlFor="inputEmail" className="form-label">Email address<span className='mandatory'>*</span></label>

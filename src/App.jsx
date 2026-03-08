@@ -55,18 +55,6 @@ const App = () => {
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/product/:id" element={<ProductPage />} />
               <Route 
-                path="/signIn" 
-                  element={
-                  isAuthenticated ? <Navigate to="/" replace/> : <SignInPage />
-                } 
-              />
-              <Route 
-                path="/register" 
-                  element={
-                  isAuthenticated ? <Navigate to="/" replace/> : <RegisterPage />
-                } 
-              />
-              <Route 
                 path="/profile" 
                   element={
                   isAuthenticated ? <ProfilePage /> : <Navigate to="/signIn" />
@@ -98,6 +86,18 @@ const App = () => {
               />
               <Route path="*" element={<ErrorPage />} />
             </Route>
+            <Route 
+                path="/signIn" 
+                  element={
+                  isAuthenticated ? <Navigate to="/" replace/> : <SignInPage />
+                } 
+              />
+              <Route 
+                path="/register" 
+                  element={
+                  isAuthenticated ? <Navigate to="/" replace/> : <RegisterPage />
+                } 
+              />
           </Routes>
         </AnimatePresence>
       </Router>

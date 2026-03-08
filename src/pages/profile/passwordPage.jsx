@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { useDeleteAccountMutation, useLogoutMutation } from '../../features/authSlice';
-import { useGetMeQuery, useUpdatePasswordMutation } from '../../features/userSlice';
+import { useLogoutMutation } from '../../features/authSlice';
+import { useGetMeQuery, useUpdatePasswordMutation, useDeleteAccountMutation } from '../../features/userSlice';
 
 const PasswordPage = () => {
 
@@ -76,7 +76,7 @@ const handleDeleteAccount = async () => {
     Cookies.remove("accessToken");
     toast.success("Account deleted successfully");
     navigate("/signIn", { replace: true });
-    window.location.reload();
+    // window.location.reload();
   } catch (error) {
     const msg =
       error?.response?.data?.message ||

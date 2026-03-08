@@ -64,7 +64,7 @@ const BtmHeader = () => {
       await logout().unwrap();
       Cookies.remove('accessToken', { path: "/" });
       toast.success('Logout successful');
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       toast.error('Error on Logout');
     }
@@ -133,10 +133,14 @@ const BtmHeader = () => {
         {
           isAuthenticated ? (
             <div className="sign-icon">
-              <div className="user-info-btn" onClick={() => setUserActive((prev) => !prev)}>
-                { isLoading ? '' : <span>Hi, {me?.firstName}</span> }
-                <MdOutlineArrowDropDown />
-              </div>
+              {
+                isLoading 
+                ? '' 
+                : <div className="user-info-btn" onClick={() => setUserActive((prev) => !prev)}>
+                    <span>Hi, {me?.firstName}</span> 
+                    <MdOutlineArrowDropDown />
+                  </div>
+              }
               <div className={`${userActive ?  'user-active': ''} user-info-list`}>
                 <NavLink className='link' onClick={() => setUserActive(false)} state={{me: me || null}} to='/profile'>
                   <RiAccountCircleFill />

@@ -22,12 +22,6 @@ export const authSlice = apiSlice.injectEndpoints({
         method: 'POST',
       })
     }),
-    deleteAccount: builder.mutation({
-      query: () => ({
-        url: '/users/me',
-        method: 'DELETE',
-      })
-    })
   })
 });
 
