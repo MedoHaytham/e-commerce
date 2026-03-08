@@ -27,6 +27,13 @@ body { background: #f1f5f9; font-family: "Poppins", sans-serif; }
   border-radius: 14px; border: 1px solid #e5e7eb;
   overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.05);
 }
+
+@media (max-width: 768px) {
+  .sidebar { 
+    display: none;
+  }
+}
+
 .sidebar__user { padding: 24px 20px 18px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; gap: 12px; }
 .sidebar__avatar {
   width: 44px; height: 44px; border-radius: 50%; background: #1d8cdc;
@@ -103,3 +110,4 @@ body { background: #f1f5f9; font-family: "Poppins", sans-serif; }
   width: 22px; height: 22px; border-radius: 50%; background: #22c55e;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
+

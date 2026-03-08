@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Joi from 'joi-browser';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { useDispatch, useSelector } from 'react-redux';
-import { setCredentials } from '../../features/authSlice';
-import { fetchFavorites } from '../../features/favoritesSclice';
-import { fetchCart } from '../../features/cartSlice';
-import api from '../../api/axiosInstance';
+import { useLoginMutation } from '../../features/authSlice';
+import Cookies from 'js-cookie';
+import LoadingCircle from '../../components/loadingCircle/loadingCircle';
+
 import './loginPage.css'
 
 
 const SignInPage = () => {
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => state.auth);
 
+  const [login, { isLoading, isError, error}] = useLoginMutation();
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -34,7 +31,6 @@ const SignInPage = () => {
   }
 
   const [errors, setErrors] = useState({});
-  const [errorsLogin, setErrorLogin] = useState('');
 
   const validate = () => {
     const {error} = Joi.validate(form, schema, {abortEarly: false});
@@ -50,43 +46,38 @@ const SignInPage = () => {
     return Object.keys(errors).length > 0 ? errors : null;
   }
 
-  const login = async () => {
-    const {data} = await api.post('/auth/login', form);
-    dispatch(setCredentials(data.data));
-    await Promise.all([
-      dispatch(fetchFavorites()),
-      dispatch(fetchCart()),
-    ]);
-    toast.success('Login Success');
-  }
 
   let submitHadnler = async (e) => {
     e.preventDefault();
-    
+
     const errors = validate();
+    if (errors) return;
 
-    if(errors) return;
     try {
-      setErrorLogin('');
-      await login();
-      navigate('/', {replace: true});
-    } catch(error) {
-      const msg = error?.response?.data?.message || error?.message || 'Login Failed';
-      setErrorLogin(msg);
-    }
-  }
+      const data = await login(form).unwrap();
+      const accessToken = data?.data?.accessToken;
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/', { replace: true });
+      if (accessToken) {
+        Cookies.set('accessToken', accessToken, { path: "/" });
+
+        setForm({
+          email: '',
+          password: '',
+        });
+
+        navigate('/', { replace: true });
+        window.location.reload();
+      }
+    } catch (_) {
+      
     }
-  }, [isAuthenticated, navigate]);
+  };
 
   return ( 
     <div className='login'>
       <main className='container position-absolute top-50 start-50 translate-middle'>
         <h1>Login</h1>
-        {errorsLogin && <div className='alert alert-danger mt-2' >{errorsLogin}</div>}
+        {isError && error && <div className='alert alert-danger mt-2' >{error.data.message}</div>}
         <form onSubmit={submitHadnler}>
           <div className="mb-3">
             <label htmlFor="inputEmail" className="form-label">Email address<span className='mandatory'>*</span></label>
@@ -111,7 +102,9 @@ const SignInPage = () => {
             <input type="checkbox" className="form-check-input" id="check" />
             <label className="form-check-label" htmlFor="check">Check me out</label>
           </div>
-          <button type="submit" className="btn btn-primary">Submit</button>
+          <button type="submit" disabled={isLoading} className="btn btn-primary">
+            {isLoading ? <LoadingCircle /> : 'Submit'}
+          </button>
           <div className='register'>
             <Link to={'/register'}>
               Don't have an Account? <span>Register</span>

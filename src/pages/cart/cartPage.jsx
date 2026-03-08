@@ -2,13 +2,15 @@ import './cartPage.css';
 import CartItem from '../../components/cartItem';
 import PageTransition from '../../components/pageTransition';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import CartPageLoading from './cartPageLoading';
+import { useFetchCartQuery } from '../../features/cartSlice';
 
 
 const CartPage = () => {
 
-  const { cartItems, isLoading } = useSelector((state) => state.cart);
+  // const { cartItems, isLoading } = useSelector((state) => state.cart);
+  const { data: cartData, isLoading } = useFetchCartQuery();
+  const cartItems = cartData?.data?.inCartProducts || [];
   let totalCost = cartItems.reduce((acc, curent) => (acc + curent.product.price * curent.quantity), 0)
   const navigate = useNavigate();
 

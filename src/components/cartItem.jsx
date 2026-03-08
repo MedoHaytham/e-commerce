@@ -1,22 +1,22 @@
 import { FaTrashAlt } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
-import { decreaseQuantity, increaseQuantity, removeFromCart } from "../features/cartSlice";
 import LoadingCircle from "./loadingCircle/loadingCircle";
+import { useDecreaseQuantityMutation, useIncreaseQuantityMutation, useRemoveFromCartMutation } from "../features/cartSlice";
 
 
 const CartItem = ({item}) => {
 
-  const { removingById, updatingById } = useSelector((state) => state.cart);
-  const dispatch = useDispatch();
   const product = item.product;
   const productId = product?._id || product?.id;
   const quantity = item.quantity;
 
-  const isRemoving = !!removingById?.[productId];
-  const isUpdating = !!updatingById?.[productId];
+  const [increaseQuantity, { isLoading: increaseLoading }] = useIncreaseQuantityMutation();
+  const [decreaseQuantity, { isLoading: decreaseLoading }] = useDecreaseQuantityMutation();
+  const [removeFromCart, { isLoading: removeLoading }] = useRemoveFromCartMutation();
 
-  const isDisabled = isRemoving || isUpdating;
+  const isDisabled = removeLoading || increaseLoading || decreaseLoading;
+  const isUpdating = increaseLoading || decreaseLoading;
+
 
   return (
     <div className={`cart-item ${isDisabled ? "is-removing" : ""}`}>
@@ -32,15 +32,15 @@ const CartItem = ({item}) => {
             <p className="price">${product.price}</p>
           </Link>
           <div className="quantity-control">
-            <button onClick={()=> quantity <= 1 ? '' : dispatch(decreaseQuantity(productId)) } disabled={isDisabled}>-</button>
+            <button onClick={()=> quantity <= 1 ? '' : decreaseQuantity({ productId }) } disabled={isDisabled}>-</button>
             <span className='quantity'>{ isUpdating ? <LoadingCircle /> : quantity}</span>
-            <button onClick={()=>  quantity > 99 ? '' : dispatch(increaseQuantity(productId)) } disabled={isDisabled}>+</button>
+            <button onClick={()=>  quantity > 99 ? '' : increaseQuantity({ productId }) } disabled={isDisabled}>+</button>
           </div>
         </div>
       </div>
-      <button className='del-item' onClick={() => dispatch(removeFromCart(productId))}>
+      <button className='del-item' disabled={isDisabled} onClick={() => removeFromCart({ productId })}>
         {
-          isRemoving ? <LoadingCircle />  : <FaTrashAlt />
+          removeLoading ? <LoadingCircle />  : <FaTrashAlt />
         }
       </button>
     </div>

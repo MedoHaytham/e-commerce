@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Joi from 'joi-browser';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import api from '../../api/axiosInstance';
+// import api from '../../api/axiosInstance';
+import Cookies from 'js-cookie';
 
 import './registerPage.css';
-import { useSelector } from 'react-redux';
+import { useRegisterMutation } from '../../features/authSlice';
+import LoadingCircle from '../../components/loadingCircle/loadingCircle';
 
 const countries = [
   {value: 'egypt', label: 'Egypt'},
@@ -35,7 +37,6 @@ const countries = [
 const RegisterPage = () => {
 
   const navigate = useNavigate();
-  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const [form, setForm] = useState({
     firstName: '',
@@ -56,11 +57,14 @@ const RegisterPage = () => {
   
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [register, { isLoading, isError, error }] = useRegisterMutation();
   
   const schema = {
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
-    phone: Joi.string().required(),
+    phone: Joi.string()
+    .regex(/^01[0125][0-9]{8}$/)
+    .required(),
     country: Joi.string().required(),
     birthDate: Joi.string().required(),
     gender: Joi.string().required(),
@@ -88,11 +92,7 @@ const RegisterPage = () => {
     setErrors(errors);
     return Object.keys(errors).length > 0 ? errors : null;
   }
-  
-  async function register() {
-    await api.post('/auth/register', form);
-    toast.success('Register Success');
-  }
+
 
   let submitHadnler = async (e) => {
     e.preventDefault();
@@ -100,25 +100,36 @@ const RegisterPage = () => {
     const errors = validate();
     if(errors) return;
     try {
-      await register();
-      navigate('/signIn');
+      const {data} = await register(form);
+      const accessToken = data.data.accessToken;
+      if (accessToken) {
+        Cookies.set('accessToken', accessToken, { path: "/" });
+        setForm({
+          firstName: '',
+          lastName: '',
+          phone: '',
+          country: '',
+          birthDate: '',
+          gender: '',
+          email:'',
+          password: '',
+          confirmPassword: '',
+        });
+        navigate('/signIn');
+        toast.success('Register Success');
+      } 
     } catch(error) {
       const msg = error?.response?.data?.message || error?.message || 'Register Failed';
-      toast.error(msg);
+      console.log(error);
+      console.log(msg);
     }
   }
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/', { replace: true });
-    }
-  }, [isAuthenticated, navigate]);
-
-
-  return ( 
+  return (
     <div className='register'>
       <main className='container'>
         <h1>Register</h1>
+        {isError && error && <p className='alert alert-danger mt-2'>{error.data.message}</p>}
         <form onSubmit={submitHadnler}>
           <div className='row'>
             <div className="mb-3 col-6">
@@ -200,7 +211,9 @@ const RegisterPage = () => {
               {errors.gender && <div className='alert alert-danger mt-2' >{errors.gender}</div>}
             </div>
           </div>
-          <button type="submit" className="btn btn-primary mt-4">Submit</button>
+          <button type="submit" disabled={isLoading} className="btn btn-primary mt-4">
+            {isLoading ? <LoadingCircle /> : 'Submit'}
+          </button>
           <div className='login mt-3'>
             <Link to={'/signIn'}>
               Already have an Account? <span>Login</span>

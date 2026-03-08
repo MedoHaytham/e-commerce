@@ -1,21 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './profilePage.css'
-import { User, MapPin, CreditCard, Bell, Shield } from "lucide-react";
-
-const mockUser = {
-  firstName: "Yousef",
-  lastName: "Sayed",
-  email: "yousef.sayed@gmail.com",
-  phone: "+20 123 456 7890",
-  nationality: "egyptian",
-  birthday: "1995-06-15",
-  gender: "male",
-};
+import Sidebar from '../../components/sidebar';
+import { useNavigate, useLocation } from 'react-router-dom';
+// import api from '../../api/axiosInstance';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import Cookies from 'js-cookie';
 
 const countries = [
   {value: 'egypt', label: 'Egypt'},
   {value: 'saudi arabia', label: 'Saudi Arabia'},
-  {value: 'emirates', label: 'Emirates'},
+  {value: 'uae', label: 'UAE'},
   {value: 'qatar', label: 'Qatar'},
   {value: 'american', label: 'American'},
   {value: 'british', label: 'British'},
@@ -36,93 +31,108 @@ const countries = [
   {value: 'other', label: 'Other'}
 ];
 
-const Toast = ({ message, onClose }) => {
-  React.useEffect(() => {
-    const t = setTimeout(onClose, 3000);
-    return () => clearTimeout(t);
-  }, [onClose]);
-
-  return (
-    <div className="toast">
-      <div className="toast__icon">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </div>
-      {message}
-    </div>
-  );
-};
-
-
-const accountItems = [
-  { label: "Profile",   icon: User },
-  { label: "Addresses", icon: MapPin },
-  { label: "Payments",  icon: CreditCard },
-];
-
-const otherItems = [
-  { label: "Notifications",    icon: Bell },
-  { label: "Security Settings", icon: Shield },
-];
-
 const ProfilePage = () => {
-  const [firstName,   setFirstName]   = useState(mockUser.firstName);
-  const [lastName,    setLastName]    = useState(mockUser.lastName);
-  const [email,       setEmail]       = useState(mockUser.email);
-  const [phone,       setPhone]       = useState(mockUser.phone);
-  const [nationality, setNationality] = useState(mockUser.nationality);
-  const [birthday,    setBirthday]    = useState(mockUser.birthday);
-  const [gender,      setGender]      = useState(mockUser.gender);
-  const [activeTab,   setActiveTab]   = useState("Profile");
-  const [toast,       setToast]       = useState(null);
+  const location = useLocation();
+  const me = location.state?.me || {};
+  const isAuthenticated = Cookies.get('accessToken') ? true : false;
+  const navigate = useNavigate();
 
-  const initials = `${firstName[0] || ''}${lastName[0] || ''}`.toUpperCase();
+  const toDateInput = (d) => {
+    if (!d) return "";
+    const date = new Date(d);
+    if (Number.isNaN(date.getTime())) return "";
+    return date.toISOString().slice(0, 10);
+  };
 
-  const handleUpdate = () => setToast("Profile updated successfully!");
+  useEffect(() => {
+    if (location.state?.me) return;
+
+    async function fetchMe() {
+      try {
+        const res = await axios.get('https://e-commerce-backend-geri.onrender.com/api/users/me', {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('accessToken')}`,
+          },
+        }); 
+        setFirstName(res.data.data.firstName || "");
+        setLastName(res.data.data.lastName || "");
+        setEmail(res.data.data.email || "");
+        setPhone(res.data.data.phone || "");
+        setCountry(res.data.data.country || "");
+        setBirthDate(toDateInput(res.data.data.birthDate) || "");
+        setGender(res.data.data.gender || "");
+      } catch (error) {
+        const msg =
+          error?.response?.data?.message ||
+          error?.message ||
+          "Error on Fetch Me";
+
+        toast.error(msg);
+      }
+    }
+    fetchMe();
+  }, [location.state?.me, isAuthenticated, navigate]);
+
+  // useEffect(() => {
+  //   if (!isAuthenticated) {
+  //     navigate("/signIn", { replace: true });
+  //   }
+  // }, [isAuthenticated, navigate]);
+
+  const [firstName, setFirstName] = useState(me.firstName || "");
+  const [lastName, setLastName] = useState(me.lastName || "");
+  const [email, setEmail] = useState(me.email || "");
+  const [phone, setPhone] = useState(me.phone || "");
+  const [country, setCountry] = useState(me.country || "egypt");
+  const [birthDate, setBirthDate] = useState(toDateInput(me.birthDate));
+  const [gender, setGender] = useState(me.gender || "male");
+  const [activeTab, setActiveTab] = useState("Profile");
+
+  const handleUpdate = async () => {
+    try {
+      const res = await axios.patch('https://e-commerce-backend-geri.onrender.com/api/users/me', {
+        firstName,
+        lastName,
+        email,
+        phone,
+        country,
+        birthDate,
+        gender,
+      }, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('accessToken')}`,
+        },
+      });
+
+      setFirstName(res.data.data.firstName);
+      setLastName(res.data.data.lastName);
+      setEmail(res.data.data.email);
+      setPhone(res.data.data.phone);
+      setCountry(res.data.data.country);
+      setBirthDate(toDateInput(res.data.data.birthDate));
+      setGender(res.data.data.gender);
+      toast.success("Profile updated successfully!");
+    } catch (error) {
+      const msg =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Error on Update Profile";
+      toast.error(msg);
+    }
+  };
 
   return (
     <div className="profile-page">
       {/* Main content inside your container */}
       <div className="container">
         {/* Sidebar */}
-        <div className="sidebar">
-          <div className="sidebar__user">
-            <div className="sidebar__avatar">{initials}</div>
-            <div>
-              <div className="sidebar__user-name">{firstName} {lastName}</div>
-              <div className="sidebar__user-email">{email}</div>
-            </div>
-          </div>
-
-          <div className="sidebar__section">
-            <div className="sidebar__section-label">My Account</div>
-            {accountItems.map(({ label, icon: Icon }) => (
-              <div
-                key={label}
-                className={`sidebar__item${activeTab === label ? ' sidebar__item--active' : ''}`}
-                onClick={() => setActiveTab(label)}
-              >
-                <Icon size={17} />
-                <span>{label}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="sidebar__section">
-            <div className="sidebar__section-label">Others</div>
-            {otherItems.map(({ label, icon: Icon }) => (
-              <div
-                key={label}
-                className={`sidebar__item${activeTab === label ? ' sidebar__item--active' : ''}`}
-                onClick={() => setActiveTab(label)}
-              >
-                <Icon size={17} />
-                <span>{label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        <Sidebar
+          firstName={firstName}
+          lastName={lastName}
+          email={email}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+        />
 
         {/* Profile card */}
         <div className="profile-card">
@@ -159,15 +169,15 @@ const ProfilePage = () => {
 
             <div className="form-grid">
               <div className="form-field">
-                <label>Nationality</label>
-                <select value={nationality} onChange={e => setNationality(e.target.value)}>
+                <label>Country</label>
+                <select value={country} onChange={e => setCountry(e.target.value)}>
                   {countries.map(n => (
                     <option key={n.value} value={n.value}>{n.label}</option>
                   ))}
                 </select>
               </div>
               <div className="form-field form-field--date">
-                <label>Birthday</label>
+                <label>Birth Date</label>
                 <svg
                   className="date-icon"
                   width="16" height="16"
@@ -179,7 +189,7 @@ const ProfilePage = () => {
                   <line x1="8"  y1="2" x2="8"  y2="6" />
                   <line x1="3"  y1="10" x2="21" y2="10" />
                 </svg>
-                <input type="date" value={birthday} onChange={e => setBirthday(e.target.value)} />
+                <input type="date" value={birthDate} onChange={e => setBirthDate(e.target.value)} />
               </div>
             </div>
 
@@ -205,8 +215,6 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-
-      {toast && <Toast message={toast} onClose={() => setToast(null)} />}
     </div>
   );
 };

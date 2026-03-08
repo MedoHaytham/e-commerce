@@ -1,31 +1,39 @@
-import { createSlice } from "@reduxjs/toolkit";
+import apiSlice  from "../app/api/apiSlice";
 
-const initialState = {
-  token: null,
-  user: null,
-  isAuthenticated: false,
-  authChecked: false
-}
-
-const authSlice = createSlice({
-  initialState,
-  name: 'auth',
-  reducers: {
-    setCredentials: (state, action)=> {
-      const {accessToken, user} = action.payload;
-      state.token = accessToken;
-      state.user = user;
-      state.isAuthenticated = true;
-      state.authChecked = true;
-    },
-    logout: (state) => {
-      state.token = null;
-      state.user = null;
-      state.isAuthenticated = false;
-      state.authChecked = true;
-    }
-  }
+export const authSlice = apiSlice.injectEndpoints({
+  endpoints: (builder) => ({
+    register: builder.mutation({
+      query: (credentials) => ({
+        url: '/auth/register',
+        method: 'POST',
+        body: { ...credentials },
+      })
+    }),
+    login: builder.mutation({
+      query: (credentials) => ({
+        url: '/auth/login',
+        method: 'POST',
+        body: { ...credentials },
+      })
+    }),
+    logout: builder.mutation({
+      query: () => ({
+        url: '/auth/logout',
+        method: 'POST',
+      })
+    }),
+    deleteAccount: builder.mutation({
+      query: () => ({
+        url: '/users/me',
+        method: 'DELETE',
+      })
+    })
+  })
 });
 
-export const {setCredentials, logout} = authSlice.actions;
-export default authSlice.reducer;
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useLogoutMutation,
+  useDeleteAccountMutation,
+} = authSlice;

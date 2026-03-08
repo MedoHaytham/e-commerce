@@ -2,23 +2,29 @@ import React from 'react';
 import { FaStar, FaRegHeart, FaCartArrowDown, FaShare, FaRegStar, FaStarHalfAlt, FaCheck } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../../features/cartSlice';
-import { toggleFavorites } from '../../features/favoritesSclice';
+import { useAddToCartMutation, useFetchCartQuery } from '../../features/cartSlice';
+import { useFetchFavoritesQuery, useToggleFavoritesMutation } from '../../features/favoritesSclice';
+import Cookies from 'js-cookie';
 
 const Product = ({ item }) => {
 
   const productId = item?._id || item?.id;
-
-  const cartItems = useSelector((state) => state.cart.cartItems);
-  const dispatch = useDispatch();
-  const favItems = useSelector((state) => state.favorites.favoritesItems);
   const navigate = useNavigate();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
+  const isAuthenticated = Cookies.get('accessToken') ? true : false;
+  
+  const { data: cartData } = useFetchCartQuery();
+  const cartItems = cartData?.data?.inCartProducts || [];
 
-  const inCart = cartItems.some((cartItem) => (cartItem.product._id || cartItem.product.id) === productId);
-  const inFav = favItems.some((favItem) => (favItem._id  || favItem.id) === productId);
+  const [addToCart] = useAddToCartMutation();
+
+  const {data: favoritesData} = useFetchFavoritesQuery();
+  const favItems = favoritesData?.data?.favoriteProducts || [];
+
+  const [toggleFavorites] = useToggleFavoritesMutation();
+
+  const inCart = cartItems.some((cartItem) => (cartItem.product?._id || cartItem.product?.id) === productId);
+  const inFav = favItems.some((favItem) => (favItem._id || favItem.id) === productId);
 
   const renderStars = () => {
     const stars = [];
@@ -45,57 +51,60 @@ const Product = ({ item }) => {
     return stars;
   };
 
-  
 
   const handleAddToCart = () => {
-    // addToCart(item);
     if(!isAuthenticated) {
       toast.error('Please login first');
       return;
     }
     if(inCart) return;
-    dispatch(addToCart({ productId, product: item }))
-    toast.success(
-      <div className='toast-wrapper'>
-        <img src={item.images[0]} alt="toast-img" />
-        <div className="toast-contet">
-          <strong>{item.title}</strong>
-          Added To Cart
-          <button className='btn' onClick={() => navigate('/cart')}>View Cart</button>
+    addToCart({ productId, product: item }).unwrap().then(() => {
+      toast.success(
+        <div className='toast-wrapper'>
+          <img src={item.images[0]} alt="toast-img" />
+          <div className="toast-contet">
+            <strong>{item.title}</strong>
+            Added To Cart
+            <button className='btn' onClick={() => navigate('/cart')}>View Cart</button>
+          </div>
         </div>
-      </div>
-      ,{duration: 3500}
-    )
+        ,{duration: 3500}
+      )
+    }).catch((error) => {
+      toast.error('Error addToCart: ' + error);
+    })
   }
 
   const handleAddToFav = () => {
-    // toggleFavorites(item);
     if(!isAuthenticated) {
       toast.error('Please login first');
       return;
     }
-    inFav 
-    ? toast.error(
-      <div className='toast-wrapper'>
-        <img src={item.images[0]} alt="toast-img" />
-        <div className="toast-contet">
-          <strong>{item.title}</strong>
-          Removed From Favorites
+    toggleFavorites({ productId, product: item }).unwrap().then(() => {
+      inFav 
+      ? toast.error(
+        <div className='toast-wrapper'>
+          <img src={item.images[0]} alt="toast-img" />
+          <div className="toast-contet">
+            <strong>{item.title}</strong>
+            Removed From Favorites
+          </div>
         </div>
-      </div>
-      ,{duration: 3500}
-    ) 
-    : toast.success(
-      <div className='toast-wrapper'>
-        <img src={item.images[0]} alt="toast-img" />
-        <div className="toast-contet">
-          <strong>{item.title}</strong>
-          Added To Favorites
+        ,{duration: 3500}
+      ) 
+      : toast.success(
+        <div className='toast-wrapper'>
+          <img src={item.images[0]} alt="toast-img" />
+          <div className="toast-contet">
+            <strong>{item.title}</strong>
+            Added To Favorites
+          </div>
         </div>
-      </div>
-      ,{duration: 3500}
-    )
-    dispatch(toggleFavorites({ productId, product: item }));
+        ,{duration: 3500}
+      )
+    }).catch((error) => {
+      toast.error('Error toggleFavorites: ' + error);
+    })
   }
 
   return ( 

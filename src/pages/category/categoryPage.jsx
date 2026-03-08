@@ -6,7 +6,8 @@ import Product from '../../components/slideProducts/product';
 import './categoryPage.css';
 import CategoryPageLoading from './catePageLoading';
 import PageTransition from '../../components/pageTransition';
-import api from '../../api/axiosInstance';
+// import api from '../../api/axiosInstance';
+import axios from 'axios';
 
 const CategoryPage = () => {
   
@@ -19,7 +20,7 @@ const CategoryPage = () => {
       try {
         setLoading(true);
         setProducts([]);
-        let response = await api.get(`/products/category/${slug}`);
+        let response = await axios.get(`https://e-commerce-backend-geri.onrender.com/api/products/category/${slug}`);
         let data = response.data.data.map((p) => ({
           id: p._id,
           title: p.title,

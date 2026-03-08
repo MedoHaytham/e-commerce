@@ -5,16 +5,12 @@ import { MdPersonAddAlt1 } from "react-icons/md";
 import { IoMdMenu } from "react-icons/io";
 import { MdOutlineArrowDropDown } from "react-icons/md";
 import { toast } from 'react-toastify';
-import { clearCart } from '../../features/cartSlice';
-import { clearFavorites } from '../../features/favoritesSclice';
-import { logout } from '../../features/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import api from '../../api/axiosInstance';
 import { RiAccountCircleFill } from "react-icons/ri";
 import { IoIosPaper } from "react-icons/io";
-
-
-
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { useLogoutMutation } from '../../features/authSlice';
+import { User, MapPin, CreditCard, Shield } from "lucide-react";
 
 const navlinks = [
   {title: 'Home' , link: '/'},
@@ -22,32 +18,51 @@ const navlinks = [
   {title: 'Contact' , link: '/contact'},
 ];
 
+const accountItems = [
+  { label: "Profile", icon: User, path: "/profile" },
+  { label: "Addresses", icon: MapPin, path: "/addresses" },
+  { label: "Payments", icon: CreditCard, path: "/payments" },
+  { label: "Security Settings", icon: Shield, path: "/security-settings" },
+];
+
 const BtmHeader = () => {
+
+  const location = useLocation();
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const isAccountPage = accountItems.some(
+    (item) => location.pathname.startsWith(item.path)
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const [categories, setCategories] = useState([]);
   const [active, setActive] = useState(false);
   const [userActive, setUserActive] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const location = useLocation();
-
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [me, setMe] = useState(null);
+  
 
-  const { isAuthenticated, authChecked, user } = useSelector((state) => state.auth);
+  const [me, setMe] = useState(null);
+  const isAuthenticated = Cookies.get('accessToken') ? true : false;
+
+  const [logout] = useLogoutMutation();
+
 
   const handleLogout =  async () => {
     try {
-      await api.post('/auth/logout');
-      toast.success('Logout Success');
+      await logout().unwrap();
+      Cookies.remove('accessToken', { path: "/" });
+      toast.success('Logout successful');
+      window.location.reload();
     } catch (error) {
-      const msg = error?.response?.data?.message || error?.message || "Logout Failed";
-      toast.error(msg);
-    } finally {
-      dispatch(logout());
-      dispatch(clearCart());
-      dispatch(clearFavorites());
-      navigate("/signIn", { replace: true });
+      toast.error('Error on Logout');
     }
   };
 
@@ -55,7 +70,7 @@ const BtmHeader = () => {
   useEffect(() =>{
     async function fetchAllCategories () {
       try {
-        let response = await api.get('/categories?limit=25');
+        let response = await axios.get('https://e-commerce-backend-geri.onrender.com/api/categories?limit=25');
         let data = response.data.data.map((cate) => ({
           name: cate.name,
           slug: cate.slug,
@@ -67,20 +82,30 @@ const BtmHeader = () => {
     }
     fetchAllCategories();
   },[]);
+  
+  
 
   useEffect(() => {
     async function fetchMe() {
       try {
-        const response = await api.get(`/users/${user.id}`);
+        const response = await axios.get('https://e-commerce-backend-geri.onrender.com/api/users/me', {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('accessToken')}`,
+          },
+        });
         setMe(response.data.data);
       } catch (error) {
-        toast.error('Error on Fetch Me');
+        Cookies.remove('accessToken', { path: "/" });
+        setMe(null);
+        navigate('/signIn', { replace: true });
+        toast.error(error?.response?.data?.message || 'Error on Fetch Me');
       }
     }
 
-    if (!authChecked || !isAuthenticated || !user?.id) return;
+    if (!isAuthenticated) return;
     fetchMe();
-  }, [authChecked, isAuthenticated, user?.id]);
+  }, [isAuthenticated, navigate]);
+
 
   return ( 
     <div className='btm-hedear'>
@@ -100,23 +125,40 @@ const BtmHeader = () => {
             <IoMdMenu />
           </div>
           <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
-            {navlinks.map((navlink, index) => (            
-                <li key={index} className={ location.pathname === navlink.link ? 'active' : '' } onClick={() => setMenuOpen(false)} >
-                  <NavLink className= 'link' to={navlink.link}>{navlink.title}</NavLink>
-                </li>
-              ))
-            }
+            {isMobile && isAuthenticated && isAccountPage
+              ? accountItems.map((item, index) => {
+                  const Icon = item.icon;
+                  return (
+                    <li key={index} onClick={() => setMenuOpen(false)}>
+                      <NavLink className="link" to={item.path}>
+                        <Icon size={18} style={{ marginRight: "6px" }} />
+                        {item.label}
+                      </NavLink>
+                    </li>
+                  );
+                })
+              : navlinks.map((navlink, index) => (
+                  <li
+                    key={index}
+                    className={location.pathname === navlink.link ? "active" : ""}
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    <NavLink className="link" to={navlink.link}>
+                      {navlink.title}
+                    </NavLink>
+                  </li>
+                ))}
           </ul>
         </div>
         {
-          !authChecked ? null : isAuthenticated ? (
+          isAuthenticated ? (
             <div className="sign-icon">
               <div className="user-info-btn" onClick={() => setUserActive((prev) => !prev)}>
                 <span>Hi, {me?.firstName}</span>
                 <MdOutlineArrowDropDown />
               </div>
               <div className={`${userActive ?  'user-active': ''} user-info-list`}>
-                <NavLink className='link' onClick={() => setUserActive(false)} to='/profile'>
+                <NavLink className='link' onClick={() => setUserActive(false)} state={{me: me || null}} to='/profile'>
                   <RiAccountCircleFill />
                   Profile
                 </NavLink>
@@ -124,10 +166,10 @@ const BtmHeader = () => {
                   <IoIosPaper />
                   My Orders
                 </NavLink>
-                <NavLink className='link' onClick={() => {handleLogout(); setUserActive(false)}}>
+                <button className='link' style={{textAlign: 'start' , backgroundColor: 'var(--bg-color)'}} onClick={handleLogout}>
                   <PiSignOutBold />
                   Logout
-                </NavLink>
+                </button>
               </div>
             </div>
           ) : (

@@ -4,13 +4,17 @@ import { FaRegHeart } from "react-icons/fa";
 import { TiShoppingCart } from "react-icons/ti";
 import './header.css';
 import SearchBox from './searchBox';
-import { useSelector } from 'react-redux';
+import { useFetchCartQuery } from '../../features/cartSlice';
+import { useFetchFavoritesQuery } from '../../features/favoritesSclice';
 
 
 const TopHeader = () => {
 
-  const cartItems = useSelector((state) => state.cart.cartItems);
-  const favItems = useSelector((state) => state.favorites.favoritesItems);
+  const { data: cartData } = useFetchCartQuery();
+  const cartItems = cartData?.data?.inCartProducts || [];
+
+  const { data: favoritesData } = useFetchFavoritesQuery();
+  const favItems = favoritesData?.data?.favoriteProducts || [];
 
   return ( 
     <div className='top-header'>

@@ -2,14 +2,15 @@ import './checkoutPage.css';
 import PageTransition from '../../components/pageTransition';
 import OrderSummary from './orderSummary';
 import ShipingMethod from './shipingMethod';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
+import { useFetchCartQuery } from '../../features/cartSlice';
 
 
 const CheckoutPage = () => {
 
-  const cartItems = useSelector((state) => state.cart.cartItems);
+  const { data: cartData } = useFetchCartQuery();
+  const cartItems = useMemo(() => cartData?.data?.inCartProducts || [], [cartData]);
   const navigate = useNavigate();
 
   useEffect(()=> {

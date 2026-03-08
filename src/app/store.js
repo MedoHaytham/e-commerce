@@ -1,12 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
-import  CartReducer from '../features/cartSlice'
-import  FavoritesReducer from '../features/favoritesSclice'
-import AuthReducer from '../features/authSlice'
+import apiSlice from './api/apiSlice'
+import { setupListeners } from '@reduxjs/toolkit/query'
 
 export const store = configureStore({
   reducer: {
-    cart: CartReducer,
-    favorites: FavoritesReducer,
-    auth: AuthReducer
+    [apiSlice.reducerPath]: apiSlice.reducer,
   },
-})
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(apiSlice.middleware),
+});
+
+setupListeners(store.dispatch);

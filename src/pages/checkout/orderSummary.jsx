@@ -1,11 +1,13 @@
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import CheckoutProduct from './checkoutProduct';
-import { useSelector } from "react-redux";
+import { useFetchCartQuery } from "../../features/cartSlice";
 
 
 const OrderSummary = () => {
 
-  const cartItems = useSelector((state) => state.cart.cartItems);
+  // const cartItems = useSelector((state) => state.cart.cartItems);
+  const { data: cartData } = useFetchCartQuery();
+  const cartItems = cartData?.data?.inCartProducts || [];
   const fee = 64;
   let totalCost = cartItems.reduce((acc, curent) => (acc + curent.product.price * curent.quantity), 0);
   const totalWithFees = totalCost + fee;

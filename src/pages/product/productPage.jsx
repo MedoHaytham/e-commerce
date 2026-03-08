@@ -7,7 +7,7 @@ import ProductImages from './productImages';
 import ProductInfo from './productInfo';
 import SlideProductsLoading from '../../components/slideProducts/slideProductsLoading';
 import PageTransition from '../../components/pageTransition';
-import api from '../../api/axiosInstance';
+import axios from 'axios';
 import './productPage.css';
 
 const ProductPage = () => {
@@ -22,7 +22,7 @@ const ProductPage = () => {
       setLoading(true);
       setProduct(null);
       try {
-        let response = await api.get(`/products/${id}`);
+        let response = await axios.get(`https://e-commerce-backend-geri.onrender.com/api/products/${id}`);
         setProduct(response.data.data);
         setActiveImg(response.data.data.images[0] || '');
       } catch (error) {

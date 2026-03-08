@@ -1,16 +1,17 @@
 import PageTransition from "../../components/pageTransition";
 import TopSlide from "../../components/topSlide";
 import Product from "../../components/slideProducts/product";
-import { useSelector } from "react-redux";
 import FavPageLoading from "./favPageLoading";
+import { useFetchFavoritesQuery } from "../../features/favoritesSclice";
 
 import './favoritesPage.css';
 
 const FavoritesPage = () => {
 
-  const { favoritesItems, isLoading } = useSelector((state) => state.favorites);
+  const { data: favoritesData, isLoading } = useFetchFavoritesQuery();
+  const favoritesItems = favoritesData?.data?.favoriteProducts || [];
 
-  const favorites = (favoritesItems || []).map((p) => ({ ...p, id: p._id }));
+  const getPid = (x) => x?._id || x?.id || x?.product?._id || x?.product?.id
 
   return (
     <PageTransition>
@@ -22,9 +23,10 @@ const FavoritesPage = () => {
               <TopSlide categoryName='Your Favorites' />
               <div className="products">
                 {
-                  favorites.length === 0 
+                  favoritesItems.length === 0 
                   ? <p>No Favorites Products yet.</p>
-                  : favorites.map((p) => (<Product key={p.id} item={p}/>))
+                  : favoritesItems.map((p) => 
+                    (<Product key={getPid(p)} item={p.product || p}/>))
                 }
               </div>
             </div>

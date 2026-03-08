@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import RootLayout from "./layout/rootLayout";
 import HomePage from "./pages/home/home";
@@ -17,32 +16,16 @@ import CategoryPage from "./pages/category/categoryPage";
 import ScrollToTop from "./components/scrollToTop";
 import { Toaster } from "react-hot-toast";
 import { AnimatePresence } from "framer-motion";
-import { fetchFavorites } from "./features/favoritesSclice";
-import { useDispatch } from "react-redux";
-import { fetchCart } from "./features/cartSlice";
-import { logout, setCredentials } from "./features/authSlice";
-import api from "./api/axiosInstance";
 import OrdersPage from "./pages/orders/ordersPage";
-import ProfilePage from "./pages/account/profilePage";
+import ProfilePage from "./pages/profile/profilePage";
+import PasswordPage from "./pages/profile/passwordPage";
+import Cookies from "js-cookie";
+import AddressesPage from "./pages/profile/addressesPage";
+import PaymentsPage from "./pages/profile/paymentsPage";
 
 const App = () => {
 
-  const dispatch = useDispatch();
-
-
-  useEffect(() => {
-    const bootstrapAuth = async () => {
-      try {
-        const res = await api.get("/auth/refresh");
-        dispatch(setCredentials(res.data.data));
-        dispatch(fetchFavorites());
-        dispatch(fetchCart());        
-      } catch {
-        dispatch(logout());
-      }
-    };
-    bootstrapAuth();
-  }, [dispatch]);
+  const isAuthenticated = Cookies.get('accessToken');
 
   return (
     <>
@@ -71,10 +54,48 @@ const App = () => {
               <Route path="/accessories" element={<AccessoriesPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/product/:id" element={<ProductPage />} />
-              <Route path="/signIn" element={<SignInPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/orders" element={<OrdersPage />} />
+              <Route 
+                path="/signIn" 
+                  element={
+                  isAuthenticated ? <Navigate to="/" replace/> : <SignInPage />
+                } 
+              />
+              <Route 
+                path="/register" 
+                  element={
+                  isAuthenticated ? <Navigate to="/" replace/> : <RegisterPage />
+                } 
+              />
+              <Route 
+                path="/profile" 
+                  element={
+                  isAuthenticated ? <ProfilePage /> : <Navigate to="/signIn" />
+                } 
+              />
+              <Route 
+                path="/security-settings" 
+                  element={
+                  isAuthenticated ? <PasswordPage /> : <Navigate to="/signIn" />
+                } 
+              />
+              <Route 
+                path="/orders" 
+                  element={
+                  isAuthenticated ? <OrdersPage /> : <Navigate to="/signIn" />
+                } 
+              />
+              <Route 
+                path="/addresses" 
+                  element={
+                  isAuthenticated ? <AddressesPage /> : <Navigate to="/signIn" />
+                } 
+              />
+              <Route 
+                path="/payments" 
+                  element={
+                  isAuthenticated ? <PaymentsPage /> : <Navigate to="/signIn" />
+                } 
+              />
               <Route path="*" element={<ErrorPage />} />
             </Route>
           </Routes>

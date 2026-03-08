@@ -1,95 +1,49 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import api from '../api/axiosInstance';
+import apiSlice from "../app/api/apiSlice";
 
-const initialState = {
-  favoritesItems: [],
-  isLoading: false,
-  error: null,
-  optimisticSnapshot: null,
-};
+const getPid = (x) => x?._id || x?.id || x?.product?._id || x?.product?.id;
 
-export const fetchFavorites = createAsyncThunk("favorites/fetchFavorites", async (_, thunkAPI) => {
-    try {
-      const response = await api.get(`users/favorites`);
-      return response.data.data.favoriteProducts;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(
-        error?.response?.data || { message: error.message }
-      );
-    }
-  }
-);
+export const favoritesSlice = apiSlice.injectEndpoints({
+  endpoints: (builder) => ({
+    fetchFavorites: builder.query({
+      query: () => 'users/favorites',
+    }),
+    toggleFavorites: builder.mutation({
+      query: ({productId}) => ({
+        url: `users/favorites/${productId}`,
+        method: 'POST'
+      }),
+      async onQueryStarted({productId, product}, {dispatch, queryFulfilled}) {
+        const patchResult = dispatch(
+          favoritesSlice.util.updateQueryData('fetchFavorites', undefined, (draft) => {
+            if (!draft?.data?.favoriteProducts) return
 
-export const toggleFavorites = createAsyncThunk("favorites/toggleFavorite", async ({ productId }, thunkAPI) => {
-    try {
-      const response = await api.post(`users/favorites/${productId}`, {});
-      return response.data.data.favoriteProducts;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(
-        error?.response?.data || { message: error.message }
-      );
-    }
-  }
-);
+            const existing = draft.data.favoriteProducts.find(
+              (x) => getPid(x) === productId
+            );
 
-export const FavoritesSlice = createSlice({
-  name: "favorites",
-  initialState,
-  reducers: {
-    clearFavorites: (state) => {
-      state.favoritesItems = [];
-      state.error = null;
-      state.optimisticSnapshot = null;
-    }
-  },
-  extraReducers: (builder) => {
-    builder
-    .addCase(fetchFavorites.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(fetchFavorites.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.favoritesItems = action.payload;
-      })
-      .addCase(fetchFavorites.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-      })
-
-
-      .addCase(toggleFavorites.pending, (state, action) => {
-        state.error = null;
-
-        const { productId, product } = action.meta.arg;
-
-        state.optimisticSnapshot = [...state.favoritesItems];
-
-        const exists = state.favoritesItems.some(
-          (p) => (p._id || p.id) === productId
+            if (existing) {
+              draft.data.favoriteProducts = draft.data.favoriteProducts.filter(
+                (x) => getPid(x) !== productId 
+              )
+            } else {
+              draft.data.favoriteProducts.push({
+                ...product,
+                _optimistic: true
+              })
+            }
+          })
         );
-
-        if (exists) {
-          state.favoritesItems = state.favoritesItems.filter(
-            (p) => (p._id || p.id) !== productId
-          );
-        } else {
-          state.favoritesItems.push(product);
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
         }
-      })
-      .addCase(toggleFavorites.fulfilled, (state, action) => {
-        state.optimisticSnapshot = null;
-        state.favoritesItems = action.payload;
-      })
-      .addCase(toggleFavorites.rejected, (state, action) => {
-        if (state.optimisticSnapshot) {
-          state.favoritesItems = state.optimisticSnapshot;
-        }
-        state.optimisticSnapshot = null;
-        state.error = action.payload;
-      });
-  },
+      },
+    })
+  })
 });
 
-export const { clearFavorites } = FavoritesSlice.actions;
-export default FavoritesSlice.reducer;
+export const {
+  useFetchFavoritesQuery,
+  useToggleFavoritesMutation,
+} = favoritesSlice;
