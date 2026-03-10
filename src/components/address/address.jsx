@@ -1,7 +1,7 @@
 import React from 'react';
 import { IoMdClose } from "react-icons/io";
 import { FaEdit } from "react-icons/fa";
-import LoadingCircle from '../../components/loadingCircle/loadingCircle';
+import LoadingCircle from '../loadingCircle/loadingCircle';
 
 
 const Address = ({address, isActive, onClick, removeAddress, isDeleting, showForm}) => {

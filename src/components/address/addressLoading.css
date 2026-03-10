@@ -1,0 +1,46 @@
+.addresses-loading {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(256px, 1fr));
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 991px) {
+  .addresses-loading {
+    grid-template-columns: repeat(auto-fill, minmax(188px, 1fr));
+  }
+}
+
+.addresses-loading .address-loading {
+  padding: 12px 20px;
+  border: 1px solid var(--border_color);
+  border-radius: 8px;
+  transition: 0.3s;
+  position: relative;
+}
+
+.addresses-loading .address-loading .title {
+  height: 30px;
+  width: 25%;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 767px) {
+  .addresses-loading .address-loading .title {
+    height: 20px;
+    margin-bottom: 8px;
+  }
+}
+
+.addresses-loading .address-loading .content {
+  height: 20px;
+  width: 80%;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 767px) {
+  .addresses-loading .address-loading .content {
+    height: 15px;
+    margin-bottom: 5px;
+  }
+}

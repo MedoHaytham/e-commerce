@@ -3,7 +3,7 @@ import { IoMdClose } from "react-icons/io";
 import Joi from 'joi-browser';
 import { useAddAddressMutation, useUpdateAddressMutation } from '../../features/userSlice';
 import toast from 'react-hot-toast';
-import LoadingCircle from '../../components/loadingCircle/loadingCircle';
+import LoadingCircle from '../loadingCircle/loadingCircle';
 
 const emptyForm = {
   title: '',

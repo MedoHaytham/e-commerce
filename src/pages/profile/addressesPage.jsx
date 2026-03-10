@@ -2,9 +2,10 @@ import Sidebar from '../../components/sidebar';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDeleteAddressMutation, useGetAddressesQuery, useGetMeQuery, useSetDefaultAddressMutation } from '../../features/userSlice';
-import Address from '../checkout/address';
+import Address from '../../components/address/address';
 import { IoMdAdd } from "react-icons/io";
-import AddressForm from '../checkout/addressForm';
+import AddressForm from '../../components/address/addressForm';
+import AddressLoading from '../../components/address/addressLoading';
 
 const AddressesPage = () => {
   const [firstName, setFirstName] = useState("");
@@ -14,7 +15,7 @@ const AddressesPage = () => {
 
   const { data: me } = useGetMeQuery();
 
-  const {data: addressData} = useGetAddressesQuery();
+  const {data: addressData, isLoading: isLoadingAddresses} = useGetAddressesQuery();
   const addresses = addressData?.data?.addresses || [];
 
   useEffect(() => {
@@ -62,46 +63,56 @@ const AddressesPage = () => {
         <div className="profile-card">
           <div className="profile-card__section">
             <h2 className="profile-card__title">Addresses</h2>
-            <div className="addresses">
-              {addresses.map((a) => (
-                <Address 
-                  key={a._id}
-                  address={a}
-                  isActive={a.isDefault}
-                  onClick={async () => {
-                    try {
-                      await setDefaultAddress(a._id).unwrap();
-                    } catch (error) {
-                      console.log(error);
-                    }
-                  }}
-                  removeAddress={async () => {
-                    try {
-                      setDeletingAddressId(a._id);
-                      await deleteAddress(a._id).unwrap();
-                    } catch (error) {
-                      console.log(error);
-                    } finally {
-                      setDeletingAddressId(null);
-                    }
-                  }}
-                  isDeleting={deletingAddressId === a._id}
-                  showForm={(e) => {
-                    e.stopPropagation();
-                    setSelectedAddress(a);
+            {
+              isLoadingAddresses 
+              ? <AddressLoading count={2} />
+              : <div className="addresses">
+                {
+                  addresses.map((a) => (
+                    <Address 
+                      key={a._id}
+                      address={a}
+                      isActive={a.isDefault}
+                      onClick={async () => {
+                        try {
+                          await setDefaultAddress(a._id).unwrap();
+                        } catch (error) {
+                          console.log(error);
+                        }
+                      }}
+                      removeAddress={async () => {
+                        try {
+                          setDeletingAddressId(a._id);
+                          await deleteAddress(a._id).unwrap();
+                        } catch (error) {
+                          console.log(error);
+                        } finally {
+                          setDeletingAddressId(null);
+                        }
+                      }}
+                      isDeleting={deletingAddressId === a._id}
+                      showForm={(e) => {
+                        e.stopPropagation();
+                        setSelectedAddress(a);
+                        setShowForm(true);
+                        setIsAdding(false);
+                        setIsEditing(true);
+                      }}
+                    />
+                  ))
+                }
+                <button className='new-address' 
+                  onClick={() => {
+                    setSelectedAddress(null);
                     setShowForm(true);
-                    setIsAdding(false);
-                    setIsEditing(true);
+                    setIsAdding(true);
+                    setIsEditing(false);
                   }}
-                />
-              ))}
-              <button className='new-address' onClick={() => {
-                setSelectedAddress(null);
-                setShowForm(true);
-                setIsAdding(true);
-                setIsEditing(false);
-              }}><IoMdAdd /> Add Address</button>
-            </div>
+                >
+                  <IoMdAdd /> Add Address
+                </button>
+              </div>
+            }
           </div>
 
         </div>

@@ -328,6 +328,7 @@ body { background: #f1f5f9; font-family: "Poppins", sans-serif; }
 
 .add-address .btn {
   width: 100%;
+  display: block;
   border-radius: 8px;
   border: 2px solid var(--main_color);
 }

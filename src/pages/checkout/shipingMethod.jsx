@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { IoMdAdd } from "react-icons/io";
-import Address from './address';
-import AddressForm from './addressForm';
+import Address from '../../components/address/address';
+import AddressForm from '../../components/address/addressForm';
 import { useDeleteAddressMutation, useGetAddressesQuery, useSetDefaultAddressMutation } from '../../features/userSlice';
+import AddressLoading from '../../components/address/addressLoading';
 
 
 
@@ -33,7 +34,7 @@ const ShipingMethod = () => {
         <div className="addresses">
           {
             isLoading 
-            ? ''
+            ? <AddressLoading count={2} />
             :
               addresses.map((a) => (
               <Address 
@@ -68,12 +69,20 @@ const ShipingMethod = () => {
               />
             ))
           }
-          <button className='new-address' onClick={() => {
-            setSelectedAddress(null);
-            setShowForm(true);
-            setIsAdding(true);
-            setIsEditing(false);
-          }}><IoMdAdd /> Add Address</button>
+          {
+            isLoading 
+            ? null 
+            : <button className='new-address' 
+                onClick={() => {
+                  setSelectedAddress(null);
+                  setShowForm(true);
+                  setIsAdding(true);
+                  setIsEditing(false);
+                }}
+              >
+                <IoMdAdd /> Add Address
+              </button>
+          }
         </div>
         <div className="notes">
           <h2>Additional Notes</h2>
