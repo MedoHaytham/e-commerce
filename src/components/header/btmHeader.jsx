@@ -152,7 +152,7 @@ const BtmHeader = () => {
                   <IoIosPaper />
                   My Orders
                 </NavLink>
-                <button className='link' style={{textAlign: 'start' , backgroundColor: 'var(--bg-color)'}} onClick={handleLogout}>
+                <button className='link' onClick={handleLogout}>
                   <PiSignOutBold />
                   Logout
                 </button>

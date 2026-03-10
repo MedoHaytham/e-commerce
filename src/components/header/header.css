@@ -434,6 +434,12 @@
   font-size: 14px;
 }
 
+.btm-hedear .container .my-nav .category-nav .category-nav-list .link:hover {
+  background-color: var(--main_color);
+  color: var(--white_color);
+}
+
+
 .btm-hedear .container .my-nav .category-nav .category-nav-list.active .link:not(:last-child){
   border-bottom: 1px  solid var(--border_color);
 }
@@ -566,11 +572,26 @@
   font-size: 14px;
 }
 
+.btm-hedear .container .sign-icon .user-info-list .link:hover {
+  background-color: var(--main_color);
+  color: var(--white_color);
+}
+
 .btm-hedear .container .sign-icon .user-info-list .link svg {
   fill: var(--main_color);
   margin-right: 10px;
   font-size: 18px;
 }
+
+.btm-hedear .container .sign-icon .user-info-list .link:hover svg {
+  fill: var(--white_color);
+}
+
+.btm-hedear .container .sign-icon .user-info-list button.link {
+  text-align: start;
+  background-color: var(--bg-color);
+}
+
 
 .btm-hedear .container .sign-icon .user-info-list.user-active .link:not(:last-child){
   border-bottom: 1px  solid var(--border_color);
