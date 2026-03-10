@@ -1,9 +1,10 @@
 import React from 'react';
 import { IoMdClose } from "react-icons/io";
+import { FaEdit } from "react-icons/fa";
+import LoadingCircle from '../../components/loadingCircle/loadingCircle';
 
 
-const Address = ({address, isActive, onClick, removeAddress}) => {
-
+const Address = ({address, isActive, onClick, removeAddress, isDeleting, showForm}) => {
 
   return ( 
     <div 
@@ -12,10 +13,23 @@ const Address = ({address, isActive, onClick, removeAddress}) => {
     >
       <div className="title">
         <h2>{address.title}</h2>
-        <IoMdClose onClick={() => removeAddress(address.title)}/>
+        <div>
+          <FaEdit onClick={ showForm }/>
+          {
+            isDeleting ? (
+              <LoadingCircle />
+            ) : (
+                <IoMdClose onClick={(e) => {
+                e.stopPropagation();
+                removeAddress();
+              }}/>
+            )
+          }        
+        </div>
       </div>
       <p>{address.firstName} {address.lastName }</p>
       <p>{address.address}</p>
+      <p>{address.city}</p>
       <p>{address.phone}</p>
     </div>
   );

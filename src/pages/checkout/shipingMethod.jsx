@@ -3,22 +3,24 @@ import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { IoMdAdd } from "react-icons/io";
 import Address from './address';
 import AddressForm from './addressForm';
+import { useDeleteAddressMutation, useGetAddressesQuery, useSetDefaultAddressMutation } from '../../features/userSlice';
 
 
 
 const ShipingMethod = () => {
   
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [addresses, setAdresses] = useState(() => {
-    const savedAddress = localStorage.getItem('address');
-    return savedAddress ? JSON.parse(savedAddress) : [];
-  });
   const [showForm, setShowForm] = useState(false);
+  const [deletingAddressId, setDeletingAddressId] = useState(null);
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [isAdding, setIsAdding] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
-  const removeAddress = (title) => {
-    const newAdresses = addresses.filter((a) => (a.title !== title));
-    setAdresses(newAdresses);
-  } 
+  const { data: addressesData, isLoading } = useGetAddressesQuery();
+  const addresses = addressesData?.data?.addresses || [];
+
+  const [ deleteAddress ] = useDeleteAddressMutation();
+  const [ setDefaultAddress ] = useSetDefaultAddressMutation();
+  
 
   return ( 
     <div className="shiping-method">
@@ -30,17 +32,48 @@ const ShipingMethod = () => {
         <h1>Shipping Address</h1>
         <div className="addresses">
           {
-            addresses.map((a, index) => (
+            isLoading 
+            ? ''
+            :
+              addresses.map((a) => (
               <Address 
-                key={index}
+                key={a._id}
                 address={a}
-                isActive={activeIndex === index}
-                onClick={() => setActiveIndex(index)}
-                removeAddress={removeAddress}
+                isActive={a.isDefault}
+                onClick={async () => {
+                  try {
+                    await setDefaultAddress(a._id).unwrap();
+                  } catch (error) {
+                    console.log(error);
+                  }
+                }}
+                removeAddress={async () => {
+                  try {
+                    setDeletingAddressId(a._id);
+                    await deleteAddress(a._id).unwrap();
+                  } catch (error) {
+                    console.log(error);
+                  } finally {
+                    setDeletingAddressId(null);
+                  }
+                }}
+                isDeleting={deletingAddressId === a._id}
+                showForm={(e) => {
+                  e.stopPropagation();
+                  setSelectedAddress(a);
+                  setShowForm(true);
+                  setIsAdding(false);
+                  setIsEditing(true);
+                }}
               />
             ))
           }
-          <button className='new-address' onClick={() => setShowForm(true)}><IoMdAdd /> Add Address</button>
+          <button className='new-address' onClick={() => {
+            setSelectedAddress(null);
+            setShowForm(true);
+            setIsAdding(true);
+            setIsEditing(false);
+          }}><IoMdAdd /> Add Address</button>
         </div>
         <div className="notes">
           <h2>Additional Notes</h2>
@@ -52,7 +85,12 @@ const ShipingMethod = () => {
         showForm={showForm}
         setShowForm={setShowForm}
         addresses={addresses}
-        setAdresses={setAdresses}
+        isAdding={isAdding}
+        setIsAdding={setIsAdding}
+        isEditing={isEditing}
+        setIsEditing={setIsEditing}
+        selectedAddress={selectedAddress}
+        setSelectedAddress={setSelectedAddress}
       />
     </div>
   );

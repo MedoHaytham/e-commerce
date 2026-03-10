@@ -141,6 +141,8 @@
 /* shiping-method start*/
 .checkout .shiping-method {
   flex: 3;
+  position: sticky;
+  top: 150px;
   background-color: var(--bg_color);
   border-radius: 20px;
   overflow: hidden;
@@ -191,6 +193,7 @@
   border-radius: 8px;
   transition: 0.3s;
   position: relative;
+  cursor: pointer;
 }
 
 .checkout .shiping-method .addresses .address.active {
@@ -203,12 +206,24 @@
   align-items: center;
 }
 
-.checkout .shiping-method .addresses .address .title svg{
+.checkout .shiping-method .addresses .address .title div{
   position: absolute;
   top: 7px;
   right: 7px;
-  font-size: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.checkout .shiping-method .addresses .address .title div svg:first-child {
+  fill: black;
+  font-size: 17px;
+}
+
+.checkout .shiping-method .addresses .address .title div svg:last-child {
   fill: red;
+  font-size: 22px;
 }
 
 
@@ -291,6 +306,10 @@
   justify-content: space-between;
   font-size: 22px;
   padding: 24px 24px 16px;
+}
+
+.checkout .shiping-method .add-address .top svg {
+  cursor: pointer;
 }
 
 @media (max-width: 767px) {

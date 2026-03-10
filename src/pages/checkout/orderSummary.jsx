@@ -22,7 +22,7 @@ const OrderSummary = () => {
         {
           cartItems.map((p) => (
             <CheckoutProduct
-              key={p.product.id} 
+              key={p.product._id} 
               title={p.product.title}
               price={p.product.price}
               quantity={p.quantity}

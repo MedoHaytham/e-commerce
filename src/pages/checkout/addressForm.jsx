@@ -1,18 +1,51 @@
 import React, { useEffect, useState } from 'react';
 import { IoMdClose } from "react-icons/io";
 import Joi from 'joi-browser';
+import { useAddAddressMutation, useUpdateAddressMutation } from '../../features/userSlice';
+import toast from 'react-hot-toast';
+import LoadingCircle from '../../components/loadingCircle/loadingCircle';
 
+const emptyForm = {
+  title: '',
+  firstName: '',
+  lastName: '',
+  address: '',
+  city: '',
+  phone: '',
+};
 
-const AddressForm = ({showForm, setShowForm, addresses, setAdresses}) => {
+const AddressForm = ({
+  showForm, 
+  setShowForm, 
+  isAdding, 
+  setIsAdding, 
+  isEditing, 
+  setIsEditing,
+  selectedAddress,
+  setSelectedAddress
+}) => {
 
-  const [form, setForm] = useState({
-      title: '',
-      firstName:'',
-      lastName: '',
-      address: '',
-      city:'',
-      phone: '',
-    });
+  const [form, setForm] = useState(emptyForm)
+
+  const [addAddress, {isLoading: isAddLoading }] = useAddAddressMutation();
+  const [ updateAddress, {isLoading: isUpdateLoading } ] = useUpdateAddressMutation();
+
+  const isLoading = isAddLoading || isUpdateLoading;
+
+  useEffect(() => {
+    if(isEditing && selectedAddress) {
+      setForm({
+        title: selectedAddress.title || '',
+        firstName: selectedAddress.firstName || '',
+        lastName: selectedAddress.lastName || '',
+        address: selectedAddress.address || '',
+        city: selectedAddress.city || '',
+        phone: selectedAddress.phone || '',
+      });
+    } else {
+      setForm(emptyForm);
+    }
+  },[isEditing, selectedAddress])
   
   const onChangeHandler =  (e) => {
     const {name, value} = e.target;
@@ -48,25 +81,50 @@ const AddressForm = ({showForm, setShowForm, addresses, setAdresses}) => {
     setErrors(errors);
     return Object.keys(errors).length > 0 ? errors : null;
   }
+
+  const resetFormState = () => {
+    setForm(emptyForm);
+    setShowForm(false);
+    setIsAdding(false);
+    setIsEditing(false);
+    setSelectedAddress(null);
+  }
   
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
     const errors = validate();
     if(errors) return;
-    setAdresses((prev) => [...prev, form]);
-    setShowForm(false);
-  }
 
-  useEffect(() => {
-    localStorage.setItem('address', JSON.stringify(addresses));
-  }, [addresses]);
+    if(isAdding) {
+      try {
+        await addAddress(form).unwrap();
+        toast.success("Address added successfully");
+      } catch (error) {
+        console.log(error);
+      } finally {
+        resetFormState();
+      }
+    }
+
+    if(isEditing && selectedAddress) {
+      try {
+        await updateAddress({addressId: selectedAddress._id, ...form}).unwrap();
+        toast.success("Address updated successfully");
+      } catch (error) {
+        console.log(error);
+      } finally {
+        resetFormState();
+      }
+    }
+
+  }
 
   return ( 
     <div className={`add-address ${showForm ? 'show-address' : ''}`}>
-      <form onSubmit={onSubmitHandler}>
+      <form onSubmit={ onSubmitHandler }>
         <div className="top">
-          <h2>Edit Address</h2>
-          <IoMdClose onClick={() => setShowForm(false)}/>
+          <h2>{isEditing ? 'Edit Address' : 'Add Address'}</h2>
+          <IoMdClose onClick={ resetFormState }/>
         </div>
         <div className="bottom">
           <div className='info'>
@@ -102,7 +160,9 @@ const AddressForm = ({showForm, setShowForm, addresses, setAdresses}) => {
             {errors.phone && <p className='text-danger mt-2'>{errors.phone}</p>}
             <p>eg: 1234567890</p>
           </div>
-          <input type="submit" className='btn'/>
+          <button type="submit" disabled={isLoading} className="btn btn-primary mt-4">
+            {isLoading ? <LoadingCircle /> : 'Submit'}
+          </button>
         </div>
       </form>
     </div>
