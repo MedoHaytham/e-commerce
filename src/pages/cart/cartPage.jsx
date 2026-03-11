@@ -48,7 +48,6 @@ const CartPage = () => {
               </div>
             </div>
       }
-
     </PageTransition>
   );
 }

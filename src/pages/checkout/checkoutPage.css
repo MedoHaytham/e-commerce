@@ -190,6 +190,7 @@
 .checkout .shiping-method .addresses .address {
   padding: 12px 20px;
   border: 1px solid var(--border_color);
+  background-color: var(--white_color);
   border-radius: 8px;
   transition: 0.3s;
   position: relative;

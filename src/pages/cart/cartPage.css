@@ -265,6 +265,12 @@
 }
 
 /* Loading */
+
+.image-item {
+  width: 100px;
+  height: 100px;
+}
+
 .title-loading {
   width: 80%;
   height: 20px;

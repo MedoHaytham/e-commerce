@@ -13,7 +13,7 @@ const CartPageLoading = ({count}) => {
               <div key={index} className="cart-item">
                 <div className="item-info">
                   <div className="image-item skeltoin"></div>
-                  <div className="item-content">         
+                  <div className="item-content">    
                     <h4 className='title-loading skeltoin'></h4>
                     <p className="price-loading skeltoin"></p>
                     <div className="quantity-control-loading skeltoin"></div>

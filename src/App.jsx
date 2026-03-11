@@ -31,7 +31,7 @@ const App = () => {
   const isAuthenticated = !!meData?.data;
 
   if (isLoading) {
-    return <div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}><LoadingCircle /></div>;
+    return <div style={{ height: 'calc(100vh - 137px)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}><LoadingCircle /></div>;
   }
 
   return (

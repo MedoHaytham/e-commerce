@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import { useGetMeQuery, useUpdateMeMutation } from '../../features/userSlice';
+import PageTransition from '../../components/pageTransition';
 
 const countries = [
   {value: 'egypt', label: 'Egypt'},
@@ -108,100 +109,104 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="profile-page">
-      {/* Main content inside your container */}
-      <div className="container">
-        {/* Sidebar */}
-        <Sidebar
-          firstName={firstName}
-          lastName={lastName}
-          email={email}
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-        />
+    
+      <div className="profile-page">
+        {/* Main content inside your container */}
+        <PageTransition>
+          <div className="container">
+            {/* Sidebar */}
+            <Sidebar
+              firstName={firstName}
+              lastName={lastName}
+              email={email}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
 
-        {/* Profile card */}
-        <div className="profile-card">
+            {/* Profile card */}
+            <div className="profile-card">
 
-          {/* Contact Information */}
-          <div className="profile-card__section">
-            <h2 className="profile-card__title">Contact Information</h2>
-            <div className="form-grid">
-              <div className="form-field">
-                <label>Email</label>
-                <input type="email" value={email} onChange={e => setEmail(e.target.value)} />
+              {/* Contact Information */}
+              <div className="profile-card__section">
+                <h2 className="profile-card__title">Contact Information</h2>
+                <div className="form-grid">
+                  <div className="form-field">
+                    <label>Email</label>
+                    <input type="email" value={email} onChange={e => setEmail(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Phone Number</label>
+                    <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} />
+                  </div>
+                </div>
               </div>
-              <div className="form-field">
-                <label>Phone Number</label>
-                <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} />
+
+              {/* Personal Information */}
+              <div className="profile-card__section">
+                <h2 className="profile-card__title">Personal Information</h2>
+
+                <div className="form-grid">
+                  <div className="form-field">
+                    <label>First Name</label>
+                    <input value={firstName} onChange={e => setFirstName(e.target.value)} />
+                  </div>
+                  <div className="form-field">
+                    <label>Last Name</label>
+                    <input value={lastName} onChange={e => setLastName(e.target.value)} />
+                  </div>
+                </div>
+
+                <div className="form-grid">
+                  <div className="form-field">
+                    <label>Country</label>
+                    <select value={country} onChange={e => setCountry(e.target.value)}>
+                      {countries.map(n => (
+                        <option key={n.value} value={n.value}>{n.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-field form-field--date">
+                    <label>Birth Date</label>
+                    <svg
+                      className="date-icon"
+                      width="16" height="16"
+                      fill="none" stroke="currentColor" strokeWidth="1.8"
+                      viewBox="0 0 24 24"
+                    >
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                      <line x1="16" y1="2" x2="16" y2="6" />
+                      <line x1="8"  y1="2" x2="8"  y2="6" />
+                      <line x1="3"  y1="10" x2="21" y2="10" />
+                    </svg>
+                    <input type="date" value={birthDate} onChange={e => setBirthDate(e.target.value)} />
+                  </div>
+                </div>
+
+                <div className="gender-group">
+                  <span className="group-label">Gender</span>
+                  <div className="gender-options">
+                    {['male', 'female'].map(g => (
+                      <label key={g} className="gender-option" onClick={() => setGender(g)}>
+                        <div className={`radio-circle${gender === g ? ' radio-circle--active' : ''}`}>
+                          {gender === g && <div className="radio-dot" />}
+                        </div>
+                        {g.charAt(0).toUpperCase() + g.slice(1)}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="form-footer">
+                  <button className="update-btn" onClick={handleUpdate}>
+                    Update Profile
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-
-          {/* Personal Information */}
-          <div className="profile-card__section">
-            <h2 className="profile-card__title">Personal Information</h2>
-
-            <div className="form-grid">
-              <div className="form-field">
-                <label>First Name</label>
-                <input value={firstName} onChange={e => setFirstName(e.target.value)} />
-              </div>
-              <div className="form-field">
-                <label>Last Name</label>
-                <input value={lastName} onChange={e => setLastName(e.target.value)} />
-              </div>
-            </div>
-
-            <div className="form-grid">
-              <div className="form-field">
-                <label>Country</label>
-                <select value={country} onChange={e => setCountry(e.target.value)}>
-                  {countries.map(n => (
-                    <option key={n.value} value={n.value}>{n.label}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="form-field form-field--date">
-                <label>Birth Date</label>
-                <svg
-                  className="date-icon"
-                  width="16" height="16"
-                  fill="none" stroke="currentColor" strokeWidth="1.8"
-                  viewBox="0 0 24 24"
-                >
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                  <line x1="16" y1="2" x2="16" y2="6" />
-                  <line x1="8"  y1="2" x2="8"  y2="6" />
-                  <line x1="3"  y1="10" x2="21" y2="10" />
-                </svg>
-                <input type="date" value={birthDate} onChange={e => setBirthDate(e.target.value)} />
-              </div>
-            </div>
-
-            <div className="gender-group">
-              <span className="group-label">Gender</span>
-              <div className="gender-options">
-                {['male', 'female'].map(g => (
-                  <label key={g} className="gender-option" onClick={() => setGender(g)}>
-                    <div className={`radio-circle${gender === g ? ' radio-circle--active' : ''}`}>
-                      {gender === g && <div className="radio-dot" />}
-                    </div>
-                    {g.charAt(0).toUpperCase() + g.slice(1)}
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            <div className="form-footer">
-              <button className="update-btn" onClick={handleUpdate}>
-                Update Profile
-              </button>
-            </div>
-          </div>
-        </div>
+        </PageTransition>
       </div>
-    </div>
+    
   );
 };
 
