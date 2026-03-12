@@ -2,6 +2,7 @@ import React from 'react';
 import { IoMdClose } from "react-icons/io";
 import { FaEdit } from "react-icons/fa";
 import LoadingCircle from '../loadingCircle/loadingCircle';
+import './address.css';
 
 
 const Address = ({address, isActive, onClick, removeAddress, isDeleting, showForm}) => {
@@ -29,7 +30,7 @@ const Address = ({address, isActive, onClick, removeAddress, isDeleting, showFor
       </div>
       <p>{address.firstName} {address.lastName }</p>
       <p>{address.address}</p>
-      <p>{address.city}</p>
+      <p>{address.city}. {address.country}</p>
       <p>{address.phone}</p>
     </div>
   );

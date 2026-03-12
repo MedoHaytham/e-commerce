@@ -11,6 +11,7 @@ const emptyForm = {
   lastName: '',
   address: '',
   city: '',
+  country: '',
   phone: '',
 };
 
@@ -58,6 +59,7 @@ const AddressForm = ({
     lastName: Joi.string().required().label('Last Name'),
     address: Joi.string().required().label('Address'),
     city: Joi.string().required().label('City'),
+    // country: Joi.string().required().label('Country'),
     phone: Joi.string()
       .regex(/^[0-9]+$/)
       .min(10)
@@ -149,10 +151,17 @@ const AddressForm = ({
             <input type="text" id='address' name='address' value={form.address} onChange={onChangeHandler}/>
             {errors.address && <p className='text-danger mt-2' >{errors.address}</p>}
           </div>
-          <div className='info'>
-            <label htmlFor="city">city<span>*</span></label>
-            <input type="text" id='city' name='city' value={form.city} onChange={onChangeHandler}/>
-            {errors.city && <p className='text-danger mt-2' >{errors.city}</p>}
+          <div className='country-city'>
+            <div className='info'>
+              <label htmlFor="city">city<span>*</span></label>
+              <input type="text" id='city' name='city' value={form.city} onChange={onChangeHandler}/>
+              {errors.city && <p className='text-danger mt-2' >{errors.city}</p>}
+            </div>
+            <div className='info'>
+              <label htmlFor="country">country</label>
+              <input type="text" id='country' name='country' value={form.country} onChange={onChangeHandler}/>
+              {errors.country && <p className='text-danger mt-2' >{errors.country}</p>}
+            </div>
           </div>
           <div className='info'>
             <label htmlFor="phone">phone<span>*</span></label>
