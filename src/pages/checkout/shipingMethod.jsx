@@ -3,7 +3,7 @@ import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { IoMdAdd } from "react-icons/io";
 import Address from '../../components/address/address';
 import AddressForm from '../../components/address/addressForm';
-import { useDeleteAddressMutation, useGetAddressesQuery, useSetDefaultAddressMutation } from '../../features/userSlice';
+import { useDeleteAddressMutation, useGetAddressesQuery, useGetMeQuery, useSetDefaultAddressMutation } from '../../features/userSlice';
 import AddressLoading from '../../components/address/addressLoading';
 
 
@@ -15,80 +15,96 @@ const ShipingMethod = () => {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [country, setCountry] = useState('');
 
   const { data: addressesData, isLoading } = useGetAddressesQuery();
   const addresses = addressesData?.data?.addresses || [];
 
   const [ deleteAddress ] = useDeleteAddressMutation();
   const [ setDefaultAddress ] = useSetDefaultAddressMutation();
+  const {data: me, refetch: refetchMe} = useGetMeQuery();
+
+  const handleOpenAddAddress = async () => {
+    try {
+      const refreshedMe = await refetchMe().unwrap();
+      const latestCountry = refreshedMe?.data?.country || '';
+
+      setCountry(latestCountry);
+    } catch (error) {
+      console.log(error);
+      setCountry(me?.data?.country || '');
+    }
+
+    setSelectedAddress(null);
+    setIsAdding(true);
+    setIsEditing(false);
+    setShowForm(true);
+  };
   
 
-  return ( 
-    <div className="shiping-method">
-      <div className="top-shiping">
-        <IoMdCheckmarkCircleOutline />
-        <h1>Shipping Method</h1>
-      </div>
-      <div className="bottom-shiping">
-        <h1>Shipping Address</h1>
-        <div className="addresses">
-          {
-            isLoading 
-            ? <AddressLoading count={2} />
-            :
-              addresses.map((a) => (
-              <Address 
-                key={a._id}
-                address={a}
-                isActive={a.isDefault}
-                onClick={async () => {
-                  try {
-                    await setDefaultAddress(a._id).unwrap();
-                  } catch (error) {
-                    console.log(error);
-                  }
-                }}
-                removeAddress={async () => {
-                  try {
-                    setDeletingAddressId(a._id);
-                    await deleteAddress(a._id).unwrap();
-                  } catch (error) {
-                    console.log(error);
-                  } finally {
-                    setDeletingAddressId(null);
-                  }
-                }}
-                isDeleting={deletingAddressId === a._id}
-                showForm={(e) => {
-                  e.stopPropagation();
-                  setSelectedAddress(a);
-                  setShowForm(true);
-                  setIsAdding(false);
-                  setIsEditing(true);
-                }}
-              />
-            ))
-          }
-          {
-            isLoading 
-            ? null 
-            : <button className='new-address' 
-                onClick={() => {
-                  setSelectedAddress(null);
-                  setShowForm(true);
-                  setIsAdding(true);
-                  setIsEditing(false);
-                }}
-              >
-                <IoMdAdd /> Add Address
-              </button>
-          }
+  return (
+    <>
+      <div className="shiping-method">
+        <div className="top-shiping">
+          <IoMdCheckmarkCircleOutline />
+          <h1>Shipping Method</h1>
         </div>
-        <div className="notes">
-          <h2>Additional Notes</h2>
-          <textarea name="notes" id="notes" placeholder='Enter Notes'></textarea>
+        <div className="bottom-shiping">
+          <h1>Shipping Address</h1>
+          <div className="addresses">
+            {
+              isLoading 
+              ? <AddressLoading count={2} />
+              :
+                addresses.map((a) => (
+                <Address 
+                  key={a._id}
+                  address={a}
+                  isActive={a.isDefault}
+                  onClick={async () => {
+                    try {
+                      await setDefaultAddress(a._id).unwrap();
+                    } catch (error) {
+                      console.log(error);
+                    }
+                  }}
+                  removeAddress={async () => {
+                    try {
+                      setDeletingAddressId(a._id);
+                      await deleteAddress(a._id).unwrap();
+                    } catch (error) {
+                      console.log(error);
+                    } finally {
+                      setDeletingAddressId(null);
+                    }
+                  }}
+                  isDeleting={deletingAddressId === a._id}
+                  showForm={(e) => {
+                    e.stopPropagation();
+                    setSelectedAddress(a);
+                    setShowForm(true);
+                    setIsAdding(false);
+                    setIsEditing(true);
+                  }}
+                />
+              ))
+            }
+            {
+              isLoading 
+              ? null 
+              : <button className='new-address' 
+                  onClick={handleOpenAddAddress}
+                >
+                  <IoMdAdd /> Add Address
+                </button>
+            }
+          </div>
+          <div className="notes">
+            <h2>Additional Notes</h2>
+            <textarea name="notes" id="notes" placeholder='Enter Notes'></textarea>
+          </div>
+          <button className='btn'>Proceed to payment</button>
         </div>
-        <button className='btn'>Proceed to payment</button>
       </div>
       <AddressForm 
         showForm={showForm}
@@ -100,8 +116,9 @@ const ShipingMethod = () => {
         setIsEditing={setIsEditing}
         selectedAddress={selectedAddress}
         setSelectedAddress={setSelectedAddress}
+        country={country}
       />
-    </div>
+    </>
   );
 }
 

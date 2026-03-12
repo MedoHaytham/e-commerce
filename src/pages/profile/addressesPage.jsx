@@ -13,7 +13,7 @@ const AddressesPage = () => {
   const [email, setEmail] = useState("");
   const [activeTab, setActiveTab] = useState("Addresses");
 
-  const { data: me } = useGetMeQuery();
+  const { data: me, refetch: refetchMe } = useGetMeQuery();
 
   const {data: addressData, isLoading: isLoadingAddresses} = useGetAddressesQuery();
   const addresses = addressData?.data?.addresses || [];
@@ -42,9 +42,27 @@ const AddressesPage = () => {
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [country, setCountry] = useState('');
 
   const [ deleteAddress ] = useDeleteAddressMutation();
   const [ setDefaultAddress ] = useSetDefaultAddressMutation();
+
+  const handleOpenAddAddress = async () => {
+    try {
+      const refreshedMe = await refetchMe().unwrap();
+      const latestCountry = refreshedMe?.data?.country || '';
+
+      setCountry(latestCountry);
+    } catch (error) {
+      console.log(error);
+      setCountry(me?.data?.country || '');
+    }
+
+    setSelectedAddress(null);
+    setIsAdding(true);
+    setIsEditing(false);
+    setShowForm(true);
+  };
 
 
   return (
@@ -101,14 +119,10 @@ const AddressesPage = () => {
                     />
                   ))
                 }
-                <button className='new-address' 
-                  onClick={() => {
-                    setSelectedAddress(null);
-                    setShowForm(true);
-                    setIsAdding(true);
-                    setIsEditing(false);
-                  }}
-                >
+                    <button
+                      className='new-address'
+                      onClick={handleOpenAddAddress}
+                    >
                   <IoMdAdd /> Add Address
                 </button>
               </div>
@@ -119,13 +133,13 @@ const AddressesPage = () => {
         <AddressForm 
           showForm={showForm}
           setShowForm={setShowForm}
-          addresses={addresses}
           isAdding={isAdding}
           setIsAdding={setIsAdding}
           isEditing={isEditing}
           setIsEditing={setIsEditing}
           selectedAddress={selectedAddress}
           setSelectedAddress={setSelectedAddress}
+          country={country}
         />
       </div>
     </div>

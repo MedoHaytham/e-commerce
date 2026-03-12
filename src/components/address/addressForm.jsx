@@ -11,8 +11,8 @@ const emptyForm = {
   lastName: '',
   address: '',
   city: '',
-  country: '',
   phone: '',
+  country: '',
 };
 
 const AddressForm = ({
@@ -23,7 +23,8 @@ const AddressForm = ({
   isEditing, 
   setIsEditing,
   selectedAddress,
-  setSelectedAddress
+  setSelectedAddress,
+  country,
 }) => {
 
   const [form, setForm] = useState(emptyForm)
@@ -31,22 +32,31 @@ const AddressForm = ({
   const [addAddress, {isLoading: isAddLoading }] = useAddAddressMutation();
   const [ updateAddress, {isLoading: isUpdateLoading } ] = useUpdateAddressMutation();
 
+
   const isLoading = isAddLoading || isUpdateLoading;
 
+
   useEffect(() => {
-    if(isEditing && selectedAddress) {
+
+    if (!showForm) return;
+
+    if (isEditing && selectedAddress) {
       setForm({
         title: selectedAddress.title || '',
         firstName: selectedAddress.firstName || '',
         lastName: selectedAddress.lastName || '',
         address: selectedAddress.address || '',
         city: selectedAddress.city || '',
+        country: selectedAddress.country || country || '',
         phone: selectedAddress.phone || '',
       });
     } else {
-      setForm(emptyForm);
+      setForm({
+        ...emptyForm,
+        country: country || '',
+      });
     }
-  },[isEditing, selectedAddress])
+  }, [showForm, isEditing, selectedAddress, country]);
   
   const onChangeHandler =  (e) => {
     const {name, value} = e.target;
@@ -59,7 +69,7 @@ const AddressForm = ({
     lastName: Joi.string().required().label('Last Name'),
     address: Joi.string().required().label('Address'),
     city: Joi.string().required().label('City'),
-    // country: Joi.string().required().label('Country'),
+    country: Joi.string().required().label('Country'),
     phone: Joi.string()
       .regex(/^[0-9]+$/)
       .min(10)
@@ -85,21 +95,30 @@ const AddressForm = ({
   }
 
   const resetFormState = () => {
-    setForm(emptyForm);
+    setForm({
+      ...emptyForm,
+      country: country || '',
+    });
     setShowForm(false);
     setIsAdding(false);
     setIsEditing(false);
     setSelectedAddress(null);
   }
-  
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     const errors = validate();
     if(errors) return;
 
+    const payload = {
+      ...form,
+      country: form.country || country || ''
+    };
+
     if(isAdding) {
       try {
-        await addAddress(form).unwrap();
+
+        await addAddress(payload).unwrap();
         toast.success("Address added successfully");
       } catch (error) {
         console.log(error);
@@ -110,7 +129,7 @@ const AddressForm = ({
 
     if(isEditing && selectedAddress) {
       try {
-        await updateAddress({addressId: selectedAddress._id, ...form}).unwrap();
+        await updateAddress({ addressId: selectedAddress._id, ...payload }).unwrap();
         toast.success("Address updated successfully");
       } catch (error) {
         console.log(error);
@@ -130,7 +149,7 @@ const AddressForm = ({
         </div>
         <div className="bottom">
           <div className='info'>
-            <label htmlFor="title">titles<span className=''>*</span></label>
+            <label htmlFor="title">title<span className=''>*</span></label>
             <input type="text" id='title' name='title' value={form.title} onChange={onChangeHandler}/>
             {errors.title && <p className='text-danger mt-2' >{errors.title}</p>}
           </div>
@@ -159,7 +178,7 @@ const AddressForm = ({
             </div>
             <div className='info'>
               <label htmlFor="country">country</label>
-              <input type="text" id='country' name='country' value={form.country} onChange={onChangeHandler}/>
+              <input type="text" id='country' name='country' value={form.country} disabled/>
               {errors.country && <p className='text-danger mt-2' >{errors.country}</p>}
             </div>
           </div>
