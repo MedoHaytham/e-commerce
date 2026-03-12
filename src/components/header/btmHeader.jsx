@@ -97,7 +97,7 @@ const BtmHeader = () => {
             <div className="category-btn" onClick={() => setActive((prev) => !prev)}>
               <IoMdMenu className="menu-icon" />
               <p>Browse Category</p>
-              <MdOutlineArrowDropDown />
+              <MdOutlineArrowDropDown className={`${active ?  'active': ''} arrow`}/>
             </div>
             <div className={`${active ?  'active': ''} category-nav-list`}>
               {categories.map((cate, index) => (<NavLink className='link' key={index} to={`/category/${cate.slug}`} onClick={() => setActive(false)}>{cate.name}</NavLink>))}
@@ -140,7 +140,7 @@ const BtmHeader = () => {
                 ? '' 
                 : <div className="user-info-btn" onClick={() => setUserActive((prev) => !prev)}>
                     <span>Hi, {me?.firstName}</span> 
-                    <MdOutlineArrowDropDown />
+                    <MdOutlineArrowDropDown className={`${userActive ?  'active': ''} arrow`}/>
                   </div>
               }
               <div className={`${userActive ?  'user-active': ''} user-info-list`}>
