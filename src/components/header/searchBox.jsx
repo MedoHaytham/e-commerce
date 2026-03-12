@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { FaSearch } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-// import api from '../../api/axiosInstance';
 import axios from 'axios';
 
 const SearchBox = () => {
@@ -40,7 +39,6 @@ const SearchBox = () => {
     }, 300);
 
     return () => clearTimeout(debouce);
-    // fetchSuggestions();
   }, [searchTerm]);
 
   let submitHadnler = (e) => {

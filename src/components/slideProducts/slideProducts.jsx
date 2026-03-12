@@ -4,7 +4,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation } from 'swiper/modules';
 import Product from './product';
 import TopSlide from '../topSlide';
-//import api from '../../api/axiosInstance';
 import axios from 'axios';
 
 import 'swiper/css';

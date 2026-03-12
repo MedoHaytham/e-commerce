@@ -8,7 +8,6 @@ import { useFetchCartQuery } from '../../features/cartSlice';
 
 const CartPage = () => {
 
-  // const { cartItems, isLoading } = useSelector((state) => state.cart);
   const { data: cartData, isLoading } = useFetchCartQuery();
   const cartItems = cartData?.data?.inCartProducts || [];
   let totalCost = cartItems.reduce((acc, curent) => (acc + curent.product.price * curent.quantity), 0)

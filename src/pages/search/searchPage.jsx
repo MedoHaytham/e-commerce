@@ -5,7 +5,6 @@ import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Product from '../../components/slideProducts/product';
 import SearchPageLoading from './searchPageLoading';
-// import api from '../../api/axiosInstance';
 import axios from 'axios';
 
 import './searchPage.css';

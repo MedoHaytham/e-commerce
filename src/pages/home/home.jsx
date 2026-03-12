@@ -4,7 +4,6 @@ import SlideProducts from '../../components/slideProducts/slideProducts';
 import { toast } from 'react-toastify';
 import SlideProductsLoading from '../../components/slideProducts/slideProductsLoading';
 import PageTransition from '../../components/pageTransition';
-// import api from '../../api/axiosInstance';
 import axios from 'axios';
 
 import './home.css';

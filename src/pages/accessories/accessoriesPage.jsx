@@ -3,7 +3,6 @@ import PageTransition from '../../components/pageTransition';
 import AccessoriesPageLoading from './accessoriesPageLoading';
 import Product from '../../components/slideProducts/product';
 import { toast } from 'react-toastify';
-// import api from '../../api/axiosInstance';
 import TopSlide from '../../components/topSlide';
 
 import './accessoriesPage.css';

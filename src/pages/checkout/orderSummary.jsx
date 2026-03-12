@@ -5,7 +5,6 @@ import { useFetchCartQuery } from "../../features/cartSlice";
 
 const OrderSummary = () => {
 
-  // const cartItems = useSelector((state) => state.cart.cartItems);
   const { data: cartData } = useFetchCartQuery();
   const cartItems = cartData?.data?.inCartProducts || [];
   const fee = 64;

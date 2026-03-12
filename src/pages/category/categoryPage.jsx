@@ -6,7 +6,6 @@ import Product from '../../components/slideProducts/product';
 import './categoryPage.css';
 import CategoryPageLoading from './catePageLoading';
 import PageTransition from '../../components/pageTransition';
-// import api from '../../api/axiosInstance';
 import axios from 'axios';
 
 const CategoryPage = () => {

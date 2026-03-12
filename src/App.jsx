@@ -56,38 +56,43 @@ const App = () => {
               <Route path="/search" element={<SearchPage />} />
               <Route path="/favorites" element={<FavoritesPage />} />
               <Route path="/cart" element={<CartPage />} />
-              <Route path="/checkout" element={<CheckoutPage />} />
+              <Route 
+                path="/checkout" 
+                element={
+                  isAuthenticated ? <CheckoutPage /> : <Navigate to="/signIn" />
+                } 
+              />
               <Route path="/category/:slug" element={<CategoryPage />} />
               <Route path="/accessories" element={<AccessoriesPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/product/:id" element={<ProductPage />} />
               <Route 
                 path="/profile" 
-                  element={
+                element={
                   isAuthenticated ? <ProfilePage /> : <Navigate to="/signIn" />
                 } 
               />
               <Route 
                 path="/security-settings" 
-                  element={
+                element={
                   isAuthenticated ? <PasswordPage /> : <Navigate to="/signIn" />
                 } 
               />
               <Route 
                 path="/orders" 
-                  element={
+                element={
                   isAuthenticated ? <OrdersPage /> : <Navigate to="/signIn" />
                 } 
               />
               <Route 
                 path="/addresses" 
-                  element={
+                element={
                   isAuthenticated ? <AddressesPage /> : <Navigate to="/signIn" />
                 } 
               />
               <Route 
                 path="/payments" 
-                  element={
+                element={
                   isAuthenticated ? <PaymentsPage /> : <Navigate to="/signIn" />
                 } 
               />
@@ -95,13 +100,13 @@ const App = () => {
             </Route>
             <Route 
                 path="/signIn" 
-                  element={
+                element={
                   isAuthenticated ? <Navigate to="/" replace/> : <SignInPage />
                 } 
               />
               <Route 
                 path="/register" 
-                  element={
+                element={
                   isAuthenticated ? <Navigate to="/" replace/> : <RegisterPage />
                 } 
               />
