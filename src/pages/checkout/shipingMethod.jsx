@@ -5,6 +5,10 @@ import Address from '../../components/address/address';
 import AddressForm from '../../components/address/addressForm';
 import { useDeleteAddressMutation, useGetAddressesQuery, useGetMeQuery, useSetDefaultAddressMutation } from '../../features/userSlice';
 import AddressLoading from '../../components/address/addressLoading';
+import { useCreateOrderMutation } from '../../features/orderSlice';
+import { useNavigate } from 'react-router-dom';
+import LoadingCircle from '../../components/loadingCircle/loadingCircle';
+import toast from 'react-hot-toast';
 
 
 
@@ -16,6 +20,8 @@ const ShipingMethod = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [country, setCountry] = useState('');
+  const [notes, setNotes] = useState('');
+  const navigate = useNavigate();
 
   const { data: addressesData, isLoading } = useGetAddressesQuery();
   const addresses = addressesData?.data?.addresses || [];
@@ -23,6 +29,7 @@ const ShipingMethod = () => {
   const [ deleteAddress ] = useDeleteAddressMutation();
   const [ setDefaultAddress ] = useSetDefaultAddressMutation();
   const {data: me, refetch: refetchMe} = useGetMeQuery();
+  const [ createOrder, { isLoading: isCreatingOrder } ] = useCreateOrderMutation();
 
   const handleOpenAddAddress = async () => {
     try {
@@ -40,7 +47,30 @@ const ShipingMethod = () => {
     setIsEditing(false);
     setShowForm(true);
   };
-  
+
+  const hadleProceedToPayment = async () => {
+    try {
+      if (addresses.length === 0) {
+        toast.error('Please add an address');
+        return;
+      }
+
+      const defaultAddress = addresses.find((a) => a.isDefault);
+      if (!defaultAddress) {
+        toast.error('Please select an address');
+        return;
+      }
+
+      const addressId = defaultAddress?._id;
+      await createOrder({
+        addressId: addressId,
+        notes: notes,
+      }).unwrap();
+      navigate('/orderpay');
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -101,9 +131,9 @@ const ShipingMethod = () => {
           </div>
           <div className="notes">
             <h2>Additional Notes</h2>
-            <textarea name="notes" id="notes" placeholder='Enter Notes'></textarea>
+            <textarea name="notes" id="notes" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder='Enter Notes'></textarea>
           </div>
-          <button className='btn'>Proceed to payment</button>
+          <button className='btn' onClick={hadleProceedToPayment} disabled={isCreatingOrder}> {isCreatingOrder ? <LoadingCircle /> : 'Proceed to payment'}</button>
         </div>
       </div>
       <AddressForm 

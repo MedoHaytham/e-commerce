@@ -23,6 +23,7 @@ import AddressesPage from "./pages/profile/addressesPage";
 import PaymentsPage from "./pages/profile/paymentsPage";
 import { useGetMeQuery } from "./features/userSlice";
 import LoadingCircle from "./components/loadingCircle/loadingCircle";
+import Orderpay from "./pages/checkout/orderpay";
 
 const App = () => {
 
@@ -94,6 +95,12 @@ const App = () => {
                 path="/payments" 
                 element={
                   isAuthenticated ? <PaymentsPage /> : <Navigate to="/signIn" />
+                } 
+              />
+              <Route 
+                path="/orderpay" 
+                element={
+                  isAuthenticated ? <Orderpay /> : <Navigate to="/signIn" />
                 } 
               />
               <Route path="*" element={<ErrorPage />} />
