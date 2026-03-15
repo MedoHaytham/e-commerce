@@ -1,0 +1,333 @@
+/* ordersPage.css */
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Layout ──────────────────────────────────────────────── */
+.orders-page {
+  background: #f1f5f9;
+  min-height: calc(100vh - 137px);
+  padding: 30px 0 50px;
+}
+
+.orders-page .container {
+  /* width/margin from index.css */
+}
+
+.orders-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Tabs ────────────────────────────────────────────────── */
+.orders-tabs {
+  display: flex;
+  background: #fff;
+  border-radius: 14px 14px 0 0;
+  border: 1px solid #e5e7eb;
+  border-bottom: none;
+  width: fit-content;
+  overflow: hidden;
+}
+
+.orders-tab {
+  padding: 12px 36px;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #94a3b8;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s;
+  position: relative;
+  direction: rtl;
+}
+.orders-tab:hover { color: #1d8cdc; }
+.orders-tab--active { color: #1d8cdc; font-weight: 600; }
+.orders-tab--active::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: #1d8cdc;
+  border-radius: 2px 2px 0 0;
+}
+
+/* ── Orders List ─────────────────────────────────────────── */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+}
+
+/* ── Skeleton ────────────────────────────────────────────── */
+.order-skeleton {
+  height: 160px;
+  border-radius: 14px;
+}
+
+/* ── Order Card ──────────────────────────────────────────── */
+.order-card {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  overflow: visible;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  direction: rtl;
+  animation: slideUp 0.25s ease both;
+}
+
+/* Header */
+.order-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.order-card__header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.order-card__header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.order-icon-wrap {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: #e8f4fd;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.order-header-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.order-delivery-text {
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.order-id-text {
+  font-family: "Poppins", sans-serif;
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* Badges */
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-family: "Poppins", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* 3-dot menu */
+.order-menu-wrap { position: relative; }
+
+.order-menu-btn {
+  width: 30px; height: 30px;
+  border-radius: 50%; border: none;
+  background: transparent; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.order-menu-btn:hover { background: #f1f5f9; }
+
+.order-menu-dropdown {
+  position: absolute;
+  top: 36px; left: 0;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+  min-width: 150px;
+  z-index: 100;
+  overflow: hidden;
+  animation: slideUp 0.15s ease;
+}
+
+.order-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  color: #475569;
+  cursor: pointer;
+  transition: background 0.12s;
+  direction: rtl;
+}
+.order-menu-item:hover { background: #f0f7ff; color: #1d8cdc; }
+.order-menu-item--danger { color: #ef4444; }
+.order-menu-item--danger:hover { background: #fee2e2; color: #dc2626; }
+
+/* ── Item Row ────────────────────────────────────────────── */
+.order-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid #f8fafc;
+  gap: 14px;
+}
+.order-item:last-of-type { border-bottom: none; }
+
+.order-item__info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: right;
+  min-width: 0;
+}
+
+.order-item__name {
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  color: #1e293b;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+}
+
+.order-item__price-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.order-item__qty {
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  color: #94a3b8;
+  background: #f1f5f9;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.order-item__price {
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.order-item__subtotal {
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.order-item__img {
+  width: 68px; height: 68px;
+  object-fit: contain;
+  border-radius: 10px;
+  border: 1px solid #f1f5f9;
+  background: #fafafa;
+  flex-shrink: 0;
+}
+
+.order-item__img--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Card Footer ─────────────────────────────────────────── */
+.order-card__footer {
+  padding: 14px 20px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  background: #fafbfc;
+  border-radius: 0 0 14px 14px;
+}
+
+.order-totals {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 200px;
+}
+
+.order-total-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  color: #64748b;
+  direction: rtl;
+}
+.order-total-row--discount { color: #22c55e; }
+.order-total-row--total {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+  padding-top: 6px;
+  border-top: 1px dashed #e2e8f0;
+  margin-top: 4px;
+}
+
+.order-address {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: "Poppins", sans-serif;
+  font-size: 11px;
+  color: #94a3b8;
+  direction: rtl;
+  max-width: 300px;
+  text-align: right;
+}
+
+/* ── Empty State ─────────────────────────────────────────── */
+.orders-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px 20px;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+}
+.orders-empty p {
+  font-family: "Poppins", sans-serif;
+  font-size: 15px;
+  color: #94a3b8;
+  margin: 0;
+}
