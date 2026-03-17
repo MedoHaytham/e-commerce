@@ -1,60 +1,58 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { CheckCircle, XCircle, Loader } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { cartSlice } from '../../features/cartSlice';
 import './checkoutPage.css';
 
 function Orderpay() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const [status, setStatus] = useState('loading'); // loading | success | failed
+  const dispatch = useDispatch();
+  const [status, setStatus] = useState('loading');
 
   useEffect(() => {
-    // For hash routing — params come after the path
-    const urlParams = new URLSearchParams(window.location.search);
-    // Also check hash for some routers
-    const hashParams = new URLSearchParams(window.location.hash.split('?')[1] || '');
-    
-    const success = urlParams.get('success') || hashParams.get('success') || searchParams.get('success');
-    
+    const urlParams   = new URLSearchParams(window.location.search);
+    const hashParams  = new URLSearchParams(window.location.hash.split('?')[1] || '');
+    const success     = urlParams.get('success') || hashParams.get('success') || searchParams.get('success');
+
     if (success === 'true') {
       setStatus('success');
+      dispatch(cartSlice.util.invalidateTags(['Cart']));
     } else if (success === 'false') {
       setStatus('failed');
     }
-  }, [searchParams]);
-
+  }, [searchParams, dispatch]);
 
   return (
     <div className='orderpay'>
-        {status === 'loading' && (
-          <div className='orderpay__box'>
-            <Loader size={48} className='orderpay__spin' color='#1d8cdc' />
-            <h2>Processing your payment...</h2>
-            <p>Please wait while we confirm your order.</p>
-          </div>
-        )}
-
-        {status === 'success' && (
-          <div className='orderpay__box'>
-            <CheckCircle size={64} color='#22c55e' />
-            <h2>Payment Successful!</h2>
-            <p>Your order has been placed successfully.</p>
-            <button className='btn' onClick={() => navigate('/orders')}>
-              View My Orders
-            </button>
-          </div>
-        )}
-
-        {status === 'failed' && (
-          <div className='orderpay__box'>
-            <XCircle size={64} color='#ef4444' />
-            <h2>Payment Failed</h2>
-            <p>Something went wrong with your payment. Please try again.</p>
-            <button className='btn' onClick={() => navigate('/checkout')}>
-              Try Again
-            </button>
-          </div>
-        )}
+      {status === 'loading' && (
+        <div className='orderpay__box'>
+          <Loader size={48} className='orderpay__spin' color='#1d8cdc' />
+          <h2>Processing your payment...</h2>
+          <p>Please wait while we confirm your order.</p>
+        </div>
+      )}
+      {status === 'success' && (
+        <div className='orderpay__box'>
+          <CheckCircle size={64} color='#22c55e' />
+          <h2>Payment Successful!</h2>
+          <p>Your order has been placed successfully.</p>
+          <button className='btn' onClick={() => navigate('/orders')}>
+            View My Orders
+          </button>
+        </div>
+      )}
+      {status === 'failed' && (
+        <div className='orderpay__box'>
+          <XCircle size={64} color='#ef4444' />
+          <h2>Payment Failed</h2>
+          <p>Something went wrong with your payment. Please try again.</p>
+          <button className='btn' onClick={() => navigate('/checkout')}>
+            Try Again
+          </button>
+        </div>
+      )}
     </div>
   );
 }
