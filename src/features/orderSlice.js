@@ -25,6 +25,13 @@ export const orderSlice = apiSlice.injectEndpoints({
         }),
         invalidatesTags: ['Orders']
       }),
+      initiatePayment: builder.mutation({
+        query: (body) => ({
+          url: "/paymob/pay",
+          method: "POST",
+          body,
+        }),
+      })
     })
 });
 
@@ -32,4 +39,5 @@ export const {
   useGetOrdersQuery,
   useCreateOrderMutation,
   useCancelOrderMutation,
+  useInitiatePaymentMutation,
 } = orderSlice;

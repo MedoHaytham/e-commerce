@@ -7,7 +7,7 @@ const OrderSummary = () => {
 
   const { data: cartData } = useFetchCartQuery();
   const cartItems = cartData?.data?.inCartProducts || [];
-  const fee = 30;
+  const fee = 0;
   let totalCost = cartItems.reduce((acc, curent) => (acc + curent.product.price * curent.quantity), 0);
   const totalWithFees = totalCost + fee;
 

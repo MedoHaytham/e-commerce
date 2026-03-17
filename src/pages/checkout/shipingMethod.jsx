@@ -5,8 +5,7 @@ import Address from '../../components/address/address';
 import AddressForm from '../../components/address/addressForm';
 import { useDeleteAddressMutation, useGetAddressesQuery, useGetMeQuery, useSetDefaultAddressMutation } from '../../features/userSlice';
 import AddressLoading from '../../components/address/addressLoading';
-import { useCreateOrderMutation } from '../../features/orderSlice';
-import { useNavigate } from 'react-router-dom';
+import { useCreateOrderMutation, useInitiatePaymentMutation } from '../../features/orderSlice';
 import LoadingCircle from '../../components/loadingCircle/loadingCircle';
 import toast from 'react-hot-toast';
 
@@ -21,7 +20,6 @@ const ShipingMethod = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [country, setCountry] = useState('');
   const [notes, setNotes] = useState('');
-  const navigate = useNavigate();
 
   const { data: addressesData, isLoading } = useGetAddressesQuery();
   const addresses = addressesData?.data?.addresses || [];
@@ -30,6 +28,9 @@ const ShipingMethod = () => {
   const [ setDefaultAddress ] = useSetDefaultAddressMutation();
   const {data: me, refetch: refetchMe} = useGetMeQuery();
   const [ createOrder, { isLoading: isCreatingOrder } ] = useCreateOrderMutation();
+  const [ initiatePayment, { isLoading: isInitiatingPayment } ] = useInitiatePaymentMutation();
+
+  const isProcessing = isCreatingOrder || isInitiatingPayment;
 
   const handleOpenAddAddress = async () => {
     try {
@@ -57,18 +58,27 @@ const ShipingMethod = () => {
 
       const defaultAddress = addresses.find((a) => a.isDefault);
       if (!defaultAddress) {
-        toast.error('Please select an address');
+        toast.error('Please select a default address');
         return;
       }
 
-      const addressId = defaultAddress?._id;
-      await createOrder({
-        addressId: addressId,
-        notes: notes,
+      // Step 1: create order
+      const orderRes = await createOrder({
+        addressId: defaultAddress._id,
+        notes,
       }).unwrap();
-      navigate('/orderpay');
+
+      const orderId = orderRes.data.orderId;
+
+      // Step 2: get Paymob payment key
+      const payRes = await initiatePayment({ orderId }).unwrap();
+
+      // Step 3: redirect to Paymob hosted page
+      window.location.href = payRes.data.redirectUrl;
+
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      toast.error(error?.data?.message || 'Payment failed. Please try again.');
     }
   };
 
@@ -133,7 +143,7 @@ const ShipingMethod = () => {
             <h2>Additional Notes</h2>
             <textarea name="notes" id="notes" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder='Enter Notes'></textarea>
           </div>
-          <button className='btn' onClick={hadleProceedToPayment} disabled={isCreatingOrder}> {isCreatingOrder ? <LoadingCircle /> : 'Proceed to payment'}</button>
+          <button className='btn' onClick={hadleProceedToPayment} disabled={isProcessing}> {isProcessing ? <LoadingCircle /> : 'Proceed to payment'}</button>
         </div>
       </div>
       <AddressForm 
