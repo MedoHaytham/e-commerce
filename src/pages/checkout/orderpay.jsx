@@ -9,16 +9,20 @@ function Orderpay() {
   const [status, setStatus] = useState('loading'); // loading | success | failed
 
   useEffect(() => {
-    const success = searchParams.get('success');
+    // For hash routing — params come after the path
+    const urlParams = new URLSearchParams(window.location.search);
+    // Also check hash for some routers
+    const hashParams = new URLSearchParams(window.location.hash.split('?')[1] || '');
+    
+    const success = urlParams.get('success') || hashParams.get('success') || searchParams.get('success');
+    
     if (success === 'true') {
       setStatus('success');
     } else if (success === 'false') {
       setStatus('failed');
-    } else {
-      // No params yet — might still be processing
-      setStatus('loading');
     }
   }, [searchParams]);
+
 
   return (
     <div className='orderpay'>
