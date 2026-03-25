@@ -28,7 +28,7 @@ body { background: #f1f5f9; font-family: "Poppins", sans-serif; }
   overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.05);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .sidebar { 
     display: none;
   }
@@ -64,6 +64,11 @@ body { background: #f1f5f9; font-family: "Poppins", sans-serif; }
 
 /* Form */
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+
+@media (max-width: 767px) {
+  .form-grid { grid-template-columns: 1fr; }
+}
+
 .form-field label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 500; color: #475569; }
 .form-field input,
 .form-field select {

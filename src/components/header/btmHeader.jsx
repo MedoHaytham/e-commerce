@@ -37,7 +37,7 @@ const BtmHeader = () => {
   
 
   const location = useLocation();
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
   const isAccountPage = accountItems.some(
     (item) => location.pathname.startsWith(item.path)
   );
