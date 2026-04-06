@@ -1,70 +1,86 @@
-# Getting Started with Create React App
+# React E-Commerce Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A fully-featured, responsive e-commerce web application built with **React**, **Redux Toolkit**, and **React Router**. This project provides a complete shopping experience, from browsing products and adding them to the cart or favorites, to user authentication, profile management, and a seamless checkout process.
 
-## Available Scripts
+## 🚀 Features
 
-In the project directory, you can run:
+- **User Authentication:** Registration, Login, and secure session management using cookies.
+- **Product Catalog:** Browse products by category, view detailed product pages, and search for specific items.
+- **Shopping Cart & Checkout:** Add products to the cart, manage quantities, and proceed through a complete checkout flow.
+- **Favorites / Wishlist:** Save items to a favorites list for future purchases.
+- **User Profile Management:** Manage account details, secure settings (passwords), addresses, payment methods, and view order history.
+- **State Management & Data Fetching:** Efficient global state management using **Redux Toolkit** and optimized data fetching with **RTK Query** & **Axios**.
+- **Smooth Animations:** Page transitions and UI micro-interactions powered by **Framer Motion**.
+- **Responsive Design:** Designed with a mobile-first approach for styling, utilizing **Bootstrap** and custom CSS.
+- **Notifications & Validations:** Real-time feedback messages with **React Toastify / Hot Toast** and robust client-side form validation with **Joi**.
 
-### `npm start`
+## 🛠️ Technology Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Frontend Framework:** React 19
+- **State Management:** Redux Toolkit (Slices + RTK Query)
+- **Routing:** React Router DOM
+- **HTTP Client:** Axios
+- **Animations:** Framer Motion
+- **Carousel / Sliders:** Swiper
+- **Styling:** Vanilla CSS & Bootstrap 5
+- **Icons:** FontAwesome, Lucide React, and React Icons
+- **Notifications:** React Toastify & React Hot Toast
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📂 Project Structure
 
-### `npm test`
+```text
+src/
+├── app/             # Redux store configuration
+├── components/      # Reusable UI components (Loading, Sliders, Layout elements)
+├── features/        # Redux slices (Cart, Favorites, User, etc.)
+├── imgs/            # Static image assets
+├── layout/          # Global layout wrappers (e.g., Header, Footer)
+├── pages/           # Application pages/routes (Home, Product, Cart, Profile, etc.)
+├── App.jsx          # Main application component & routing setup
+└── index.jsx        # React DOM entry point
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## ⚙️ Getting Started
 
-### `npm run build`
+### Prerequisites
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Ensure you have [Node.js](https://nodejs.org/) installed on your machine.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Installation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. **Clone the repository:**
+   ```bash
+   git clone <your-repository-url>
+   cd e-commerce
+   ```
 
-### `npm run eject`
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. **Start the development server:**
+   ```bash
+   npm start
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   The app will run in development mode.
+   Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Build and Deployment
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+To build the app for production:
+```bash
+npm run build
+```
+Builds the app for production to the `build` folder. It correctly bundles React in production mode and optimizes the build for the best performance.
 
-## Learn More
+The project is pre-configured to be easily deployed to **GitHub Pages** using `npm run deploy`.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🔗 Backend API
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+This project connects to a custom backend API for data storage and processes. The base URL configured for the data fetching is:
+`https://e-commerce-backend-geri.onrender.com/api/`
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+*Created with ❤️ by Mohamed Haytham.*
