@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 const Product = ({ item }) => {
 
   const productId = item?._id || item?.id;
+  const productImage = item?.images?.[0] || '/placeholder.jpg';
   const navigate = useNavigate();
 
   const isAuthenticated = Cookies.get('accessToken') ? true : false;
@@ -28,8 +29,8 @@ const Product = ({ item }) => {
 
   const renderStars = () => {
     const stars = [];
-    const fullStars = Math.floor(item.rating);
-    const hasHalfStar = item.rating % 1 !== 0;
+    const fullStars = Math.floor(item?.rating || 0);
+    const hasHalfStar = (item?.rating || 0) % 1 !== 0;
     const totalStars = 5;
 
     // full stars
@@ -115,7 +116,7 @@ const Product = ({ item }) => {
           in Cart
         </span>
         <div className="image">
-          <img src={item.images[0]} alt="" />
+          <img src={productImage} alt="" />
         </div>
         <p className='title'>{item.title}</p>
         <div className="stars">

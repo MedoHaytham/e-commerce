@@ -13,6 +13,7 @@ const CategoryPage = () => {
   const {slug} = useParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [categoryExist, setCategoryExist] = useState(true);
   
   useEffect(()=> {
     async function fetchProducts() {
@@ -20,6 +21,7 @@ const CategoryPage = () => {
         setLoading(true);
         setProducts([]);
         let response = await axios.get(`https://e-commerce-backend-geri.onrender.com/api/products/category/${slug}`);
+        setCategoryExist(true);
         let data = response.data.data.map((p) => ({
           id: p._id,
           title: p.title,
@@ -29,7 +31,11 @@ const CategoryPage = () => {
         }));
         setProducts(data);
       } catch(error) {
-        toast.error('Error on fetch prodcuts: ' + error);
+        if (error?.response?.status === 404) {
+          setCategoryExist(false);
+        } else {
+          toast.error('Error fetching products: ' + error);
+        }
       } finally {
         setLoading(false);
       }
@@ -42,7 +48,12 @@ const CategoryPage = () => {
       {
         loading 
         ? <CategoryPageLoading count={3}/> 
-        : <div className='category-products'>
+        : !categoryExist ? 
+          (<div style={{ padding: '10px' }}>
+            <h2>Category not found</h2>
+            <p>The category "{slug}" doesn't exist.</p>
+          </div>) : 
+          (<div className='category-products'>
             <div className="container">
               <TopSlide 
                 categoryName={slug.replace('-', ' ')} 
@@ -50,12 +61,14 @@ const CategoryPage = () => {
                 desc={'Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, voluptates?'}
               />
               <div className="products">
-                {
+                {products.length === 0 ? (
+                  <p>No products found</p>
+                ) : (
                   products.map((p) => (<Product key={p.id} item={p}/>))
-                }
+                )}
               </div>
             </div>
-          </div>
+          </div>)
       }
     </PageTransition>
   );

@@ -28,11 +28,17 @@ const SlideProducts = ({categorySlug, categoryName}) => {
         }));
         setProducts(data);
       } catch(error) {
-        toast.error('Error on fetch prodcuts: ' + error);
+        if (error?.response?.status === 404) {
+          setProducts([]);
+        } else {
+          toast.error('Error fetching products: ' + error);
+        }
       }
     }
     fetchProducts();
   },[categorySlug]);
+
+  if (!categorySlug) return null;
 
   return ( 
     <div className="slider">

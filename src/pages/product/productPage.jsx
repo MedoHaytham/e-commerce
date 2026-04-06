@@ -9,10 +9,12 @@ import SlideProductsLoading from '../../components/slideProducts/slideProductsLo
 import PageTransition from '../../components/pageTransition';
 import axios from 'axios';
 import './productPage.css';
+import { useNavigate } from 'react-router-dom';
 
 const ProductPage = () => {
 
   const {id} = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeImg, setActiveImg] = useState('');
@@ -26,7 +28,11 @@ const ProductPage = () => {
         setProduct(response.data.data);
         setActiveImg(response.data.data.images[0] || '');
       } catch (error) {
-        toast.error('Error fetchProduct: ' + error);
+        if (error?.response?.status === 404) {
+          setProduct(null);
+        } else {
+          toast.error('Error fetchProduct: ' + error);
+        }
       } finally {
         setLoading(false);
       }
@@ -34,12 +40,18 @@ const ProductPage = () => {
     fetchProduct();
   },[id]);
 
+  useEffect(() => {
+    if (!loading && !product) {
+      navigate('/');
+    }
+  }, [loading, product, navigate]);
+
   return (
     <PageTransition key={id}>
       {
         loading 
         ? <ProductLoading /> 
-        : <div className='product-details'>
+        : product ? <div className='product-details'>
             <div className="container">
               <ProductImages 
                 product={product} 
@@ -48,15 +60,15 @@ const ProductPage = () => {
               />
               <ProductInfo product={product} />
             </div>
-          </div>
+          </div> : null
       }
       {
         loading 
         ? <SlideProductsLoading count={3}/> 
-        : <SlideProducts 
-            categorySlug={product.category} 
-            categoryName={product.category} 
-          />
+        : product ? <SlideProducts 
+            categorySlug={product?.category?.slug || product?.category} 
+            categoryName={product?.category?.name || product?.category || ''} 
+          /> : null
       }
     </PageTransition>
   );
